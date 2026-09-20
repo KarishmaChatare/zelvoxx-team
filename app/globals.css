@@ -1,20 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0B0B0B;
-  --color-primary: #7B61FF;
-  --color-accent: #2D9CDB;
+  --color-background: #08080C;
+  --color-surface-1: #0E0D17;
+  --color-surface-2: #141322;
+  --color-surface-3: #1A192C;
+  --color-primary: #7C61FF;
+  --color-accent: #8B5CF6;
+  --color-highlight: #A78BFA;
   --font-heading: var(--font-poppins);
   --font-body: var(--font-inter);
 }
 
 @layer utilities {
   .glass {
-    @apply bg-white/[0.02] backdrop-blur-md border border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.1)];
+    @apply bg-white/[0.02] backdrop-blur-md border border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.2)];
   }
 
   .glass-premium {
-    @apply bg-gradient-to-br from-white/[0.05] to-white/[0.01] backdrop-blur-xl border border-white/[0.1] shadow-[0_8px_32px_rgba(0,0,0,0.3)] relative overflow-hidden;
+    @apply bg-gradient-to-br from-white/[0.06] to-white/[0.01] backdrop-blur-xl border border-white/[0.1] shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden;
   }
 
   .glass-premium::before {
@@ -93,13 +97,40 @@
     cursor: auto !important;
   }
 
+  html {
+    scroll-padding-top: 6rem;
+    overflow-x: clip;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :root:has(:target) {
+      scroll-behavior: smooth;
+    }
+  }
+
   body {
-    @apply bg-background text-white antialiased font-body;
+    @apply bg-background text-white antialiased font-body selection:bg-primary/30 selection:text-white;
     cursor: auto !important;
     background-image:
-      radial-gradient(circle at 15% 20%, rgba(123, 97, 255, 0.14), transparent 35%),
-      radial-gradient(circle at 85% 10%, rgba(45, 156, 219, 0.12), transparent 32%),
-      linear-gradient(180deg, #0b0b0b 0%, #09090f 100%);
+      radial-gradient(circle at 15% 15%, rgba(124, 97, 255, 0.15), transparent 38%),
+      radial-gradient(circle at 85% 10%, rgba(139, 92, 246, 0.12), transparent 35%),
+      radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.04), transparent 50%),
+      linear-gradient(180deg, #08080C 0%, #0B0A12 50%, #060609 100%);
+  }
+
+  /* Modern subtle purple scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #08080C;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(124, 97, 255, 0.25);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(124, 97, 255, 0.5);
   }
 
   section {
@@ -133,12 +164,12 @@
 @layer utilities {
   .premium-border {
     @apply border border-white/10;
-    background: linear-gradient(#0f0f16, #0f0f16) padding-box, linear-gradient(135deg, rgba(123,97,255,.45), rgba(45,156,219,.25)) border-box;
+    background: linear-gradient(#0c0b14, #0c0b14) padding-box, linear-gradient(135deg, rgba(124,97,255,.5), rgba(139,92,246,.3), rgba(167,139,250,.2)) border-box;
     border: 1px solid transparent;
   }
 
   .soft-glow {
-    box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 18px 50px -24px rgba(123,97,255,.6), 0 12px 30px -20px rgba(45,156,219,.5);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 18px 50px -24px rgba(124,97,255,.6), 0 12px 30px -20px rgba(139,92,246,.5);
   }
 
   .reveal-up {
@@ -245,19 +276,19 @@
   }
   
   .glow-text {
-    text-shadow: 0 0 30px rgba(123, 97, 255, 0.5), 0 0 60px rgba(123, 97, 255, 0.3);
+    text-shadow: 0 0 30px rgba(124, 97, 255, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
   }
   
   .glow-text-strong {
-    text-shadow: 0 0 40px rgba(123, 97, 255, 0.7), 0 0 80px rgba(123, 97, 255, 0.4), 0 0 120px rgba(123, 97, 255, 0.2);
+    text-shadow: 0 0 40px rgba(124, 97, 255, 0.7), 0 0 80px rgba(139, 92, 246, 0.4), 0 0 120px rgba(167, 139, 250, 0.25);
   }
   
   .glow-box {
-    box-shadow: 0 0 30px rgba(123, 97, 255, 0.2), 0 0 60px rgba(123, 97, 255, 0.1);
+    box-shadow: 0 0 30px rgba(124, 97, 255, 0.25), 0 0 60px rgba(139, 92, 246, 0.12);
   }
   
   .glow-box-strong {
-    box-shadow: 0 0 40px rgba(123, 97, 255, 0.4), 0 0 80px rgba(123, 97, 255, 0.2);
+    box-shadow: 0 0 40px rgba(124, 97, 255, 0.45), 0 0 80px rgba(139, 92, 246, 0.25);
   }
   
   .hover-lift {
@@ -273,7 +304,7 @@
   }
   
   .hover-glow:hover {
-    box-shadow: 0 0 40px rgba(123, 97, 255, 0.3), 0 0 80px rgba(123, 97, 255, 0.15);
+    box-shadow: 0 0 40px rgba(124, 97, 255, 0.35), 0 0 80px rgba(139, 92, 246, 0.2);
   }
   
   .glass-card {
@@ -283,7 +314,7 @@
   
   .gradient-border {
     position: relative;
-    background: linear-gradient(135deg, rgba(123,97,255,0.2), rgba(45,156,219,0.1));
+    background: linear-gradient(135deg, rgba(124,97,255,0.2), rgba(139,92,246,0.1));
     border: 1px solid transparent;
     background-clip: padding-box;
   }
@@ -294,7 +325,7 @@
     inset: -1px;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(123,97,255,0.5), rgba(45,156,219,0.3));
+    background: linear-gradient(135deg, rgba(124,97,255,0.5), rgba(139,92,246,0.35), rgba(167,139,250,0.3));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
@@ -313,4 +344,34 @@
   .section-spacing {
     @apply py-32 md:py-44;
   }
+
+  .animate-marquee-css {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: marquee-scroll 28s linear infinite;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-css {
+    animation-play-state: paused;
+  }
+}
+
+/* Allow sitewide ambient background texture to show through main content wrappers */
+main {
+  background-color: transparent !important;
 }

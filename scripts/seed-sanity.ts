@@ -44,8 +44,8 @@ async function seedSanity() {
       highlightedText: "Revenue Systems",
       subtitle: "Stop wasting money on random tactics. We engineer complete growth systems — from brand strategy to automated sales funnels — that turn visitors into paying customers. Trusted by 200+ businesses across 15 industries.",
       badgeText: "Growth Systems for Ambitious Brands",
-      ctaText: "Book a Strategy Call",
-      ctaLink: "https://calendly.com/Zelvoxx",
+      ctaText: "Call +91 98106 01084",
+      ctaLink: "tel:+919810601084",
       secondaryCtaText: "View Our Work",
       secondaryCtaLink: "/portfolio",
       publishedAt: new Date().toISOString(),
@@ -638,8 +638,8 @@ Worth every penny and then some.`,
     await createIfNotExists("whyZelvoxx", {
       heroTitle: "Why Brands Choose Zelvoxx",
       heroSubtitle: "We're not another agency. We're growth partners who embed ourselves in your business, understand your customers better than you do, and build systems that generate revenue long after our engagement ends.",
-      ctaText: "Book a Strategy Call",
-      ctaLink: "https://calendly.com/Zelvoxx",
+      ctaText: "Call +91 98106 01084",
+      ctaLink: "tel:+919810601084",
       problemText: `Most businesses are trapped in a cycle of random acts of marketing. A blog post here. An Instagram ad there. A website update when things feel stale.
 
 The result? Thousands spent with nothing to show for it.
@@ -678,7 +678,7 @@ That's why we treat your business like our own. Every recommendation, every camp
 If you're looking for the cheapest option or expect overnight miracles, we're not your agency. But if you're ready to build something lasting, we're ready to build it with you.`,
       finalCtaTitle: "Ready to Build Your Growth System?",
       finalCtaSubtitle: "Book a free 30-minute strategy call. We'll audit your current growth efforts and give you a roadmap — even if you don't hire us.",
-      whatsappNumber: "+1234567890",
+      whatsappNumber: "+919810601084",
       whatsappCtaText: "Chat on WhatsApp",
     }, "heroTitle", "Why Brands Choose Zelvoxx");
 

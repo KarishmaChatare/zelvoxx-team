@@ -1,10 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { MessageCircle } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { CALENDLY_URL } from "@/src/constants/data";
+import HeroIsometricCards from "@/src/components/ui/HeroIsometricCards";
 
 const logos = ["LUMEN", "PULSE", "HEXABIT", "AVORA", "NEXORA", "VERTEX"];
 
@@ -46,12 +45,13 @@ const defaultStats = [
 ];
 
 export default function Hero({ data, stats }: HeroProps) {
+  const prefersReducedMotion = useReducedMotion();
   // Mobile detection for faster animations
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener('resize', checkMobile, { passive: true });
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -60,57 +60,75 @@ export default function Hero({ data, stats }: HeroProps) {
   const animDuration = isMobile ? 0.4 : 0.7;
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 md:pt-32 pb-10">
-      <div className="absolute inset-0 z-0">
-        {/* Background Image with enhanced overlay */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-luminosity"
+    <section className="relative z-10 bg-background min-h-screen flex flex-col justify-center overflow-hidden pt-20 sm:pt-22 lg:pt-24 pb-4 sm:pb-6">
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          transform: "translateZ(0)",
+          backfaceVisibility: "hidden",
+          contain: "paint",
+        }}
+      >
+        {/* Background Image with enhanced overlay - direct static fetch, hardware cached in GPU VRAM */}
+        <Image
+          src="/images/hero-bg.webp"
+          alt="Zelvoxx Cinematic Workspace"
+          fill
+          priority
+          unoptimized
+          sizes="100vw"
+          className="object-cover object-[center_right] sm:object-center opacity-45 sm:opacity-50 select-none"
           style={{
-            backgroundImage:
-              'url("https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80")',
+            transform: "translateZ(0)",
+            backfaceVisibility: "hidden",
+            willChange: "transform",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/50" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background" />
 
-        {/* Animated gradient orbs - slow cinematic movement */}
+        {/* Animated gradient orbs - GPU-composited, hardware accelerated */}
         <motion.div
+          style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
           animate={{ 
             scale: [1, 1.15, 1], 
-            opacity: [0.3, 0.5, 0.3],
+            opacity: [0.35, 0.55, 0.35],
             x: [0, 30, 0],
           }}
           transition={{ duration: 12, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-          className="absolute top-0 right-0 w-[900px] h-[900px] bg-primary/25 blur-[180px] rounded-full mix-blend-screen"
+          className="absolute top-0 right-0 w-[700px] h-[700px] bg-primary/20 blur-[120px] rounded-full"
         />
         <motion.div
+          style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
           animate={{ 
-            scale: [1, 1.25, 1], 
-            opacity: [0.2, 0.4, 0.2],
-            y: [0, -50, 0],
+            scale: [1, 1.2, 1], 
+            opacity: [0.25, 0.45, 0.25],
+            y: [0, -40, 0],
           }}
           transition={{ duration: 15, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-accent/20 blur-[180px] rounded-full mix-blend-screen"
+          className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/15 blur-[120px] rounded-full"
         />
         <motion.div
+          style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
           animate={{ 
-            scale: [1, 1.1, 1],
-            opacity: [0.15, 0.35, 0.15],
+            scale: [1, 1.1, 1], 
+            opacity: [0.15, 0.3, 0.15],
           }}
           transition={{ duration: 10, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 4 }}
-          className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-primary/15 blur-[150px] rounded-full mix-blend-screen"
+          className="absolute top-1/3 left-1/4 w-[450px] h-[450px] bg-primary/10 blur-[100px] rounded-full"
         />
 
         {/* Slow animated gradient beam */}
         <motion.div
           aria-hidden="true"
+          style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
           animate={{ x: [-30, 30, -30], opacity: [0.05, 0.15, 0.05] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           className="absolute inset-y-0 left-1/2 w-[40vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/20 to-transparent blur-3xl"
         />
 
         {/* Floating particles layer - low opacity for depth */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ contain: "strict" }}>
           {particles.map((particle, idx) => (
             <motion.div
               key={idx}
@@ -121,6 +139,7 @@ export default function Hero({ data, stats }: HeroProps) {
                 left: particle.x,
                 top: particle.y,
                 filter: "blur(1px)",
+                willChange: "transform, opacity",
               }}
               animate={{
                 y: [0, -30, 0, 20, 0],
@@ -138,195 +157,80 @@ export default function Hero({ data, stats }: HeroProps) {
           ))}
         </div>
 
-        {/* Subtle animated gradient mesh */}
-        <motion.div
-          animate={{
-            background: [
-              "radial-gradient(circle at 20% 30%, rgba(123, 97, 255, 0.08) 0%, transparent 50%)",
-              "radial-gradient(circle at 80% 70%, rgba(123, 97, 255, 0.08) 0%, transparent 50%)",
-              "radial-gradient(circle at 50% 50%, rgba(45, 156, 219, 0.06) 0%, transparent 50%)",
-              "radial-gradient(circle at 20% 30%, rgba(123, 97, 255, 0.08) 0%, transparent 50%)",
-            ],
+        {/* Subtle animated gradient mesh (GPU opacity crossfade, zero JS string interpolation) */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 20% 30%, rgba(123, 97, 255, 0.08) 0%, transparent 50%)",
+            transform: "translateZ(0)",
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          animate={{ opacity: [0.3, 0.8, 0.3] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background: "radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 50%)",
+            willChange: "opacity",
+            transform: "translateZ(0)",
+          }}
           className="absolute inset-0 pointer-events-none"
         />
       </div>
 
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 mt-6 lg:mt-10">
-        <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
-          {/* Animated Logo Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-8"
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 w-full flex flex-col items-center">
+        {/* 1. Main Hero Headline & Subtext Block */}
+        <div className="flex flex-col items-center justify-center text-center w-full">
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: animDuration, delay: baseDelay }}
+            className="text-xs sm:text-sm md:text-base lg:text-lg font-heading font-bold tracking-[0.25em] sm:tracking-[0.35em] uppercase whitespace-normal sm:whitespace-nowrap text-center"
           >
-            <div className="relative group cursor-pointer">
-              <motion.div
-                animate={{ 
-                  boxShadow: [
-                    "0 0 20px rgba(123, 97, 255, 0.3)",
-                    "0 0 40px rgba(123, 97, 255, 0.5)",
-                    "0 0 20px rgba(123, 97, 255, 0.3)",
-                  ]
-                }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 rounded-2xl blur-xl"
-              />
-              <div className="relative glass-premium rounded-2xl px-6 py-3 border border-white/10">
-                <span className="text-3xl md:text-4xl font-heading font-black tracking-widest bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
-                  ZELVOX
-                </span>
-                <span className="text-3xl md:text-4xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#a78bfa]">
-                  X
-                </span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Main heading with subtle glow effect */}
-          <div className="relative">
-            {/* Glow behind heading */}
-            <motion.div
-              animate={{ 
-                opacity: [0.3, 0.6, 0.3],
-                scale: [0.9, 1.1, 0.9],
-              }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -inset-8 bg-primary/20 blur-[80px] rounded-full pointer-events-none z-0"
-            />
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: animDuration, delay: baseDelay }}
-              className="relative z-10 text-4xl sm:text-5xl md:text-6xl lg:text-[5.5rem] font-heading font-black mb-6 text-white leading-[1.05] tracking-tighter"
-            >
-              Build. Scale. <br className="hidden sm:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#A88BFF] to-primary bg-300% animate-gradient glow-text">
-                Dominate.
-              </span>
-            </motion.h1>
-          </div>
+            <span className="text-white">Build. Scale. </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] drop-shadow-[0_0_15px_rgba(124,97,255,0.6)]">
+              Dominate.
+            </span>
+          </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: animDuration, delay: baseDelay + (isMobile ? 0.1 : 0.1) }}
-            className="text-base sm:text-lg md:text-xl text-white/70 mb-8 lg:mb-10 max-w-lg font-body font-light leading-relaxed px-4 sm:px-0"
+            transition={{ duration: animDuration, delay: baseDelay + 0.1 }}
+            className="mt-2.5 sm:mt-3 max-w-[680px] text-xs sm:text-sm md:text-[15px] text-gray-400 font-normal leading-relaxed text-center px-4"
           >
-            {data?.subtitle || "We build complete digital ecosystems that generate leads, increase sales, and scale your brand."}
+            Stop chasing random tactics—build a growth system that turns visitors into customers and customers into revenue.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: animDuration, delay: baseDelay + (isMobile ? 0.15 : 0.2) }}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0"
-          >
-            <motion.a
-              href={data?.ctaLink || CALENDLY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              className="relative w-full sm:w-auto inline-flex justify-center items-center gap-2 text-white px-6 sm:px-8 py-4 rounded-xl font-bold text-sm overflow-hidden group min-h-[56px] touch-manipulation"
-            >
-              {/* Animated gradient background */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-primary via-[#8B71FF] to-primary bg-[length:200%_100%]"
-                animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              />
-              {/* Shadow layer */}
-              <motion.div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  boxShadow: "0 0 40px rgba(123,97,255,0.5), 0 10px 40px rgba(123,97,255,0.3)",
-                }}
-              />
-              <span className="relative z-10">{data?.ctaText || "Book a Call"}</span>
-            </motion.a>
-            <motion.a
-              href="#contact"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              className="relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-4 rounded-xl font-bold text-sm text-white overflow-hidden group glass-premium border border-white/10 min-h-[56px] touch-manipulation"
-            >
-              {/* Shimmer effect on hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-              <motion.div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  boxShadow: "0 0 30px rgba(123,97,255,0.2), inset 0 0 20px rgba(123,97,255,0.05)",
-                }}
-              />
-              <MessageCircle className="w-4 h-4 relative z-10" />
-              <span className="relative z-10">Chat on WhatsApp</span>
-            </motion.a>
-          </motion.div>
         </div>
 
-        <div className="w-full lg:w-[400px] flex justify-center lg:justify-end mt-8 lg:mt-0 relative z-30 px-4 sm:px-0">
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: isMobile ? 0.6 : 0.9, delay: baseDelay + (isMobile ? 0.2 : 0.3) }}
-            className="w-full max-w-[320px] sm:max-w-sm glass-premium rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/10 bg-gradient-to-b from-[#1A1A24]/80 to-[#0B0B10]/80 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col gap-4 sm:gap-6 backdrop-blur-xl relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[50px] rounded-full pointer-events-none" />
+        {/* 2. Central Hero Centerpiece (Floating Stat-Card Cluster) */}
+        <div className="w-full my-3 sm:my-5 md:my-6 relative z-30 flex justify-center">
+          <HeroIsometricCards stats={stats} />
+        </div>
 
-            {/* Logo in stats card */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: isMobile ? 0.6 : 1, delay: isMobile ? 0.4 : 0.8 }}
-              className="flex justify-center mb-1 sm:mb-2"
-            >
-              <span className="text-xl sm:text-2xl font-heading font-black tracking-widest bg-gradient-to-r from-white/60 via-white/60 to-white/40 bg-clip-text text-transparent">
-                ZELVOX
-              </span>
-              <span className="text-xl sm:text-2xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1]/60 via-[#8b5cf6]/60 to-[#a78bfa]/60">
-                X
-              </span>
-            </motion.div>
-            {(stats?.length ? stats : defaultStats).map((stat, idx) => (
-              <div key={idx}>
-                <div className="relative z-10 flex flex-col gap-1 sm:gap-2">
-                  <h3 className="text-2xl sm:text-3xl font-black font-heading text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-                    {stat.value}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-white/70 font-medium tracking-wide">{stat.label}</p>
-                </div>
-                {idx < (stats?.length ? stats : defaultStats).length - 1 && (
-                  <div className="w-full h-px bg-gradient-to-r from-white/10 via-white/5 to-transparent relative z-10 mt-4 sm:mt-8" />
-                )}
-              </div>
+        {/* 3. Closing Strip: Trusted By Brands */}
+        <div className="w-full border-t border-white/[0.06] pt-4 sm:pt-6 mt-2 sm:mt-3 flex flex-col items-center text-center">
+          <p className="text-[10px] sm:text-[11px] font-bold tracking-[0.25em] text-white/60 uppercase mb-2 sm:mb-2.5">
+            Trusted By Growing Brands Worldwide
+          </p>
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-3.5 items-center">
+            {logos.map((logo, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: isMobile ? 0.1 : 0.35 + idx * 0.05, ease: "easeOut" }}
+                whileHover={{ y: -3, scale: 1.05 }}
+                className="group relative flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 min-h-[36px] rounded-full glass-premium border border-white/10 bg-[#0E0D17]/70 hover:bg-[#141322]/90 hover:border-[#7C61FF]/40 shadow-sm hover:shadow-[0_0_20px_rgba(124,97,255,0.35)] transition-all duration-300 cursor-pointer touch-manipulation"
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-white/30 group-hover:bg-[#7C61FF] group-hover:shadow-[0_0_8px_rgba(124,97,255,0.9)] group-hover:scale-125 transition-all duration-300 shrink-0" />
+                <span className="font-heading font-bold text-[10px] sm:text-[11px] tracking-widest text-white/50 group-hover:text-white transition-colors duration-300">
+                  {logo}
+                </span>
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: isMobile ? 0.6 : 1, delay: isMobile ? 0.4 : 0.8 }}
-        className="w-full mt-16 sm:mt-24 relative z-20 max-w-7xl mx-auto px-4 sm:px-6 pb-8 lg:pb-0"
-      >
-        <p className="text-xs font-bold tracking-[0.2em] text-white/30 uppercase mb-6 sm:mb-8 lg:mb-12 text-center lg:text-left">
-          Trusted By Growing Brands Worldwide
-        </p>
-        <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-8 md:gap-16 items-center opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-          {logos.map((logo, idx) => (
-            <div key={idx} className="flex items-center gap-2">
-              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/20 flex items-center justify-center">
-                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white/60" />
-              </div>
-              <span className="font-heading font-bold text-sm sm:text-lg md:text-xl tracking-wider text-white/80">{logo}</span>
-            </div>
-          ))}
-        </div>
-      </motion.div>
     </section>
   );
 }

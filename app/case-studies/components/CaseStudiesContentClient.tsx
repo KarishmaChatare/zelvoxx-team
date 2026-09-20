@@ -15,7 +15,7 @@ export default function CaseStudiesContentClient({ caseStudiesData }: CaseStudie
   return (
     <main className="min-h-screen bg-background text-white selection:bg-primary/30 relative">
       {/* Dynamic Background */}
-      <DynamicBackground variant="blue" intensity="high" />
+      <DynamicBackground variant="purple" intensity="high" />
 
       {/* Page Content */}
       <div className="relative z-10 pt-24">
@@ -152,6 +152,7 @@ export default function CaseStudiesContentClient({ caseStudiesData }: CaseStudie
                           src={imageUrl.url()}
                           alt={study.clientName || study.title}
                           fill
+                          loading="lazy"
                           sizes="(max-width: 768px) 100vw, 33vw"
                           className="object-cover group-hover:scale-110 transition duration-700"
                         />

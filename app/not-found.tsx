@@ -34,16 +34,15 @@ export default function NotFound() {
         transition={{ delay: 0.4, duration: 0.8 }}
         className="flex flex-col items-center z-10 mt-12"
       >
-        <p className="text-white/60 font-body text-lg md:text-xl max-w-md text-center mb-10 leading-relaxed">
-          The requested coordinate does not exist within our infrastructure.
+        <p className="text-white/70 font-body text-base md:text-lg max-w-md text-center mb-8 leading-relaxed">
+          The page or system coordinate you requested could not be found or has been relocated.
         </p>
 
         <Link
           href="/"
-          className="group relative px-10 py-5 bg-white text-[#0B0B0B] font-black uppercase tracking-widest text-sm hover:text-white rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 border border-transparent hover:border-primary"
+          className="group relative px-8 py-4 bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] text-white font-heading font-bold uppercase tracking-wider text-sm rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(124,97,255,0.4)]"
         >
-          <span className="relative z-10 transition-colors duration-300">Return to Nexus</span>
-          <div className="absolute inset-0 bg-primary translate-y-[110%] group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+          <span className="relative z-10 transition-colors duration-300">Back to Homepage</span>
         </Link>
       </motion.div>
     </div>

@@ -1,0 +1,85 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="600" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0E0D17"/>
+      <stop offset="100%" stop-color="#08080C"/>
+    </linearGradient>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C61FF"/>
+      <stop offset="50%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#A78BFA"/>
+    </linearGradient>
+    <linearGradient id="leakGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#EF4444" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#F87171" stop-opacity="0.1"/>
+    </linearGradient>
+    <filter id="purpleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+    </filter>
+  </defs>
+
+  <!-- Card Background with rounded corners -->
+  <rect width="600" height="400" rx="24" fill="url(#bgGrad)" stroke="#A78BFA" stroke-opacity="0.15" stroke-width="1.5"/>
+
+  <!-- Ambient Glow Orbs -->
+  <circle cx="150" cy="180" r="100" fill="#7C61FF" fill-opacity="0.08" filter="url(#softGlow)" />
+  <circle cx="480" cy="220" r="90" fill="#8B5CF6" fill-opacity="0.07" filter="url(#softGlow)" />
+
+  <!-- Grid Blueprint lines -->
+  <g opacity="0.08" stroke="#FFFFFF" stroke-width="1">
+    <line x1="60" y1="50" x2="540" y2="50" />
+    <line x1="60" y1="120" x2="540" y2="120" />
+    <line x1="60" y1="190" x2="540" y2="190" />
+    <line x1="60" y1="260" x2="540" y2="260" />
+    <line x1="60" y1="330" x2="540" y2="330" />
+    <line x1="120" y1="30" x2="120" y2="370" />
+    <line x1="240" y1="30" x2="240" y2="370" />
+    <line x1="360" y1="30" x2="360" y2="370" />
+    <line x1="480" y1="30" x2="480" y2="370" />
+  </g>
+
+  <!-- Flow pipeline representation -->
+  <!-- Node 1: Ad Traffic -->
+  <rect x="50" y="80" width="130" height="74" rx="14" fill="#151424" stroke="#7C61FF" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="75" cy="117" r="14" fill="#7C61FF" fill-opacity="0.2"/>
+  <path d="M71 117L79 117M79 117L75 113M79 117L75 121" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="100" y="112" fill="#FFFFFF" font-family="sans-serif" font-weight="700" font-size="13">Ad Spend</text>
+  <text x="100" y="130" fill="#A78BFA" font-family="sans-serif" font-weight="500" font-size="11">High Traffic</text>
+
+  <!-- Connector Line 1 (with warning break) -->
+  <path d="M180 117 H235" stroke="#A78BFA" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
+  
+  <!-- Node 2: The Bottleneck / Weak Landing Page -->
+  <rect x="235" y="65" width="145" height="105" rx="16" fill="#1C1628" stroke="#EF4444" stroke-opacity="0.5" stroke-width="1.5"/>
+  <rect x="247" y="77" width="121" height="24" rx="6" fill="#EF4444" fill-opacity="0.15"/>
+  <text x="257" y="93" fill="#F87171" font-family="sans-serif" font-weight="700" font-size="11">CONVERSION DROP</text>
+  <text x="255" y="125" fill="#FFFFFF" font-family="sans-serif" font-weight="700" font-size="14">Leaky Website</text>
+  <text x="255" y="145" fill="#EF4444" font-family="sans-serif" font-weight="600" font-size="12">84% bounce rate</text>
+
+  <!-- Downward Leak Path -->
+  <path d="M307 170 V240" stroke="url(#leakGrad)" stroke-width="3" stroke-dasharray="6 4"/>
+  <circle cx="307" cy="250" r="18" fill="#EF4444" fill-opacity="0.1" stroke="#EF4444" stroke-opacity="0.3"/>
+  <text x="307" y="254" text-anchor="middle" fill="#EF4444" font-family="sans-serif" font-weight="800" font-size="12">-$</text>
+  <text x="307" y="285" text-anchor="middle" fill="#9CA3AF" font-family="sans-serif" font-size="11">Wasted Ad Capital</text>
+
+  <!-- Connecting to System Architecture Solution -->
+  <path d="M380 117 C 420 117, 430 200, 430 240" stroke="#7C61FF" stroke-width="2" stroke-opacity="0.4"/>
+  
+  <!-- Node 3: The Engineered Growth System -->
+  <rect x="360" y="240" width="190" height="110" rx="18" fill="#131222" stroke="url(#brandGrad)" stroke-width="2" filter="url(#purpleGlow)"/>
+  <rect x="375" y="255" width="80" height="20" rx="6" fill="#7C61FF" fill-opacity="0.25"/>
+  <text x="382" y="269" fill="#A78BFA" font-family="sans-serif" font-weight="700" font-size="10">ZELVOXX SYSTEM</text>
+  <text x="375" y="300" fill="#FFFFFF" font-family="sans-serif" font-weight="800" font-size="16">Predictable ROI</text>
+  <text x="375" y="322" fill="#34D399" font-family="sans-serif" font-weight="700" font-size="13">+340% Lead Velocity</text>
+  <circle cx="518" cy="275" r="16" fill="#34D399" fill-opacity="0.15" stroke="#34D399" stroke-opacity="0.4"/>
+  <path d="M512 275 L516 279 L524 271" stroke="#34D399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Status indicator badges -->
+  <rect x="50" y="320" width="180" height="40" rx="10" fill="#12111E" stroke="#A78BFA" stroke-opacity="0.2"/>
+  <circle cx="68" cy="340" r="4" fill="#A78BFA"/>
+  <text x="82" y="344" fill="#D1D5DB" font-family="sans-serif" font-size="11" font-weight="500">System Architecture Audit</text>
+</svg>

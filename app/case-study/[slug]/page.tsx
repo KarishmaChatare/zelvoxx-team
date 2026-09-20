@@ -2,7 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowUpRight, Clock, Briefcase, TrendingUp, Lightbulb, Target } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Clock, Briefcase, TrendingUp, Lightbulb, Target, Phone } from "lucide-react";
+import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
 import { client } from "@/sanity/lib/client";
 import { caseStudyBySlugQuery, relatedCaseStudiesQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/image";
@@ -244,14 +245,13 @@ export default async function CaseStudyPage({ params }: Props) {
                 </div>
 
                 {/* CTA Button */}
-                <Link
-                  href="https://calendly.com/Zelvoxx"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 block w-full text-center bg-primary hover:bg-primary/90 text-white py-3 rounded-xl font-semibold transition-all hover:scale-105"
+                <a
+                  href={PHONE_CALL_URL}
+                  className="mt-6 flex items-center justify-center gap-2 w-full text-center bg-primary hover:bg-primary/90 text-white py-3.5 rounded-xl font-semibold transition-all hover:scale-105"
                 >
-                  Start Similar Project
-                </Link>
+                  <Phone className="w-4 h-4" />
+                  <span>Call {PHONE_NUMBER}</span>
+                </a>
               </div>
             </div>
           </div>

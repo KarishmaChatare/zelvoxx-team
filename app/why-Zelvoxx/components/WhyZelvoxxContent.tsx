@@ -2,7 +2,7 @@
 
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Search, Zap, TrendingUp, Target, Users, MessageCircle, Calendar, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle, Search, Zap, TrendingUp, Target, Users, MessageCircle, Phone, Sparkles } from "lucide-react";
 import CTASection from "@/src/components/ui/CTASection";
 
 interface ProcessStep {
@@ -49,8 +49,8 @@ const staggerContainer: Variants = {
 const defaultData: WhyZelvoxxData = {
   heroTitle: "We Don't Run Ads. We Build Growth Systems.",
   heroSubtitle: "Most agencies sell you campaigns. We engineer ecosystems that compound revenue month after month. If you're looking for quick fixes, we're not for you.",
-  ctaText: "Book a Strategy Call",
-  ctaLink: "https://calendly.com/Zelvoxx",
+  ctaText: "Call +91 98106 01084",
+  ctaLink: "tel:+919810601084",
   problemText: "Most businesses are stuck in a cycle of dependency. They hire agencies that run ads, get some results, then the campaigns fatigue and performance drops. They switch agencies. Repeat. This is the 'campaign trap'—short-term tactics without long-term infrastructure.",
   differenceTitle: "What Makes Zelvoxx Different",
   differencePoints: [
@@ -70,7 +70,7 @@ const defaultData: WhyZelvoxxData = {
   audienceText: "We partner with established businesses doing $500K+ annual revenue who are ready to scale systematically. If you're pre-revenue or looking for 'cheap marketing,' we're not the right fit. But if you're serious about building a growth engine, let's talk.",
   finalCtaTitle: "Ready to Build Your Growth System?",
   finalCtaSubtitle: "Book a free strategy call. We'll audit your current approach and show you exactly where the leverage is.",
-  whatsappNumber: "+1234567890",
+  whatsappNumber: "+919810601084",
   whatsappCtaText: "Chat on WhatsApp",
 };
 
@@ -116,7 +116,7 @@ export default function WhyZelvoxxContent({ data }: Props) {
               href={content.ctaLink || "#"}
               className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
             >
-              <Calendar className="w-5 h-5" />
+              <Phone className="w-5 h-5" />
               {content.ctaText}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -423,8 +423,8 @@ export default function WhyZelvoxxContent({ data }: Props) {
                 href={content.ctaLink || "#"}
                 className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
               >
-                <Calendar className="w-5 h-5" />
-                Book a Strategy Call
+                <Phone className="w-5 h-5" />
+                Call +91 98106 01084
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
 

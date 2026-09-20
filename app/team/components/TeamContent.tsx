@@ -3,10 +3,10 @@
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Sparkles, Zap, Users, Target, MessageCircle, Calendar } from "lucide-react";
+import { ArrowRight, Sparkles, Zap, Users, Target, MessageCircle, Phone } from "lucide-react";
 import { urlForImage } from "@/sanity/lib/image";
 import CTASection from "@/src/components/ui/CTASection";
-import { CALENDLY_URL } from "@/src/constants/data";
+import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
 
 interface TeamMember {
   _id: string;
@@ -470,19 +470,17 @@ export default function TeamContent({ members }: Props) {
             </motion.p>
 
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <a
+                href={PHONE_CALL_URL}
                 className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
               >
-                <Calendar className="w-5 h-5" />
-                Book a Strategy Call
+                <Phone className="w-5 h-5" />
+                Call {PHONE_NUMBER}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </a>
 
               <Link
-                href="https://wa.me/1234567890"
+                href="https://wa.me/919810601084"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"

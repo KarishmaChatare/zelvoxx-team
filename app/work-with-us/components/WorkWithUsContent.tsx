@@ -393,7 +393,7 @@ export default function WorkWithUsContent() {
     <>
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center justify-center pt-28 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <DynamicBackground variant="mixed" intensity="high" />
+        <DynamicBackground variant="purple" intensity="high" />
 
         <motion.div
           className="relative max-w-5xl mx-auto text-center"
@@ -920,6 +920,15 @@ export default function WorkWithUsContent() {
                 onSubmit={handleSubmit}
                 className="p-6 sm:p-10 bg-white/[0.03] backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-white/10 space-y-6"
               >
+                {/* Honeypot Spam Field */}
+                <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+                  <input
+                    type="text"
+                    name="website_url_hp"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
                 <motion.div className="grid sm:grid-cols-2 gap-6">
                   <div className="sm:col-span-2">
                     <label className="block text-sm font-medium text-white/70 mb-2">

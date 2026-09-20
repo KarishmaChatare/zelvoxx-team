@@ -3,7 +3,8 @@
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, MessageCircle, Mail, Phone, Sparkles, Zap, Clock } from "lucide-react";
-import { CALENDLY_URL } from "@/src/constants/data";
+import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
+import TiltCard from "@/src/components/ui/TiltCard";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -39,7 +40,7 @@ const benefits = [
 
 export default function HomeContact() {
   return (
-    <section className="relative py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section id="contact" className="relative z-10 bg-[#08080C] py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.03] to-transparent" />
@@ -89,7 +90,7 @@ export default function HomeContact() {
                 Together
               </span>
             </h2>
-            <p className="text-xl text-white/50 max-w-2xl mx-auto">
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Ready to transform your digital presence? We're here to help you create something extraordinary.
             </p>
           </motion.div>
@@ -101,29 +102,31 @@ export default function HomeContact() {
               variants={scaleIn}
               className="group relative"
             >
-              <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-r from-primary via-accent to-primary opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-500" />
-              <div className="relative h-full p-8 lg:p-10 bg-[#0f0f14]/80 backdrop-blur-xl rounded-3xl border border-white/10 group-hover:border-primary/30 transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl" />
-                
-                <div className="relative">
-                  <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-6">
-                    <Mail className="w-7 h-7 text-primary" />
-                  </div>
+              <TiltCard maxTilt={5} glareOpacity={0.12} className="h-full">
+                <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-r from-primary via-accent to-primary opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-500" />
+                <div className="relative h-full p-8 lg:p-10 bg-[#0f0f14]/80 backdrop-blur-xl rounded-3xl border border-white/10 group-hover:border-primary/30 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl" />
                   
-                  <h3 className="text-2xl font-bold text-white mb-3">Send Us a Message</h3>
-                  <p className="text-white/50 mb-8">
-                    Fill out our contact form and we'll get back to you within 24 hours with a tailored strategy.
-                  </p>
+                  <div className="relative">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-6">
+                      <Mail className="w-7 h-7 text-primary" />
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold text-white mb-3">Send Us a Message</h3>
+                    <p className="text-white/70 mb-8">
+                      Fill out our contact form and we'll get back to you within 24 hours with a tailored strategy.
+                    </p>
 
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold transition-all duration-300 hover:scale-105 group/btn"
-                  >
-                    <span>Get in Touch</span>
-                    <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold transition-all duration-300 hover:scale-105 group/btn"
+                    >
+                      <span>Get in Touch</span>
+                      <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              </TiltCard>
             </motion.div>
 
             {/* Book a Call Card */}
@@ -131,31 +134,32 @@ export default function HomeContact() {
               variants={scaleIn}
               className="group relative"
             >
-              <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-r from-accent via-primary to-accent opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-500" />
-              <div className="relative h-full p-8 lg:p-10 bg-gradient-to-br from-primary/10 to-accent/10 backdrop-blur-xl rounded-3xl border border-primary/20 group-hover:border-primary/40 transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl" />
-                
-                <div className="relative">
-                  <div className="w-14 h-14 rounded-2xl bg-accent/20 flex items-center justify-center mb-6">
-                    <Phone className="w-7 h-7 text-accent" />
-                  </div>
+              <TiltCard maxTilt={5} glareOpacity={0.12} className="h-full">
+                <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-r from-accent via-primary to-accent opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-500" />
+                <div className="relative h-full p-8 lg:p-10 bg-gradient-to-br from-primary/10 to-accent/10 backdrop-blur-xl rounded-3xl border border-primary/20 group-hover:border-primary/40 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl" />
                   
-                  <h3 className="text-2xl font-bold text-white mb-3">Book a Discovery Call</h3>
-                  <p className="text-white/50 mb-8">
-                    Schedule a free 15-minute call with our team to discuss your project and goals.
-                  </p>
+                  <div className="relative">
+                    <div className="w-14 h-14 rounded-2xl bg-accent/20 flex items-center justify-center mb-6">
+                      <Phone className="w-7 h-7 text-accent" />
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold text-white mb-3">Speak With Us Directly</h3>
+                    <p className="text-white/70 mb-8">
+                      Call our team directly to discuss your project, timelines, and growth goals.
+                    </p>
 
-                  <a
-                    href={CALENDLY_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold transition-all duration-300 hover:scale-105 group/btn"
-                  >
-                    <span>Schedule Call</span>
-                    <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                  </a>
+                    <a
+                      href={PHONE_CALL_URL}
+                      className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold transition-all duration-300 hover:scale-105 group/btn"
+                    >
+                      <Phone className="w-5 h-5 text-[#A78BFA]" />
+                      <span>{PHONE_NUMBER}</span>
+                      <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
                 </div>
-              </div>
+              </TiltCard>
             </motion.div>
           </div>
 
@@ -176,7 +180,7 @@ export default function HomeContact() {
 
           {/* Trust Badges */}
           <motion.div variants={fadeInUp} className="text-center mt-16">
-            <p className="text-white/40 text-sm mb-4">Trusted by ambitious brands worldwide</p>
+            <p className="text-white/60 text-sm mb-4">Trusted by ambitious brands worldwide</p>
             <div className="flex items-center justify-center gap-8 opacity-50">
               {["LUMEN", "PULSE", "HEXABIT", "AVORA"].map((brand, idx) => (
                 <span key={idx} className="text-xl font-bold text-white/30 tracking-widest">

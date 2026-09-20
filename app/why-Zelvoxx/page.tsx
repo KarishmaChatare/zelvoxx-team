@@ -15,11 +15,25 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
+
 // Animation wrapper component for client-side animations
 import WhyZelvoxxContent from "./components/WhyZelvoxxContent";
 
 export default async function WhyZelvoxxPage() {
-  const data = await client.fetch(whyZelvoxxQuery);
+  const rawData = await client.fetch(whyZelvoxxQuery);
+  const data = rawData
+    ? {
+        ...rawData,
+        ctaLink: rawData.ctaLink?.includes("calendly")
+          ? PHONE_CALL_URL
+          : rawData.ctaLink || PHONE_CALL_URL,
+        ctaText:
+          rawData.ctaText?.includes("Calendly") || rawData.ctaText?.includes("Strategy Call")
+            ? `Call ${PHONE_NUMBER}`
+            : rawData.ctaText || `Call ${PHONE_NUMBER}`,
+      }
+    : null;
 
   return (
     <main className="min-h-screen bg-background text-white selection:bg-primary/30">

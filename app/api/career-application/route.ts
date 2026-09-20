@@ -21,6 +21,11 @@ export async function POST(request: Request) {
     const name = String(formData.get("name") || "").trim();
     const email = String(formData.get("email") || "").trim();
     const role = String(formData.get("role") || "").trim();
+    const honeypot = String(formData.get("website_url_hp") || "").trim();
+
+    if (honeypot) {
+      return NextResponse.json({ success: true, message: "Application received." }, { status: 200 });
+    }
 
     if (!name || !email || !role) {
       return NextResponse.json(

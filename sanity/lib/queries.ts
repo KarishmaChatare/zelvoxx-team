@@ -30,7 +30,7 @@ export const statsQuery = groq`
 
 // Services Section
 export const servicesQuery = groq`
-  *[_type == "service"] | order(order asc) {
+  *[_type == "service" && defined(slug.current) && defined(title)] | order(order asc) {
     _id,
     title,
     "slug": slug.current,
@@ -44,7 +44,7 @@ export const servicesQuery = groq`
 
 // Portfolio/Projects
 export const portfolioQuery = groq`
-  *[_type == "portfolio"] | order(order asc) {
+  *[_type == "portfolio" && defined(slug.current) && defined(title)] | order(order asc) {
     _id,
     title,
     "slug": slug.current,
@@ -60,7 +60,7 @@ export const portfolioQuery = groq`
 `;
 
 export const featuredPortfolioQuery = groq`
-  *[_type == "portfolio" && featured == true] | order(order asc) [0...6] {
+  *[_type == "portfolio" && featured == true && defined(slug.current) && defined(title)] | order(order asc) [0...6] {
     _id,
     title,
     "slug": slug.current,
@@ -76,7 +76,7 @@ export const featuredPortfolioQuery = groq`
 
 // Case Studies
 export const caseStudiesQuery = groq`
-  *[_type == "caseStudy"] | order(publishedAt desc) {
+  *[_type == "caseStudy" && defined(slug.current) && defined(title)] | order(publishedAt desc) {
     _id,
     title,
     "slug": slug.current,
@@ -95,7 +95,7 @@ export const caseStudiesQuery = groq`
 `;
 
 export const featuredCaseStudiesQuery = groq`
-  *[_type == "caseStudy" && featured == true] | order(publishedAt desc) [0...6] {
+  *[_type == "caseStudy" && featured == true && defined(slug.current) && defined(title)] | order(publishedAt desc) [0...6] {
     _id,
     title,
     "slug": slug.current,
@@ -111,7 +111,7 @@ export const featuredCaseStudiesQuery = groq`
 
 // Testimonials
 export const testimonialsQuery = groq`
-  *[_type == "testimonial"] | order(publishedAt desc) {
+  *[_type == "testimonial" && defined(slug.current) && defined(name)] | order(publishedAt desc) {
     _id,
     name,
     "slug": slug.current,
@@ -128,7 +128,7 @@ export const testimonialsQuery = groq`
 `;
 
 export const featuredTestimonialsQuery = groq`
-  *[_type == "testimonial" && featured == true] | order(publishedAt desc) [0...6] {
+  *[_type == "testimonial" && featured == true && defined(slug.current) && defined(name)] | order(publishedAt desc) [0...6] {
     _id,
     name,
     "slug": slug.current,

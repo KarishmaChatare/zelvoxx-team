@@ -9,7 +9,10 @@ import {
 } from "lucide-react";
 import { ServiceType, ProjectType, CaseStudyType, TestimonialType } from "@/src/types";
 
-export const CALENDLY_URL = "https://calendly.com/";
+export const PHONE_NUMBER = "+91 98106 01084";
+export const PHONE_CALL_URL = "tel:+919810601084";
+export const CALENDLY_URL = PHONE_CALL_URL; // Replaced with direct phone call
+export const WHATSAPP_URL = "https://wa.me/919810601084";
 
 export const services: ServiceType[] = [
   {
@@ -119,13 +122,13 @@ export const socialLinks = [
 
 export const legalSiteInfo = {
   effectiveDate: "May 14, 2026",
-  email: "hello.Zelvoxx@gmail.com",
+  email: "enquiry.zelvoxx@gmail.com",
   website: "https://www.zelvoxx.com",
   linkedIn: "https://www.linkedin.com/company/Zelvoxx",
 } as const;
 
 export const legalLinks = [
-  { label: "Privacy Policy", url: "/privacy" },
+  { label: "Privacy Policy", url: "/privacy-policy" },
   { label: "Terms & Conditions", url: "/terms" },
   { label: "Cookie Policy", url: "/cookie-policy" },
   { label: "Refund Policy", url: "/refund-policy" },

@@ -12,11 +12,12 @@ import Pricing from "@/src/components/sections/Pricing";
 import Process from "@/src/components/sections/Process";
 import HomeWhyZelvoxx from "@/src/components/sections/HomeWhyZelvoxx";
 import HomeTeam from "@/src/components/sections/HomeTeam";
-import HomeContact from "@/src/components/sections/HomeContact";
 import CTA from "@/src/components/sections/CTA";
 import Footer from "@/src/components/layout/Footer";
+import AmbientBackground from "@/src/components/ui/AmbientBackground";
 
 import { client } from "@/sanity/lib/client";
+import { PHONE_CALL_URL } from "@/src/constants/data";
 import {
   heroQuery,
   statsQuery,
@@ -30,7 +31,7 @@ export const revalidate = 60;
 
 export default async function Home() {
   const [
-    heroData,
+    rawHeroData,
     statsData,
     servicesData,
     caseStudiesData,
@@ -45,29 +46,52 @@ export default async function Home() {
     client.fetch(teamMembersQuery).catch(() => []),
   ]);
 
+  const heroData = rawHeroData
+    ? {
+        ...rawHeroData,
+        ctaLink: rawHeroData.ctaLink?.includes("calendly")
+          ? PHONE_CALL_URL
+          : rawHeroData.ctaLink || PHONE_CALL_URL,
+      }
+    : null;
+
   return (
     <main className="min-h-screen bg-background selection:bg-primary/30 relative">
-      {/* Global Noise Texture for Premium Depth */}
-      <div className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')" }}></div>
+      {/* Global Noise Texture for Premium Depth (GPU-accelerated static pattern, zero filter recalculation) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.035]"
+        style={{
+          backgroundImage: "url('/images/noise.png')",
+          backgroundRepeat: "repeat",
+          transform: "translate3d(0, 0, 0)",
+          backfaceVisibility: "hidden",
+          contain: "strict",
+        }}
+      />
 
       <Navbar />
 
       <Hero data={heroData} stats={statsData} />
-      <TrustedBy />
-      <Problem />
-      <SystemFlow />
-      <BuiltForGrowth />
-      <Services data={servicesData} />
-      <Portfolio data={caseStudiesData} />
-      <CaseStudies data={caseStudiesData} />
-      <Testimonials data={testimonialsData} />
-      <Pricing />
-      <Process />
-      <HomeWhyZelvoxx />
-      <HomeTeam members={teamMembersData} />
-      <HomeContact />
-      <CTA />
-      <Footer />
+
+      {/* Subtle ambient visual texture with gentle parallax across all sections from Built for Growing Businesses down to Footer */}
+      <div className="relative">
+        <AmbientBackground opacity={0.24} fixed={true} />
+        <TrustedBy />
+        <Problem />
+        <SystemFlow />
+        <BuiltForGrowth />
+        <Services data={servicesData} />
+        <Portfolio data={caseStudiesData} />
+        <CaseStudies data={caseStudiesData} />
+        <Testimonials data={testimonialsData} />
+        <Pricing />
+        <Process />
+        <HomeWhyZelvoxx />
+        <HomeTeam members={teamMembersData} />
+        <CTA />
+        <Footer />
+      </div>
 
     </main>
   );

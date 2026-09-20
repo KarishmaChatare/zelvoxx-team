@@ -1,0 +1,15 @@
+<svg width="320" height="100" viewBox="0 0 320 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="100" rx="12" fill="#131220"/>
+  <circle cx="260" cy="50" r="40" fill="#7C61FF" fill-opacity="0.1"/>
+  <!-- Bot / AI Automation icon -->
+  <rect x="45" y="32" width="40" height="36" rx="8" stroke="#7C61FF" stroke-width="1.8" fill="#1B192C"/>
+  <circle cx="56" cy="46" r="3" fill="#A78BFA"/>
+  <circle cx="74" cy="46" r="3" fill="#A78BFA"/>
+  <line x1="56" y1="56" x2="74" y2="56" stroke="#34D399" stroke-width="2" stroke-linecap="round"/>
+  <line x1="65" y1="24" x2="65" y2="32" stroke="#7C61FF" stroke-width="1.8"/>
+  <circle cx="65" cy="22" r="2" fill="#34D399"/>
+  <!-- Cadence sequence lines -->
+  <line x1="120" y1="40" x2="270" y2="40" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="2" stroke-linecap="round"/>
+  <line x1="120" y1="52" x2="220" y2="52" stroke="#A78BFA" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round"/>
+  <line x1="120" y1="64" x2="180" y2="64" stroke="#7C61FF" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round"/>
+</svg>

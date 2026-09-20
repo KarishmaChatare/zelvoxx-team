@@ -2,7 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Check, Clock, DollarSign, ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Clock, DollarSign, ArrowUpRight, Sparkles, Phone } from "lucide-react";
+import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
 import { client } from "@/sanity/lib/client";
 import { serviceBySlugQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/image";
@@ -92,15 +93,14 @@ export default async function ServicePage({ params }: Props) {
               </div>
 
               {/* CTA */}
-              <Link
-                href="https://calendly.com/Zelvoxx"
-                target="_blank"
-                rel="noopener noreferrer"
+              <a
+                href={PHONE_CALL_URL}
                 className="inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105"
               >
-                {service.ctaText || "Get Started"}
+                <Phone className="w-5 h-5" />
+                <span>Call {PHONE_NUMBER}</span>
                 <ArrowRight className="w-5 h-5" />
-              </Link>
+              </a>
             </div>
 
             {/* Hero Image */}

@@ -15,7 +15,7 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
   return (
     <main className="min-h-screen bg-background text-white selection:bg-primary/30 relative">
       {/* Dynamic Background */}
-      <DynamicBackground variant="green" intensity="medium" />
+      <DynamicBackground variant="purple" intensity="medium" />
 
       {/* Page Content */}
       <div className="relative z-10 pt-24">
@@ -123,45 +123,36 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
                     transition={{ duration: 0.6, delay: idx * 0.1 }}
                     className="relative p-8 rounded-2xl bg-[#0f0f14] border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-2 group"
                   >
-                    {/* Stars */}
-                    <div className="flex gap-1 mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                      ))}
+                    {/* Top bar: Stars + Verified Partner Badge */}
+                    <div className="flex items-center justify-between gap-3 mb-6">
+                      <div className="flex gap-1 items-center">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 fill-[#A78BFA] text-[#A78BFA]" />
+                        ))}
+                        <span className="text-xs text-white/60 ml-1 font-semibold">5.0</span>
+                      </div>
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+                        <span>Verified Partner</span>
+                      </div>
                     </div>
                     
                     {/* Quote Icon */}
                     <Quote className="w-10 h-10 text-primary/20 mb-4" />
                     
                     {/* Review */}
-                    <p className="text-white/80 text-lg leading-relaxed mb-8">
+                    <p className="text-white/85 text-base sm:text-lg leading-relaxed mb-8 flex-grow">
                       &quot;{testimonial.review || testimonial.content}&quot;
                     </p>
                     
-                    {/* Author */}
-                    <div className="flex items-center gap-4">
-                      {imageUrl ? (
-                        <div className="w-12 h-12 rounded-full overflow-hidden bg-white/10">
-                          <Image
-                            src={imageUrl.url()}
-                            alt={testimonial.name}
-                            width={48}
-                            height={48}
-                            className="object-cover w-full h-full"
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-lg">
-                          {testimonial.name?.charAt(0) || "C"}
-                        </div>
-                      )}
+                    {/* Metric Outcome Footer */}
+                    <div className="pt-4 border-t border-white/10 flex items-center justify-between mt-auto">
                       <div>
-                        <h4 className="font-bold text-white">{testimonial.name}</h4>
-                        <p className="text-white/50 text-sm">{testimonial.role}</p>
-                        {testimonial.company && (
-                          <p className="text-primary text-sm">{testimonial.company}</p>
-                        )}
+                        <span className="text-xs uppercase tracking-widest text-[#A78BFA] font-semibold block">Outcome</span>
+                        <span className="text-sm font-semibold text-white/80">{testimonial.company || "Enterprise Partner"}</span>
                       </div>
+                      <span className="text-2xl font-black font-heading text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                        {testimonial.metric || "+120%"}
+                      </span>
                     </div>
                   </motion.div>
                 );

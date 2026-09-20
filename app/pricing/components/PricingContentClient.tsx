@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, Check, Zap, Crown, Building2, Sparkles, Gift } from "lucide-react";
-import { CALENDLY_URL } from "@/src/constants/data";
+import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
 import DynamicBackground from "@/src/components/ui/DynamicBackground";
 
 interface PricingContentClientProps {
@@ -21,7 +21,7 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
   return (
     <main className="min-h-screen bg-background text-white selection:bg-primary/30 relative">
       {/* Dynamic Background */}
-      <DynamicBackground variant="orange" intensity="medium" />
+      <DynamicBackground variant="purple" intensity="medium" />
 
       {/* Page Content */}
       <div className="relative z-10 pt-24">
@@ -169,16 +169,14 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
 
                   {/* CTA */}
                   <a
-                    href={CALENDLY_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={PHONE_CALL_URL}
                     className={`block w-full text-center py-4 rounded-xl font-bold transition-all hover:scale-105 ${
                       plan.popular
                         ? "bg-primary text-white hover:bg-primary/90"
                         : "bg-white/10 text-white hover:bg-white/20"
                     }`}
                   >
-                    {plan.ctaText}
+                    Call {PHONE_NUMBER}
                   </a>
                 </motion.div>
               ))}
@@ -196,12 +194,10 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
                 Need something custom? We build bespoke solutions for complex requirements.
               </p>
               <a
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={PHONE_CALL_URL}
                 className="inline-block text-primary hover:underline font-semibold"
               >
-                Schedule a consultation →
+                Call {PHONE_NUMBER} for Consultation →
               </a>
             </motion.div>
           </div>
