@@ -8,6 +8,7 @@ import Image from "next/image";
 import { services } from "@/src/constants/data";
 import { ServiceType } from "@/src/types";
 import TiltCard from "@/src/components/ui/TiltCard";
+import { gtag } from "@/src/lib/analytics";
 
 const serviceVisualMap: Record<string, string> = {
   "Brand Positioning": "/images/services/brand-positioning.svg",
@@ -92,6 +93,12 @@ export default function Services({ data }: { data?: ServiceType[] }) {
             >
               <Link
                 href="/contact"
+                onClick={() => {
+                  gtag("event", "connect_with_us_click", {
+                    event_category: "engagement",
+                    event_label: "Services Section Connect With Us",
+                  });
+                }}
                 className="inline-flex items-center justify-center gap-2 text-white/90 hover:text-white border border-white/10 hover:border-[#7C61FF]/50 bg-white/[0.03] hover:bg-[#7C61FF]/10 px-6 py-3.5 rounded-xl transition-all text-sm font-semibold shadow-sm"
               >
                 <span>Connect With Us</span>

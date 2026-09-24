@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { WHATSAPP_URL } from "@/src/constants/data";
+import { gtag } from "@/src/lib/analytics";
 
 export default function WhatsAppButton() {
   const prefersReducedMotion = useReducedMotion();
@@ -15,6 +16,12 @@ export default function WhatsAppButton() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with Zelvoxx on WhatsApp (+91 98106 01084)"
+        onClick={() => {
+          gtag("event", "whatsapp_click", {
+            event_category: "engagement",
+            event_label: "Floating WhatsApp Button",
+          });
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         initial={{ opacity: 0, scale: 0.8, y: 20 }}

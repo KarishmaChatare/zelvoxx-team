@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, useSpring, type Variants } from "framer-motion";
 import { ArrowRight, PhoneCall, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { gtag } from "@/src/lib/analytics";
 
 function MagneticButton({
   children,
@@ -251,6 +252,12 @@ export default function CTA() {
                 >
                   <Link
                     href="/contact"
+                    onClick={() => {
+                      gtag("event", "connect_with_us_click", {
+                        event_category: "engagement",
+                        event_label: "CTA Section Connect With Us",
+                      });
+                    }}
                     className="group relative inline-flex items-center justify-center gap-3 bg-white text-black px-8 sm:px-12 py-4 sm:py-6 rounded-full font-black text-base sm:text-lg tracking-wide w-full sm:w-auto uppercase overflow-hidden transition-all duration-300 hover:shadow-[0_0_50px_rgba(255,255,255,0.4),0_10px_40px_rgba(124,97,255,0.3)] min-h-[52px] sm:min-h-[64px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     style={{
                       boxShadow:
@@ -292,6 +299,12 @@ export default function CTA() {
                 >
                   <motion.a
                     href="/#pricing"
+                    onClick={() => {
+                      gtag("event", "see_pricing_click", {
+                        event_category: "engagement",
+                        event_label: "CTA Section See Pricing",
+                      });
+                    }}
                     className="group relative inline-flex items-center justify-center gap-3 bg-transparent border border-white/20 hover:border-[#7C61FF]/60 hover:bg-white/[0.06] text-white px-8 sm:px-12 py-4 sm:py-6 rounded-full font-bold text-base sm:text-lg backdrop-blur-md tracking-wide w-full sm:w-auto uppercase overflow-hidden transition-all duration-300 hover:shadow-[0_0_35px_rgba(124,97,255,0.25)] min-h-[52px] sm:min-h-[64px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A78BFA] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                   >
                     {/* Shimmer sweep effect on hover */}

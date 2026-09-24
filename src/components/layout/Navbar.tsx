@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { gtag } from "@/src/lib/analytics";
 
 const NAV_ITEMS = [
   { label: "OUR WORK", href: "/portfolio" },
@@ -184,6 +185,12 @@ export default function Navbar() {
         <div className="hidden xl:block">
           <Link
             href="/contact"
+            onClick={() => {
+              gtag("event", "connect_with_us_click", {
+                event_category: "engagement",
+                event_label: "Navbar Desktop CTA",
+              });
+            }}
             className="inline-block bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] hover:brightness-110 text-white px-5 py-2.5 2xl:px-6 2xl:py-2.5 rounded-full font-bold text-xs 2xl:text-sm transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(124,97,255,0.45)] tracking-wide whitespace-nowrap"
           >
             Connect With Us
@@ -240,7 +247,13 @@ export default function Navbar() {
             <div className="w-full max-w-sm mx-auto pt-6">
               <Link
                 href="/contact"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  gtag("event", "connect_with_us_click", {
+                    event_category: "engagement",
+                    event_label: "Navbar Mobile CTA",
+                  });
+                }}
                 className="w-full text-center bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] hover:brightness-110 text-white py-4 rounded-full font-bold text-base block transition-all active:scale-95 shadow-[0_0_25px_rgba(124,97,255,0.45)] tracking-wide"
               >
                 Connect With Us

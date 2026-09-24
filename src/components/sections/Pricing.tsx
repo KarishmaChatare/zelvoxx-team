@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import TiltCard from "@/src/components/ui/TiltCard";
+import { gtag } from "@/src/lib/analytics";
 
 const tiers = [
   {
@@ -143,11 +144,20 @@ export default function Pricing() {
                   </div>
                 </div>
 
-                <Link href="/contact" className={`w-full py-4 sm:py-5 rounded-full font-bold transition-all duration-500 flex items-center justify-center gap-2 sm:gap-3 group/btn uppercase tracking-wider text-sm overflow-hidden relative min-h-[56px] touch-manipulation active:scale-95 ${
-                  tier.highlighted
-                  ? "bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] text-white hover:shadow-[0_0_35px_rgba(124,97,255,0.6)] lg:hover:scale-102"
-                  : "bg-white/5 text-white border border-white/10 hover:border-[#7C61FF]/50 hover:bg-[#7C61FF]/10 hover:shadow-[0_0_20px_rgba(124,97,255,0.2)]"
-                }`}>
+                <Link
+                  href="/contact"
+                  onClick={() => {
+                    gtag("event", "checkout_click", {
+                      event_category: "engagement",
+                      event_label: `Pricing Tier: ${tier.name} (${tier.price})`,
+                    });
+                  }}
+                  className={`w-full py-4 sm:py-5 rounded-full font-bold transition-all duration-500 flex items-center justify-center gap-2 sm:gap-3 group/btn uppercase tracking-wider text-sm overflow-hidden relative min-h-[56px] touch-manipulation active:scale-95 ${
+                    tier.highlighted
+                    ? "bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] text-white hover:shadow-[0_0_35px_rgba(124,97,255,0.6)] lg:hover:scale-102"
+                    : "bg-white/5 text-white border border-white/10 hover:border-[#7C61FF]/50 hover:bg-[#7C61FF]/10 hover:shadow-[0_0_20px_rgba(124,97,255,0.2)]"
+                  }`}
+                >
                   <span className="relative z-10 flex items-center gap-2">
                     {tier.cta}
                     <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1.5 transition-transform" />

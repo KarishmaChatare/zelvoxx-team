@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { socialLinks, legalLinks, footerNavLinks } from "@/src/constants/data";
+import { gtag } from "@/src/lib/analytics";
 
 function getSocialIcon(platform: string) {
   const p = platform.toLowerCase();
@@ -196,6 +197,12 @@ export default function Footer() {
 
             <Link
               href="/contact"
+              onClick={() => {
+                gtag("event", "connect_with_us_click", {
+                  event_category: "engagement",
+                  event_label: "Footer Connect With Us",
+                });
+              }}
               className="inline-flex items-center justify-center w-full sm:w-auto px-5 py-2.5 min-h-[44px] rounded-xl bg-gradient-to-r from-[#7C61FF]/15 to-[#8B5CF6]/15 hover:from-[#7C61FF] hover:via-[#8B5CF6] hover:to-[#A78BFA] text-[#A78BFA] hover:text-white border border-[#7C61FF]/30 transition-all text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 shadow-[0_0_15px_rgba(124,97,255,0.15)] hover:shadow-[0_0_25px_rgba(124,97,255,0.4)] hover:-translate-y-0.5 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A78BFA]"
             >
               Connect With Us

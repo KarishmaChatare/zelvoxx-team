@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Phone, MessageCircle } from "lucide-react";
 import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
+import { gtag } from "@/src/lib/analytics";
 
 interface CTASectionProps {
   title?: string;
@@ -65,6 +66,12 @@ export default function CTASection({
               href={primaryCtaLink}
               target={primaryCtaLink.startsWith("http") ? "_blank" : undefined}
               rel={primaryCtaLink.startsWith("http") ? "noopener noreferrer" : undefined}
+              onClick={() => {
+                gtag("event", "connect_with_us_click", {
+                  event_category: "engagement",
+                  event_label: `CTASection: ${primaryCtaText}`,
+                });
+              }}
               className="group inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-[0_0_40px_rgba(123,97,255,0.3)]"
             >
               <Phone className="w-5 h-5" />

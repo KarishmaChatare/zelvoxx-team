@@ -82,6 +82,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import WhatsAppButton from "@/src/components/ui/WhatsAppButton";
 import CookieConsent from "@/src/components/ui/CookieConsent";
 import SitewideAmbientBackground from "@/src/components/ui/SitewideAmbientBackground";
+import GoogleAnalytics from "@/src/components/analytics/GoogleAnalytics";
 
 export default function RootLayout({
   children,
@@ -112,6 +113,7 @@ export default function RootLayout({
         <CookieConsent />
         <Analytics />
         <SpeedInsights />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-P5K8WT88DZ"} />
       </body>
     </html>
   );

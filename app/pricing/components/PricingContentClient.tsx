@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Check, Zap, Crown, Building2, Sparkles, Gift } from "lucide-react";
 import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
 import DynamicBackground from "@/src/components/ui/DynamicBackground";
+import { gtag } from "@/src/lib/analytics";
 
 interface PricingContentClientProps {
   plans: any[];
@@ -170,6 +171,12 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
                   {/* CTA */}
                   <a
                     href={PHONE_CALL_URL}
+                    onClick={() => {
+                      gtag("event", "checkout_click", {
+                        event_category: "engagement",
+                        event_label: `Pricing Plan: ${plan.name} (${plan.price})`,
+                      });
+                    }}
                     className={`block w-full text-center py-4 rounded-xl font-bold transition-all hover:scale-105 ${
                       plan.popular
                         ? "bg-primary text-white hover:bg-primary/90"
@@ -195,6 +202,12 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
               </p>
               <a
                 href={PHONE_CALL_URL}
+                onClick={() => {
+                  gtag("event", "checkout_click", {
+                    event_category: "engagement",
+                    event_label: "Custom Consultation Call",
+                  });
+                }}
                 className="inline-block text-primary hover:underline font-semibold"
               >
                 Call {PHONE_NUMBER} for Consultation →

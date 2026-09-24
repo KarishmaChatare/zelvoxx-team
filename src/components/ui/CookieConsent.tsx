@@ -27,6 +27,9 @@ export default function CookieConsent() {
   const handleAccept = () => {
     try {
       localStorage.setItem(CONSENT_STORAGE_KEY, "accepted");
+      window.dispatchEvent(
+        new CustomEvent("cookie-consent-updated", { detail: "accepted" })
+      );
     } catch {}
     setIsVisible(false);
   };
@@ -34,6 +37,9 @@ export default function CookieConsent() {
   const handleDecline = () => {
     try {
       localStorage.setItem(CONSENT_STORAGE_KEY, "declined");
+      window.dispatchEvent(
+        new CustomEvent("cookie-consent-updated", { detail: "declined" })
+      );
     } catch {}
     setIsVisible(false);
   };
