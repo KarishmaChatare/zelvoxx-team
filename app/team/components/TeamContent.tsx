@@ -7,6 +7,7 @@ import { ArrowRight, Sparkles, Zap, Users, Target, MessageCircle, Phone } from "
 import { urlForImage } from "@/sanity/lib/image";
 import CTASection from "@/src/components/ui/CTASection";
 import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
+import { pushToDataLayer } from "@/src/lib/analytics";
 
 interface TeamMember {
   _id: string;
@@ -53,6 +54,7 @@ const defaultFounders: TeamMember[] = [
     role: "Co-Founder",
     isFounder: true,
     shortBio: "Systems architect. Growth strategist. Building the future of digital.",
+    image: "/images/team/founder-akshat.webp",
   },
   {
     _id: "founder-2",
@@ -60,6 +62,15 @@ const defaultFounders: TeamMember[] = [
     role: "Co-Founder",
     isFounder: true,
     shortBio: "Operations excellence. Client success. Making vision reality.",
+    image: "/images/team/founder-antara.webp",
+  },
+  {
+    _id: "operator-karishma",
+    name: "Karishma Chatare",
+    role: "CTO (Chief Technology Officer)",
+    isFounder: true,
+    shortBio: "Technical infrastructure & engineering systems",
+    image: "/images/team/operator-karishma.webp",
   },
 ];
 
@@ -73,12 +84,26 @@ const defaultTeam: TeamMember[] = [
 
 export default function TeamContent({ members }: Props) {
   // Separate founders and team members
-  const founders = members.filter((m) => m.isFounder).length > 0
-    ? members.filter((m) => m.isFounder)
-    : defaultFounders;
+  const baseFounders = members.filter((m) => m.isFounder).length > 0
+    ? members.filter((m) => m.isFounder).filter((m) => !m.name.toLowerCase().includes("karishma")).slice(0, 2)
+    : defaultFounders.slice(0, 2);
 
-  const team = members.filter((m) => !m.isFounder).length > 0
-    ? members.filter((m) => !m.isFounder)
+  const karishmaFromSanity = members.find((m) => m.name.toLowerCase().includes("karishma"));
+
+  const karishmaMember: TeamMember = {
+    _id: "operator-karishma",
+    name: "Karishma Chatare",
+    role: "CTO (Chief Technology Officer)",
+    isFounder: true,
+    shortBio: "Technical infrastructure & engineering systems",
+    image: "/images/team/operator-karishma.webp",
+    ...(karishmaFromSanity ? { ...karishmaFromSanity, image: "/images/team/operator-karishma.webp" } : {}),
+  };
+
+  const founders = [...baseFounders, karishmaMember];
+
+  const team = members.filter((m) => !m.isFounder && !m.name.toLowerCase().includes("karishma")).length > 0
+    ? members.filter((m) => !m.isFounder && !m.name.toLowerCase().includes("karishma"))
     : defaultTeam;
 
   return (
@@ -211,9 +236,27 @@ export default function TeamContent({ members }: Props) {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {founders.map((founder, idx) => {
-                const imageUrl = founder.image ? urlForImage(founder.image) : null;
+                let photoSrc: string | null = null;
+                if (founder.name.toLowerCase().includes("karishma")) {
+                  photoSrc = "/images/team/operator-karishma.webp";
+                } else if (founder.image) {
+                  if (typeof founder.image === "string") {
+                    photoSrc = founder.image;
+                  } else {
+                    try {
+                      photoSrc = urlForImage(founder.image)?.url() || null;
+                    } catch {
+                      photoSrc = null;
+                    }
+                  }
+                }
+                if (!photoSrc) {
+                  if (idx === 0) photoSrc = "/images/team/founder-akshat.webp";
+                  else if (idx === 1) photoSrc = "/images/team/founder-antara.webp";
+                  else if (idx === 2 || founder.name.toLowerCase().includes("karishma")) photoSrc = "/images/team/operator-karishma.webp";
+                }
                 return (
                   <motion.div
                     key={founder._id}
@@ -232,9 +275,9 @@ export default function TeamContent({ members }: Props) {
                         <div className="relative w-32 h-32 mb-6">
                           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-accent opacity-20 blur-md group-hover:opacity-40 transition-opacity" />
                           <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/30 transition-colors">
-                            {imageUrl ? (
+                            {photoSrc ? (
                               <Image
-                                src={imageUrl.url()}
+                                src={photoSrc}
                                 alt={founder.name}
                                 fill
                                 className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -441,49 +484,63 @@ export default function TeamContent({ members }: Props) {
         </div>
       </section>
 
-      {/* CTA SECTION */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-primary/5" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
+      {/* CTA SECTION - WORK WITH US */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-[#08080C] via-[#0E0D17] to-[#08080C] border-t border-white/10">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#7C61FF]/10 rounded-full blur-[150px] pointer-events-none" />
 
-        <div className="max-w-4xl mx-auto text-center relative">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
           >
+            <motion.div
+              variants={fadeInUp}
+              className="inline-block mb-4"
+            >
+              <span className="text-xs font-bold tracking-[0.2em] text-[#A78BFA] uppercase px-4 py-1.5 rounded-full bg-[#7C61FF]/15 border border-[#7C61FF]/30 shadow-[0_0_15px_rgba(124,97,255,0.2)]">
+                Work With Us
+              </span>
+            </motion.div>
+
             <motion.h2
               variants={fadeInUp}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl font-heading font-black text-white mb-6 tracking-tight leading-tight"
             >
               Work with a team that builds
               <br />
-              <span className="text-primary">real growth systems.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] drop-shadow-[0_0_30px_rgba(124,97,255,0.5)]">
+                real growth systems.
+              </span>
             </motion.h2>
 
             <motion.p
               variants={fadeInUp}
-              className="text-xl text-white/50 mb-10 max-w-2xl mx-auto"
+              className="text-lg sm:text-xl text-white/80 font-medium mb-10 max-w-2xl mx-auto leading-relaxed"
             >
               Ready to partner with operators who execute? Let&apos;s talk.
             </motion.p>
 
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                href={PHONE_CALL_URL}
-                className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
+                href="tel:+919810601084"
+                onClick={() => {
+                  pushToDataLayer("connect_with_us_click", {
+                    event_category: "engagement",
+                    event_label: "Team Section Connect With Us",
+                  });
+                }}
+                className="inline-flex items-center justify-center bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] hover:brightness-110 text-white px-8 py-4 rounded-full font-bold text-sm sm:text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(124,97,255,0.45)] tracking-wide min-h-[48px] touch-manipulation"
               >
-                <Phone className="w-5 h-5" />
-                Call {PHONE_NUMBER}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                Connect With Us
               </a>
 
               <Link
                 href="https://wa.me/919810601084"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
+                className="group inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 min-h-[48px] touch-manipulation"
               >
                 <MessageCircle className="w-5 h-5" />
                 Chat on WhatsApp
@@ -498,8 +555,9 @@ export default function TeamContent({ members }: Props) {
         title="Join the team?"
         subtitle="We're always looking for exceptional operators. If you think you'd fit, reach out."
         primaryCtaText="Get in Touch"
+        primaryCtaLink="tel:+919810601084"
         secondaryCtaText="View Open Roles"
-        secondaryCtaLink="#"
+        secondaryCtaLink="/work-with-us#open-roles"
       />
     </>
   );

@@ -2,17 +2,62 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, TrendingUp, AlertCircle, Zap, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { caseStudies } from "@/src/constants/data";
 import { CaseStudyType } from "@/src/types";
 import TiltCard from "@/src/components/ui/TiltCard";
+import { urlForImage } from "@/sanity/lib/image";
 
 const caseStudyVisuals: Record<string, string> = {
+  // Live case study items from Sanity / seed data
+  "Avora Luxury": "/images/case-studies/ecommerce-growth.webp",
+  "Hexabit Technologies": "/images/case-studies/saas-scale.webp",
+  "Pulse Fitness": "/images/case-studies/pulse-fitness.webp",
+  "Lumen Analytics": "/images/case-studies/lumen-analytics.webp",
+
+  // Fallback case studies from data.tsx
   "E-commerce Brand": "/images/case-studies/ecommerce-growth.webp",
   "B2B SaaS Startup": "/images/case-studies/saas-scale.webp",
+
+  // Portfolio clients in case referenced
+  "Apex Financial": "/images/portfolio/apex-financial.webp",
+  "Luminary MedSpa": "/images/portfolio/luminary-medspa.webp",
+  "Velocity SaaS": "/images/portfolio/velocity-saas.webp",
+  "Strata Real Estate": "/images/portfolio/strata-realestate.webp",
 };
+
+const keyResultHighlights: Record<string, string> = {
+  "Avora Luxury": "$50K/mo Automated Funnels",
+  "Hexabit Technologies": "+400% Organic Traffic",
+  "Pulse Fitness": "+3,587 New Members",
+  "Lumen Analytics": "$2.4M Enterprise Pipeline",
+  "E-commerce Brand": "+3.4x ROAS / $120k/mo",
+  "B2B SaaS Startup": "$2M Series A Funding",
+  "Apex Financial": "+340% Lead Volume",
+  "Luminary MedSpa": "$100k Monthly Added Revenue",
+  "Velocity SaaS": "4.2x ROI on Ads",
+  "Strata Real Estate": "$12M Closed Volume",
+};
+
+function getKeyResult(study: CaseStudyType, clientName: string): string {
+  if (keyResultHighlights[clientName]) {
+    return keyResultHighlights[clientName];
+  }
+  if (study.results && study.results.length > 0) {
+    const r = study.results[0];
+    return `${r.value} ${r.label}`;
+  }
+  if (study.result) {
+    const firstSentence = study.result.split(/[.\n]/)[0].trim();
+    if (firstSentence.length > 0 && firstSentence.length <= 40) {
+      return firstSentence;
+    }
+    return firstSentence.slice(0, 36) + "...";
+  }
+  return "Proven Growth Impact";
+}
 
 export default function CaseStudies({ data }: { data?: CaseStudyType[] }) {
   const allData = data?.length ? data : caseStudies;
@@ -25,8 +70,8 @@ export default function CaseStudies({ data }: { data?: CaseStudyType[] }) {
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-    window.addEventListener('resize', checkMobile, { passive: true });
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   return (
@@ -60,83 +105,147 @@ export default function CaseStudies({ data }: { data?: CaseStudyType[] }) {
                 Real results.
               </span>
             </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-[0.8125rem] sm:text-[0.875rem] md:text-[0.9375rem] font-normal text-gray-400 max-w-sm mx-auto lg:mx-0 leading-relaxed"
+            >
+              Audited performance breakthroughs and engineered revenue systems across industries.
+            </motion.p>
           </div>
 
           {/* Right Column: Case Studies */}
           <div className="space-y-6 sm:space-y-8">
             {displayData.map((study, idx) => {
               const clientName = study.clientName || study.client || "Client";
-              const visualImage = caseStudyVisuals[clientName] || (idx % 2 === 0 ? "/images/case-studies/ecommerce-growth.webp" : "/images/case-studies/saas-scale.webp");
+              
+              let visualImage: string = caseStudyVisuals[clientName];
+              if (!visualImage && (study.thumbnail || study.heroImage)) {
+                try {
+                  const url = urlForImage(study.thumbnail || study.heroImage)?.url();
+                  if (url) visualImage = url;
+                } catch {}
+              }
+              if (!visualImage) {
+                visualImage = idx % 2 === 0
+                  ? "/images/case-studies/ecommerce-growth.webp"
+                  : "/images/case-studies/saas-scale.webp";
+              }
+
+              const keyMetric = getKeyResult(study, clientName);
               
               // Use slug if available, otherwise fallback to /case-studies
               const studySlug = study.slug;
               const href = studySlug ? `/case-study/${studySlug}` : "/case-studies";
 
               // No delay on mobile
-              const delay = isMobile ? 0 : idx * 0.1;
+              const delay = isMobile ? 0 : idx * 0.12;
 
               return (
-                <TiltCard key={idx} className="w-full">
+                <TiltCard key={idx} maxTilt={6} glareOpacity={0.12} className="w-full">
                   <Link
                     href={href}
-                    className="block"
+                    className="group block h-full"
                   >
                     <motion.div
-                      initial={{ opacity: 0, y: 30 }}
+                      initial={{ opacity: 0, y: 35 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{ duration: 0.5, delay }}
-                      className="glass-premium premium-border soft-glow rounded-xl sm:rounded-2xl p-5 sm:p-8 relative overflow-hidden group hover:border-[#7C61FF]/40 transition-all duration-500 bg-gradient-to-b from-[#141322]/80 to-[#0A0912]/80 touch-manipulation"
+                      viewport={{ once: true, margin: "-60px" }}
+                      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+                      className="relative rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-7 overflow-hidden border border-white/10 group-hover:border-[#7C61FF]/50 bg-gradient-to-b from-[#141322]/90 via-[#0e0d1a]/90 to-[#0A0912]/95 backdrop-blur-xl shadow-2xl transition-all duration-500 touch-manipulation flex flex-col justify-between"
                     >
-                      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#7C61FF]/5 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                      
-                      <div className="border-b border-white/10 pb-4 sm:pb-6 mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 relative z-10">
-                        <div>
-                          <p className="text-white/80 font-heading text-lg">
-                            How we helped <strong className="text-white font-black">{clientName}</strong> scale.
-                          </p>
-                          {study.industry && (
-                            <span className="text-xs text-[#A78BFA]/70 mt-1 block">{study.industry}</span>
-                          )}
-                        </div>
-                        <span className="flex items-center gap-2 text-white/50 group-hover:text-[#A78BFA] text-sm font-bold transition-colors shrink-0">
-                          View Case Study <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </span>
-                      </div>
+                      {/* Ambient Glow on Hover */}
+                      <div className="absolute -inset-[1px] rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#7C61FF]/25 via-[#8B5CF6]/15 to-[#34D399]/25 opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-700 pointer-events-none" />
+                      <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-[#7C61FF]/8 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-                      {/* Case Study Visual Preview Mockup */}
-                      <div className="w-full h-44 sm:h-60 mb-6 rounded-xl overflow-hidden relative border border-white/10 shadow-lg bg-[#07070B] group-hover:border-[#7C61FF]/40 transition-all duration-500">
+                      {/* TOP: Prominent Visual Anchor with Gradient Overlays */}
+                      <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-84 rounded-xl sm:rounded-2xl overflow-hidden mb-6 bg-[#07070B] border border-white/10 group-hover:border-[#7C61FF]/40 transition-all duration-500 shadow-lg">
+                        {/* Main Case Study Image with Hover Zoom */}
                         <Image
                           src={visualImage}
-                          alt={`${clientName} Case Study Result`}
+                          alt={`${clientName} Case Study - ${study.industry || "Zelvoxx System"}`}
                           fill
-                          sizes="(max-width: 1024px) 100vw, 800px"
-                          loading="lazy"
-                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 860px"
+                          quality={95}
+                          priority={idx === 0}
+                          className="object-cover object-center transform scale-100 group-hover:scale-106 transition-transform duration-700 ease-out"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0912] via-transparent to-transparent opacity-60" />
+
+                        {/* Ambient Gradient Overlays for Readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0e0d1a] via-[#0e0d1a]/40 to-transparent opacity-85 pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#07070B]/50 via-transparent to-transparent pointer-events-none" />
+
+                        {/* Floating Top Elements on Image */}
+                        <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between gap-3 z-10 pointer-events-none">
+                          {/* Industry Badge */}
+                          {study.industry ? (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0A0912]/80 backdrop-blur-md border border-white/15 text-[11px] sm:text-xs font-semibold text-[#A78BFA] shadow-sm">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#A78BFA] animate-pulse" />
+                              {study.industry}
+                            </span>
+                          ) : <div />}
+
+                          {/* Interactive Arrow Action Button */}
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0A0912]/80 backdrop-blur-md border border-white/15 text-xs font-semibold text-white/90 group-hover:bg-[#7C61FF] group-hover:border-[#7C61FF] group-hover:text-white transition-all duration-300 shadow-md">
+                            <span>View Case Study</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                          </span>
+                        </div>
+
+                        {/* Bottom Elements on Image: Client Headline & Key Result Metric */}
+                        <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3 z-10">
+                          <div>
+                            <span className="text-[11px] uppercase tracking-wider font-bold text-white/50 block mb-0.5">
+                              Client Transformation
+                            </span>
+                            <h3 className="text-lg sm:text-xl md:text-2xl font-bold font-heading text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:via-[#C4B5FD] group-hover:to-[#7C61FF] transition-all duration-300">
+                              How we helped <span className="text-white underline decoration-[#7C61FF]/40 group-hover:decoration-[#7C61FF]">{clientName}</span> scale
+                            </h3>
+                          </div>
+
+                          {/* Animated Key Result Metric Badge */}
+                          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0A0912]/90 backdrop-blur-md border border-white/15 text-[#34D399] group-hover:border-[#34D399]/60 group-hover:bg-[#0A0912] group-hover:shadow-[0_0_22px_rgba(52,211,153,0.35)] transition-all duration-500 shrink-0 self-start sm:self-auto">
+                            <TrendingUp className="w-4 h-4 text-[#34D399] group-hover:scale-110 transition-transform duration-300" />
+                            <span className="text-xs sm:text-sm font-bold tracking-wide text-white group-hover:text-[#34D399] transition-colors">
+                              {keyMetric}
+                            </span>
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8 relative z-10">
+                      {/* 3-Column Problem / Solution / Result Breakdown */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5 relative z-10 pt-1">
                         {/* Problem */}
-                        <div className="space-y-2 sm:space-y-3">
-                          <h4 className="text-xs font-bold font-heading uppercase tracking-wider text-red-400">Problem</h4>
+                        <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 group-hover:border-white/10 transition-colors space-y-1.5 sm:space-y-2">
+                          <div className="flex items-center gap-1.5 text-xs font-bold font-heading uppercase tracking-wider text-rose-400">
+                            <AlertCircle className="w-3.5 h-3.5" />
+                            <span>Problem</span>
+                          </div>
                           <p className="text-white/60 font-body leading-relaxed text-xs sm:text-sm line-clamp-3">
                             {study.problem || "Identified growth bottlenecks and conversion challenges."}
                           </p>
                         </div>
 
                         {/* Solution */}
-                        <div className="space-y-2 sm:space-y-3">
-                          <h4 className="text-xs font-bold font-heading uppercase tracking-wider text-[#A78BFA]">Solution</h4>
+                        <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 group-hover:border-white/10 transition-colors space-y-1.5 sm:space-y-2">
+                          <div className="flex items-center gap-1.5 text-xs font-bold font-heading uppercase tracking-wider text-[#A78BFA]">
+                            <Zap className="w-3.5 h-3.5" />
+                            <span>Solution</span>
+                          </div>
                           <p className="text-white/60 font-body leading-relaxed text-xs sm:text-sm line-clamp-3">
                             {study.solution || "Implemented strategic systems and optimization."}
                           </p>
                         </div>
 
                         {/* Result */}
-                        <div className="space-y-2 sm:space-y-3">
-                          <h4 className="text-xs font-bold font-heading uppercase tracking-wider text-[#34D399]">Result</h4>
+                        <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-br from-[#34D399]/[0.08] to-transparent border border-[#34D399]/20 group-hover:border-[#34D399]/40 transition-colors space-y-1.5 sm:space-y-2">
+                          <div className="flex items-center gap-1.5 text-xs font-bold font-heading uppercase tracking-wider text-[#34D399]">
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>Result</span>
+                          </div>
                           <p className="text-white font-medium font-body leading-relaxed text-xs sm:text-sm line-clamp-3">
                             {study.result || "Significant growth and improved performance metrics."}
                           </p>

@@ -74,14 +74,14 @@ export default function CookieConsent() {
                   We use cookies and privacy-first analytics to optimize performance and elevate your browsing experience. Read our{" "}
                   <Link
                     href="/privacy-policy"
-                    className="text-[#A78BFA] hover:underline font-medium"
+                    className="text-[#A78BFA] hover:underline font-medium py-1 px-0.5 inline-block touch-manipulation"
                   >
                     Privacy Policy
                   </Link>{" "}
                   and{" "}
                   <Link
                     href="/cookie-policy"
-                    className="text-[#A78BFA] hover:underline font-medium"
+                    className="text-[#A78BFA] hover:underline font-medium py-1 px-0.5 inline-block touch-manipulation"
                   >
                     Cookie Policy
                   </Link>
@@ -91,13 +91,13 @@ export default function CookieConsent() {
                 <div className="flex items-center gap-2.5">
                   <button
                     onClick={handleAccept}
-                    className="flex-1 py-2 px-4 rounded-xl bg-gradient-to-r from-[#7C61FF] to-[#8B5CF6] hover:brightness-110 text-white font-heading font-semibold text-xs sm:text-sm tracking-wide shadow-[0_0_15px_rgba(124,97,255,0.4)] transition-all active:scale-95"
+                    className="flex-1 min-h-[44px] py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#7C61FF] to-[#8B5CF6] hover:brightness-110 text-white font-heading font-semibold text-xs sm:text-sm tracking-wide shadow-[0_0_15px_rgba(124,97,255,0.4)] transition-all active:scale-95 touch-manipulation flex items-center justify-center"
                   >
                     Accept All
                   </button>
                   <button
                     onClick={handleDecline}
-                    className="py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border border-white/10 font-body text-xs transition-colors"
+                    className="min-h-[44px] py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10 font-body text-xs sm:text-sm transition-colors touch-manipulation flex items-center justify-center"
                   >
                     Necessary Only
                   </button>

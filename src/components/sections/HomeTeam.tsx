@@ -82,7 +82,7 @@ const defaultFounders: TeamMember[] = [
     role: "CTO (Chief Technology Officer)",
     isFounder: true,
     shortBio: "Technical infrastructure & engineering systems",
-    image: null,
+    image: "/images/team/operator-karishma.webp",
   },
 ];
 
@@ -99,7 +99,7 @@ export default function HomeTeam({ members }: Props) {
     role: "CTO (Chief Technology Officer)",
     isFounder: true,
     shortBio: "Technical infrastructure & engineering systems",
-    image: null,
+    image: "/images/team/operator-karishma.webp",
   };
 
   const operators = [...baseFounders, karishmaMember];
@@ -195,7 +195,7 @@ export default function HomeTeam({ members }: Props) {
             >
               <Link
                 href="/team"
-                className="group inline-flex items-center gap-2 text-primary hover:text-white transition-colors duration-300 text-sm sm:text-base font-semibold"
+                className="group inline-flex items-center gap-2 text-primary hover:text-white transition-colors duration-300 text-sm sm:text-base font-semibold py-2.5 px-3 -mx-3 rounded-lg min-h-[44px] touch-manipulation"
               >
                 <span>Meet the Full Team</span>
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
@@ -207,7 +207,9 @@ export default function HomeTeam({ members }: Props) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-6 xl:gap-8 max-w-7xl mx-auto">
             {operators.map((founder, index) => {
               let photoSrc: string | null = null;
-              if (founder.image) {
+              if (founder.name.toLowerCase().includes("karishma")) {
+                photoSrc = "/images/team/operator-karishma.webp";
+              } else if (founder.image) {
                 if (typeof founder.image === "string") {
                   photoSrc = founder.image;
                 } else {
@@ -221,6 +223,7 @@ export default function HomeTeam({ members }: Props) {
               if (!photoSrc) {
                 if (index === 0) photoSrc = "/images/team/founder-akshat.webp";
                 else if (index === 1) photoSrc = "/images/team/founder-antara.webp";
+                else if (index === 2 || founder.name.toLowerCase().includes("karishma")) photoSrc = "/images/team/operator-karishma.webp";
               }
 
               const memberTags = (index === 0

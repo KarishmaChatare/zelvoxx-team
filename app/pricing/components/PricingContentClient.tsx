@@ -3,22 +3,24 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, Check, Zap, Crown, Building2, Sparkles, Gift } from "lucide-react";
-import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
+import { ArrowLeft, Sparkles, Gift } from "lucide-react";
 import DynamicBackground from "@/src/components/ui/DynamicBackground";
-import { gtag } from "@/src/lib/analytics";
+import { pushToDataLayer } from "@/src/lib/analytics";
+
+import PhonePricingMockup, { PhonePricingPlan } from "@/src/components/ui/PhonePricingMockup";
 
 interface PricingContentClientProps {
   plans: any[];
 }
 
-const planIcons: Record<string, React.ReactNode> = {
-  starter: <Zap className="w-6 h-6" />,
-  growth: <Crown className="w-6 h-6" />,
-  enterprise: <Building2 className="w-6 h-6" />,
-};
-
 export default function PricingContentClient({ plans }: PricingContentClientProps) {
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   return (
     <main className="min-h-screen bg-background text-white selection:bg-primary/30 relative">
       {/* Dynamic Background */}
@@ -111,82 +113,38 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
           </div>
         </section>
 
-        {/* Pricing Cards */}
-        <section className="py-20 pb-32">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {plans.map((plan: any, idx: number) => (
-                <motion.div
-                  key={plan._id}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: idx * 0.15 }}
-                  className={`relative p-8 rounded-2xl transition-all duration-300 hover:-translate-y-2 ${
-                    plan.popular
-                      ? "bg-gradient-to-b from-primary/20 to-[#0f0f14] border-2 border-primary scale-105 z-10 shadow-[0_0_60px_rgba(123,97,255,0.15)]"
-                      : "bg-[#0f0f14] border border-white/10 hover:border-primary/30"
-                  }`}
-                >
-                  {/* Popular Badge */}
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <span className="bg-primary text-white px-4 py-1 rounded-full text-sm font-bold">
-                        Most Popular
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Icon */}
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
-                    plan.popular ? "bg-primary/20 text-primary" : "bg-white/10 text-white"
-                  }`}>
-                    {planIcons[plan.slug] || <Zap className="w-6 h-6" />}
-                  </div>
-
-                  {/* Plan Name */}
-                  <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                  <p className="text-white/60 text-sm mb-6">{plan.description}</p>
-
-                  {/* Price */}
-                  <div className="mb-8">
-                    {plan.priceNote && (
-                      <span className="text-white/50 text-sm">{plan.priceNote}</span>
-                    )}
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-4xl md:text-5xl font-black text-white">{plan.price}</span>
-                    </div>
-                  </div>
-
-                  {/* Features */}
-                  <ul className="space-y-4 mb-8">
-                    {plan.features?.map((feature: string, featureIdx: number) => (
-                      <li key={featureIdx} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <span className="text-white/80">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* CTA */}
-                  <a
-                    href={PHONE_CALL_URL}
-                    onClick={() => {
-                      gtag("event", "checkout_click", {
-                        event_category: "engagement",
-                        event_label: `Pricing Plan: ${plan.name} (${plan.price})`,
-                      });
-                    }}
-                    className={`block w-full text-center py-4 rounded-xl font-bold transition-all hover:scale-105 ${
-                      plan.popular
-                        ? "bg-primary text-white hover:bg-primary/90"
-                        : "bg-white/10 text-white hover:bg-white/20"
-                    }`}
-                  >
-                    Call {PHONE_NUMBER}
-                  </a>
-                </motion.div>
-              ))}
+        {/* Pricing Cards (3-Phone Mockup) */}
+        <section className="py-12 pb-32">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-3 xl:gap-6 max-w-7xl mx-auto pt-4 pb-8 [perspective:1400px]">
+              {plans.map((plan: any, idx: number) => {
+                const position = idx === 0 ? "left" : idx === 1 ? "center" : "right";
+                const phonePlan: PhonePricingPlan = {
+                  ...plan,
+                  tierNumber: `0${idx + 1}`,
+                  tagline: idx === 0 ? "FOUNDATIONS" : idx === 1 ? "SCALE ENGINE" : "BESPOKE PARTNER",
+                  cta:
+                    plan.cta ||
+                    (plan.ctaText &&
+                    plan.ctaText !== "Get Started" &&
+                    plan.ctaText !== "Most Popular" &&
+                    plan.ctaText !== "Contact Us"
+                      ? plan.ctaText
+                      : idx === 1
+                      ? "Start Scaling Now"
+                      : idx === 0
+                      ? "Connect With Us"
+                      : "Apply for Partnership"),
+                };
+                return (
+                  <PhonePricingMockup
+                    key={plan._id || plan.name}
+                    plan={phonePlan}
+                    position={position}
+                    isMobile={isMobile}
+                  />
+                );
+              })}
             </div>
 
             {/* Custom Quote */}
@@ -200,18 +158,28 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
               <p className="text-white/60 mb-4">
                 Need something custom? We build bespoke solutions for complex requirements.
               </p>
-              <a
-                href={PHONE_CALL_URL}
+              <Link
+                href="/contact"
                 onClick={() => {
-                  gtag("event", "checkout_click", {
+                  pushToDataLayer("connect_with_us_click", {
+                    event_category: "engagement",
+                    event_label: "Pricing Custom Consultation",
+                  });
+                  pushToDataLayer("checkout_click", {
                     event_category: "engagement",
                     event_label: "Custom Consultation Call",
+                    pricing_tier: "Custom",
+                  });
+                  pushToDataLayer("begin_checkout", {
+                    event_category: "engagement",
+                    event_label: "Custom Consultation Call",
+                    pricing_tier: "Custom",
                   });
                 }}
                 className="inline-block text-primary hover:underline font-semibold"
               >
-                Call {PHONE_NUMBER} for Consultation →
-              </a>
+                Connect With Us for Consultation →
+              </Link>
             </motion.div>
           </div>
         </section>

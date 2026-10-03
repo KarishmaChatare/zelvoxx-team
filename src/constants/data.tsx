@@ -128,7 +128,7 @@ export const legalSiteInfo = {
 } as const;
 
 export const legalLinks = [
-  { label: "Privacy Policy", url: "/privacy-policy" },
+  { label: "Privacy Policy", url: "/privacy" },
   { label: "Terms & Conditions", url: "/terms" },
   { label: "Cookie Policy", url: "/cookie-policy" },
   { label: "Refund Policy", url: "/refund-policy" },

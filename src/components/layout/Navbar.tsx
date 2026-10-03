@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { gtag } from "@/src/lib/analytics";
+import { pushToDataLayer } from "@/src/lib/analytics";
 
 const NAV_ITEMS = [
   { label: "OUR WORK", href: "/portfolio" },
@@ -186,7 +186,7 @@ export default function Navbar() {
           <Link
             href="/contact"
             onClick={() => {
-              gtag("event", "connect_with_us_click", {
+              pushToDataLayer("connect_with_us_click", {
                 event_category: "engagement",
                 event_label: "Navbar Desktop CTA",
               });
@@ -249,7 +249,7 @@ export default function Navbar() {
                 href="/contact"
                 onClick={() => {
                   setIsOpen(false);
-                  gtag("event", "connect_with_us_click", {
+                  pushToDataLayer("connect_with_us_click", {
                     event_category: "engagement",
                     event_label: "Navbar Mobile CTA",
                   });

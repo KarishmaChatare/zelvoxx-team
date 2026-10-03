@@ -1,8 +1,32 @@
 import { track } from "@vercel/analytics";
 
 /**
- * Safe gtag wrapper that works on client whether GA4 script is fully loaded,
- * queuing, or initialized.
+ * Push an event object directly to GTM dataLayer:
+ * window.dataLayer.push({ event: 'event_name', ...params })
+ */
+export function pushToDataLayer(
+  event: string,
+  params?: Record<string, unknown>
+) {
+  if (typeof window === "undefined") return;
+
+  try {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event,
+      ...params,
+    });
+  } catch (err) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("[dataLayer error]", err);
+    }
+  }
+}
+
+/**
+ * Safe gtag wrapper that redirects events to GTM dataLayer objects.
+ * Calling gtag("event", "connect_with_us_click", { ... }) pushes:
+ * { event: "connect_with_us_click", ... } into window.dataLayer.
  */
 export function gtag(
   command: "config" | "event" | "consent" | "set" | "js" | string,
@@ -12,10 +36,16 @@ export function gtag(
   if (typeof window === "undefined") return;
 
   try {
+    window.dataLayer = window.dataLayer || [];
+
+    if (command === "event" && typeof targetOrAction === "string") {
+      pushToDataLayer(targetOrAction, params);
+      return;
+    }
+
     if (typeof window.gtag === "function") {
       window.gtag(command, targetOrAction, params);
     } else {
-      window.dataLayer = window.dataLayer || [];
       window.gtag = function (...args: unknown[]) {
         window.dataLayer?.push(args);
       };
@@ -30,7 +60,7 @@ export function gtag(
 
 /**
  * Universal event tracking helper.
- * Tracks custom user interactions across both Vercel Analytics and Google Analytics (GA4).
+ * Tracks custom user interactions across Vercel Analytics and GTM dataLayer.
  */
 export function trackEvent(
   eventName: string,
@@ -44,55 +74,66 @@ export function trackEvent(
     }
   }
 
-  // Also forward to Google Analytics 4
-  try {
-    gtag("event", eventName, {
-      event_category: "engagement",
-      ...properties,
-    });
-  } catch {
-    if (process.env.NODE_ENV !== "production") {
-      console.log(`[GA4 Event Error: ${eventName}]`);
-    }
-  }
+  // Forward directly to GTM dataLayer
+  pushToDataLayer(eventName, {
+    event_category: "engagement",
+    ...properties,
+  });
 }
 
 /**
- * Dedicated conversion tracking helpers matching GA4 event conventions:
- * gtag('event', 'event_name', { event_category: 'engagement', event_label: '...' })
+ * Dedicated conversion tracking helpers pushing directly to GTM dataLayer:
+ * window.dataLayer.push({ event: '...', ... })
  */
 
 export function trackConnectWithUsClick(label: string = "Connect With Us Button") {
-  gtag("event", "connect_with_us_click", {
+  pushToDataLayer("connect_with_us_click", {
     event_category: "engagement",
     event_label: label,
   });
 }
 
 export function trackWhatsAppClick(label: string = "Floating WhatsApp Button") {
-  gtag("event", "whatsapp_click", {
+  pushToDataLayer("whatsapp_click", {
     event_category: "engagement",
     event_label: label,
   });
 }
 
 export function trackSeePricingClick(label: string = "See Pricing Button") {
-  gtag("event", "see_pricing_click", {
+  pushToDataLayer("see_pricing_click", {
     event_category: "engagement",
     event_label: label,
   });
 }
 
-export function trackCheckoutClick(label: string = "Stripe/Razorpay Checkout Button", value?: number) {
-  gtag("event", "checkout_click", {
+export function trackCheckoutClick(
+  label: string = "Stripe/Razorpay Checkout Button",
+  tierDetails?: { name?: string; price?: string; value?: number }
+) {
+  const payload = {
     event_category: "engagement",
     event_label: label,
-    ...(value !== undefined ? { value } : {}),
-  });
-  // Also fire standard GA4 ecommerce begin_checkout
-  gtag("event", "begin_checkout", {
+    ...(tierDetails?.name ? { pricing_tier: tierDetails.name } : {}),
+    ...(tierDetails?.price ? { pricing_price: tierDetails.price } : {}),
+    ...(tierDetails?.value !== undefined ? { value: tierDetails.value } : {}),
+  };
+  pushToDataLayer("checkout_click", payload);
+  pushToDataLayer("begin_checkout", payload);
+}
+
+export function trackContactEmailClick(label: string = "Footer Contact Email") {
+  pushToDataLayer("contact_email_click", {
     event_category: "engagement",
     event_label: label,
-    ...(value !== undefined ? { value } : {}),
   });
 }
+
+export function trackSocialClick(platform: string, label?: string) {
+  pushToDataLayer("social_click", {
+    event_category: "engagement",
+    event_label: label || `Footer Social - ${platform}`,
+    social_network: platform,
+  });
+}
+

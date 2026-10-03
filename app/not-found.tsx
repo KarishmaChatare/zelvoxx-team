@@ -16,13 +16,13 @@ export default function NotFound() {
         className="text-center relative z-10"
       >
         {/* Giant textured number */}
-        <h1 className="text-[10rem] md:text-[18rem] font-black font-heading leading-none text-transparent bg-clip-text bg-gradient-to-b from-white to-white/5 opacity-80 select-none tracking-tighter">
+        <h1 className="text-[clamp(6rem,28vw,18rem)] font-black font-heading leading-none text-transparent bg-clip-text bg-gradient-to-b from-white to-white/5 opacity-80 select-none tracking-tighter">
           404
         </h1>
         
         {/* Overlay banner text */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center">
-          <p className="text-2xl md:text-4xl font-heading font-black text-white uppercase tracking-widest bg-[#0B0B0B]/80 px-8 py-2 border-y border-white/10 backdrop-blur-md">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center px-2">
+          <p className="text-lg sm:text-2xl md:text-4xl font-heading font-black text-white uppercase tracking-widest bg-[#0B0B0B]/80 px-4 sm:px-8 py-2 border-y border-white/10 backdrop-blur-md whitespace-nowrap">
             System Void
           </p>
         </div>

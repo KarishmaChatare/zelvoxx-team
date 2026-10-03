@@ -334,11 +334,7 @@ export const whyZelvoxxQuery = groq`
     processSteps,
     resultsText,
     founderText,
-    audienceText,
-    finalCtaTitle,
-    finalCtaSubtitle,
-    whatsappNumber,
-    whatsappCtaText
+    audienceText
   }
 `;
 

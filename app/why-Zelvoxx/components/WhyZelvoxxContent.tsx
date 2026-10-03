@@ -2,8 +2,9 @@
 
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Search, Zap, TrendingUp, Target, Users, MessageCircle, Phone, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle, Search, Zap, TrendingUp, Target, Users, Sparkles } from "lucide-react";
 import CTASection from "@/src/components/ui/CTASection";
+import { pushToDataLayer } from "@/src/lib/analytics";
 
 interface ProcessStep {
   title: string;
@@ -22,10 +23,6 @@ interface WhyZelvoxxData {
   resultsText?: string;
   founderText?: string;
   audienceText?: string;
-  finalCtaTitle?: string;
-  finalCtaSubtitle?: string;
-  whatsappNumber?: string;
-  whatsappCtaText?: string;
 }
 
 interface Props {
@@ -68,10 +65,6 @@ const defaultData: WhyZelvoxxData = {
   resultsText: "We don't celebrate vanity metrics. No 'impressions,' 'reach,' or 'engagement rates.' We measure one thing: revenue generated per dollar spent. Our clients typically see 3-5x ROAS within 90 days, with systems that continue compounding returns long after launch.",
   founderText: "We work with founders who think strategically, not tactically. Leaders who understand that sustainable growth requires building assets, not renting attention. If you're ready to invest in systems that scale, we're your partner.",
   audienceText: "We partner with established businesses doing $500K+ annual revenue who are ready to scale systematically. If you're pre-revenue or looking for 'cheap marketing,' we're not the right fit. But if you're serious about building a growth engine, let's talk.",
-  finalCtaTitle: "Ready to Build Your Growth System?",
-  finalCtaSubtitle: "Book a free strategy call. We'll audit your current approach and show you exactly where the leverage is.",
-  whatsappNumber: "+919810601084",
-  whatsappCtaText: "Chat on WhatsApp",
 };
 
 export default function WhyZelvoxxContent({ data }: Props) {
@@ -113,12 +106,16 @@ export default function WhyZelvoxxContent({ data }: Props) {
 
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href={content.ctaLink || "#"}
-              className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
+              href="/contact"
+              onClick={() => {
+                pushToDataLayer("connect_with_us_click", {
+                  event_category: "engagement",
+                  event_label: "Why Zelvoxx Hero Connect With Us",
+                });
+              }}
+              className="inline-block bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] hover:brightness-110 text-white px-8 py-4 rounded-full font-bold text-sm sm:text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(124,97,255,0.45)] tracking-wide"
             >
-              <Phone className="w-5 h-5" />
-              {content.ctaText}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              Connect With Us
             </Link>
           </motion.div>
         </motion.div>
@@ -218,7 +215,7 @@ export default function WhyZelvoxxContent({ data }: Props) {
                 How We Work
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
-                Our 3-Step Process
+                Our 4-Step Process
               </h2>
             </motion.div>
 
@@ -395,58 +392,12 @@ export default function WhyZelvoxxContent({ data }: Props) {
         </div>
       </section>
 
-      {/* FINAL CTA SECTION */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-          >
-            <motion.h2
-              variants={fadeInUp}
-              className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6"
-            >
-              {content.finalCtaTitle}
-            </motion.h2>
-
-            <motion.p
-              variants={fadeInUp}
-              className="text-xl text-white/60 mb-10 max-w-2xl mx-auto"
-            >
-              {content.finalCtaSubtitle}
-            </motion.p>
-
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href={content.ctaLink || "#"}
-                className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
-              >
-                <Phone className="w-5 h-5" />
-                Call +91 98106 01084
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-
-              <Link
-                href={`https://wa.me/${content.whatsappNumber?.replace(/\+/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
-              >
-                <MessageCircle className="w-5 h-5" />
-                {content.whatsappCtaText}
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Standard CTA Section */}
       <CTASection
         title="Want results like these?"
         subtitle="Let's discuss how we can build a custom digital growth system for your business."
-        primaryCtaText="Book a Free Strategy Call"
+        primaryCtaText="Connect With Us"
+        primaryCtaLink="/contact"
         secondaryCtaText="View All Services"
         secondaryCtaLink="/pricing"
       />

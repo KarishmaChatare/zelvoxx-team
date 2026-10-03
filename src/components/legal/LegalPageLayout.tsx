@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 
 const fadeInUp: Variants = {
@@ -83,11 +85,22 @@ export default function LegalPageLayout({
           variants={headerStagger}
           initial="hidden"
           animate="visible"
-          className="mb-12 sm:mb-14"
+          className="mb-10 sm:mb-12"
         >
+          {/* Top back navigation */}
+          <motion.div variants={fadeInUp} className="mb-4">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs font-medium text-white/50 hover:text-primary transition-colors group py-2.5 px-2 -mx-2 rounded-lg min-h-[44px] touch-manipulation"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
+              <span>Back to Homepage</span>
+            </Link>
+          </motion.div>
+
           <motion.div variants={fadeInUp}>
             <span className="inline-block text-[10px] sm:text-[11px] font-heading font-bold uppercase tracking-[0.22em] text-primary mb-3">
-              Legal
+              Legal Documentation
             </span>
           </motion.div>
           <motion.h1
@@ -100,14 +113,30 @@ export default function LegalPageLayout({
           </motion.h1>
           <motion.div
             variants={lineGrow}
-            className="h-[2px] w-28 sm:w-36 rounded-full bg-gradient-to-r from-primary via-violet-400/80 to-transparent origin-left mb-5"
+            className="h-[2px] w-28 sm:w-36 rounded-full bg-gradient-to-r from-primary via-violet-400/80 to-transparent origin-left mb-4"
           />
-          <motion.p
+          <motion.div
             variants={fadeInUp}
-            className="text-white/50 font-body text-sm sm:text-base"
+            className="flex flex-wrap items-center gap-x-4 gap-y-1 text-white/50 font-body text-xs sm:text-sm"
           >
-            Effective Date: {effectiveDate}
-          </motion.p>
+            <span>Effective Date: {effectiveDate}</span>
+            <span>•</span>
+            <span>Last Updated: {effectiveDate}</span>
+          </motion.div>
+
+          {/* Placeholder Legal Text Notice */}
+          <motion.div
+            variants={fadeInUp}
+            className="mt-4 p-3 sm:p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-mono leading-relaxed"
+          >
+            <div className="flex items-center gap-2 font-bold uppercase tracking-wider text-amber-400 text-[11px]">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              [PLACEHOLDER — REPLACE WITH REVIEWED LEGAL TEXT]
+            </div>
+            <p className="mt-1 text-amber-300/80 text-[11px] font-sans">
+              This document contains standard boilerplate legal language for development and layout preview. It must be reviewed by qualified legal counsel or generated via an official policy generator (e.g. Termly, iubenda) before commercial deployment.
+            </p>
+          </motion.div>
         </motion.header>
 
         <motion.div
@@ -118,6 +147,18 @@ export default function LegalPageLayout({
         >
           {children}
         </motion.div>
+
+        {/* Bottom back navigation */}
+        <div className="mt-14 pt-8 border-t border-white/10 flex items-center justify-between">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm text-white/60 hover:text-white transition-colors group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span>Back to Homepage</span>
+          </Link>
+          <span className="text-xs text-white/40 font-mono">Zelvoxx Legal System</span>
+        </div>
       </div>
     </div>
   );

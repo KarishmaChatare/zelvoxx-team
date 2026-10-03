@@ -1,15 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion, useSpring, type Variants } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useSpring,
+  useScroll,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 import { ArrowRight, PhoneCall, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { gtag } from "@/src/lib/analytics";
+import { pushToDataLayer } from "@/src/lib/analytics";
 
 function MagneticButton({
   children,
   className = "",
-  distance = 0.18,
+  distance = 0.22,
   disabled = false,
 }: {
   children: React.ReactNode;
@@ -18,8 +25,8 @@ function MagneticButton({
   disabled?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const x = useSpring(0, { stiffness: 260, damping: 20, mass: 0.5 });
-  const y = useSpring(0, { stiffness: 260, damping: 20, mass: 0.5 });
+  const x = useSpring(0, { stiffness: 280, damping: 18, mass: 0.4 });
+  const y = useSpring(0, { stiffness: 280, damping: 18, mass: 0.4 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (disabled || !ref.current) return;
@@ -58,11 +65,33 @@ function MagneticButton({
 export default function CTA() {
   const [isMobile, setIsMobile] = useState(false);
   const prefersReducedMotion = useReducedMotion();
-  const cardRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  // Subtle mouse-parallax within this CTA card
-  const bgX = useSpring(0, { stiffness: 120, damping: 24 });
-  const bgY = useSpring(0, { stiffness: 120, damping: 24 });
+  // Extend scroll-parallax "sink" motion through this CTA section
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Local parallax sink: shifts the ambient violet bloom downward with page scroll
+  const sinkY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? ["0px", "0px"] : ["-50px", "70px"]
+  );
+
+  const sinkYDeep = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? ["0px", "0px"] : ["-80px", "100px"]
+  );
+
+  // Subtle mouse-parallax within this section
+  const mouseX = useSpring(0, { stiffness: 90, damping: 22 });
+  const mouseY = useSpring(0, { stiffness: 90, damping: 22 });
+
+  const mouseXInverted = useTransform(mouseX, (v) => -v * 0.55);
+  const mouseXScaled = useTransform(mouseX, (v) => v * 0.75);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -71,21 +100,21 @@ export default function CTA() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion || isMobile || !cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (prefersReducedMotion || isMobile || !sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
     const normX = (e.clientX - rect.left) / rect.width - 0.5;
     const normY = (e.clientY - rect.top) / rect.height - 0.5;
-    bgX.set(normX * 28);
-    bgY.set(normY * 28);
+    mouseX.set(normX * 42);
+    mouseY.set(normY * 42);
   };
 
-  const handleCardMouseLeave = () => {
-    bgX.set(0);
-    bgY.set(0);
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
   };
 
-  // Staggered sequence variants for deliberate reveal
+  // Staggered sequence variants for deliberate scroll-reveal entrance
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -98,12 +127,12 @@ export default function CTA() {
   };
 
   const itemVariants: Variants = {
-    hidden: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 },
+    hidden: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.65,
         ease: [0.22, 1, 0.36, 1] as const,
       },
     },
@@ -121,207 +150,241 @@ export default function CTA() {
   const arrowIconVariants: Variants = {
     initial: { x: 0 },
     hover: {
-      x: 5,
+      x: 6,
       transition: { duration: 0.25, ease: "easeOut" },
     },
   };
 
   return (
-    <section className="bg-transparent relative overflow-hidden py-16 sm:py-24 lg:py-28" id="cta">
-      {/* Ambient background anchor */}
-      <div className="absolute inset-0 z-0 bg-transparent pointer-events-none" />
+    <section
+      id="cta"
+      ref={sectionRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative z-10 bg-transparent overflow-hidden py-24 sm:py-32 lg:py-40"
+    >
+      {/* 1. Continuous Scroll & Mouse Parallax Light Blooms (Fully blended into site background) */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden z-0">
+        {/* Soft atmospheric gradient veil - guarantees high text contrast without harsh box edges */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,8,12,0.55)_0%,rgba(8,8,12,0.25)_55%,transparent_85%)] pointer-events-none"
+        />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+        {/* Primary soft radial glow centered behind headline specifically */}
         <motion.div
-          ref={cardRef}
-          onMouseMove={handleCardMouseMove}
-          onMouseLeave={handleCardMouseLeave}
-          initial={{ opacity: 0, y: 50, scale: 0.95 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: isMobile ? 0.5 : 0.8, ease: "easeOut" }}
-          className="p-6 sm:p-14 md:p-20 lg:p-24 rounded-[1.75rem] sm:rounded-[3rem] relative overflow-hidden shadow-2xl group border border-white/10 glass-premium"
+          style={
+            prefersReducedMotion || isMobile
+              ? {}
+              : {
+                  x: mouseX,
+                  y: sinkY,
+                }
+          }
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] sm:w-[900px] lg:w-[1100px] h-[360px] sm:h-[460px] pointer-events-none"
         >
-          {/* Card Dark Backdrop */}
-          <div className="absolute inset-0 bg-[#0B0B0B]/60 backdrop-blur-md z-0 pointer-events-none" />
+          {/* Broad violet/blue aura */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#7C61FF]/22 via-[#8B5CF6]/16 to-[#3B82F6]/10 blur-[100px] sm:blur-[140px] rounded-full" />
+          {/* Luminous core under the accent text */}
+          <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-[#A78BFA]/22 blur-[70px] sm:blur-[95px] rounded-full" />
+        </motion.div>
 
-          {/* Mouse-Parallax Ambient Glow */}
-          <motion.div
-            style={prefersReducedMotion || isMobile ? {} : { x: bgX, y: bgY }}
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/25 via-[#8B5CF6]/10 to-transparent opacity-90 pointer-events-none z-0"
-          />
+        {/* Secondary ambient drift orbs reacting inversely to cursor for 3D depth */}
+        <motion.div
+          style={
+            prefersReducedMotion || isMobile
+              ? {}
+              : {
+                  x: mouseXInverted,
+                  y: sinkYDeep,
+                }
+          }
+          className="absolute top-1/4 left-8 sm:left-1/5 w-72 h-72 bg-[#7C61FF]/12 blur-[105px] rounded-full pointer-events-none"
+        />
+        <motion.div
+          style={
+            prefersReducedMotion || isMobile
+              ? {}
+              : {
+                  x: mouseXScaled,
+                  y: sinkY,
+                }
+          }
+          className="absolute bottom-1/4 right-8 sm:right-1/5 w-80 h-80 bg-[#8B5CF6]/12 blur-[115px] rounded-full pointer-events-none"
+        />
+      </div>
 
-          {/* Staggered Content Sequence */}
+      {/* 2. Open, Unboxed Content Layer (Floating naturally within the continuous background) */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          className="flex flex-col items-center"
+        >
+          {/* Step 1: Animated Badge with breathing border and gentle glow */}
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="relative z-10 flex flex-col items-center"
+            variants={itemVariants}
+            animate={
+              prefersReducedMotion
+                ? {}
+                : {
+                    boxShadow: [
+                      "0 0 14px rgba(124,97,255,0.12)",
+                      "0 0 28px rgba(167,139,250,0.32)",
+                      "0 0 14px rgba(124,97,255,0.12)",
+                    ],
+                    borderColor: [
+                      "rgba(255,255,255,0.12)",
+                      "rgba(167,139,250,0.45)",
+                      "rgba(255,255,255,0.12)",
+                    ],
+                  }
+            }
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-flex items-center gap-2.5 px-5 sm:px-7 py-2.5 rounded-full bg-white/[0.04] border border-white/15 mb-7 sm:mb-9 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-wide text-white/90"
           >
-            {/* 1. Animated Badge with idle sparkle pulse & border breathing glow */}
-            <motion.div
-              variants={itemVariants}
+            <motion.span
               animate={
                 prefersReducedMotion
                   ? {}
-                  : {
-                      boxShadow: [
-                        "0 0 10px rgba(124,97,255,0.06)",
-                        "0 0 24px rgba(167,139,250,0.22)",
-                        "0 0 10px rgba(124,97,255,0.06)",
-                      ],
-                      borderColor: [
-                        "rgba(255,255,255,0.1)",
-                        "rgba(167,139,250,0.35)",
-                        "rgba(255,255,255,0.1)",
-                      ],
-                    }
+                  : { rotate: [0, 15, -15, 0], scale: [1, 1.15, 1] }
               }
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-              className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 rounded-full bg-white/5 border border-white/10 mb-6 sm:mb-8 backdrop-blur-sm text-xs sm:text-sm"
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="inline-flex items-center justify-center"
             >
+              <Sparkles className="w-4 h-4 text-[#A78BFA]" />
+            </motion.span>
+            <span>Built for Growing Businesses</span>
+          </motion.div>
+
+          {/* Step 2: Two-color Headline with slow gradient shimmer sweep on accent words */}
+          <motion.h2
+            variants={itemVariants}
+            className="text-[1.875rem] sm:text-[2.5rem] md:text-[3.25rem] lg:text-[4rem] xl:text-[4.5rem] font-heading font-black text-white uppercase tracking-tight sm:tracking-tighter mb-6 sm:mb-8 leading-[1.08] sm:leading-[1.04] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]"
+          >
+            Ready to stop wasting time and start{" "}
+            <span className="relative inline-block mt-1 sm:mt-0">
+              {/* Soft ambient aura specifically hugging the accent text */}
               <motion.span
+                aria-hidden="true"
                 animate={
                   prefersReducedMotion
                     ? {}
-                    : { rotate: [0, 15, -15, 0], scale: [1, 1.15, 1] }
+                    : { opacity: [0.45, 0.85, 0.45], scale: [0.98, 1.03, 0.98] }
                 }
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="inline-flex items-center justify-center"
+                className="absolute -inset-3 rounded-2xl bg-gradient-to-r from-[#7C61FF]/30 via-[#8B5CF6]/30 to-[#A78BFA]/30 blur-xl pointer-events-none"
+              />
+              <motion.span
+                className="text-transparent bg-clip-text bg-gradient-to-r from-[#7C61FF] via-[#C4B5FD] to-[#7C61FF] bg-[length:200%_auto] relative inline-block drop-shadow-[0_0_20px_rgba(124,97,255,0.4)]"
+                animate={
+                  prefersReducedMotion
+                    ? {}
+                    : { backgroundPosition: ["0% center", "200% center"] }
+                }
+                transition={{ duration: 5.5, repeat: Infinity, ease: "linear" }}
               >
-                <Sparkles className="w-4 h-4 text-primary" />
+                dominating your market?
               </motion.span>
-              <span>Built for Growing Businesses</span>
-            </motion.div>
+            </span>
+          </motion.h2>
 
-            {/* 2. Headline with ambient shimmer sweep on accent words */}
-            <motion.h2
-              variants={itemVariants}
-              className="text-[1.625rem] sm:text-[2.125rem] md:text-[2.5rem] lg:text-[3.5rem] xl:text-[3.875rem] font-heading font-black text-white uppercase tracking-tight sm:tracking-tighter mb-6 sm:mb-8 leading-[1.12] sm:leading-[1.08] drop-shadow-2xl"
-            >
-              Ready to stop wasting time and start{" "}
-              <span className="relative inline-block">
-                {/* Soft ambient glow aura behind accent words */}
-                <motion.span
-                  aria-hidden="true"
-                  animate={
-                    prefersReducedMotion
-                      ? {}
-                      : { opacity: [0.35, 0.7, 0.35], scale: [0.98, 1.02, 0.98] }
-                  }
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -inset-2 rounded-xl bg-gradient-to-r from-[#7C61FF]/25 via-[#8B5CF6]/25 to-[#A78BFA]/25 blur-xl pointer-events-none"
-                />
-                <motion.span
-                  className="text-transparent bg-clip-text bg-gradient-to-r from-[#7C61FF] via-[#A78BFA] to-[#7C61FF] bg-[length:200%_auto] relative inline-block"
-                  animate={
-                    prefersReducedMotion
-                      ? {}
-                      : { backgroundPosition: ["0% center", "200% center"] }
-                  }
-                  transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+          {/* Step 3: Subtext with generous spacing and high legibility */}
+          <motion.p
+            variants={itemVariants}
+            className="text-base sm:text-xl md:text-2xl text-white/80 font-body font-light mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+          >
+            Stop bleeding cash on broken marketing and weak templates. We build{" "}
+            <strong className="text-white font-semibold">lethal growth systems</strong> that crush
+            your competition and scale your revenue on autopilot.
+          </motion.p>
+
+          {/* Step 4: Interactive Action Buttons with Magnetic Pull and Hover Dynamics */}
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full sm:w-auto"
+          >
+            {/* Button 1: Connect With Us */}
+            <MagneticButton disabled={!!prefersReducedMotion || isMobile}>
+              <motion.div
+                initial="initial"
+                whileHover="hover"
+                whileTap={{ scale: 0.96 }}
+                animate={{ scale: 1 }}
+              >
+                <Link
+                  href="/contact"
+                  onClick={() => {
+                    pushToDataLayer("connect_with_us_click", {
+                      event_category: "engagement",
+                      event_label: "CTA Section Connect With Us",
+                    });
+                  }}
+                  className="group relative inline-flex items-center justify-center gap-3 bg-white text-black px-9 sm:px-12 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-wide w-full sm:w-auto uppercase overflow-hidden transition-all duration-300 hover:shadow-[0_0_50px_rgba(255,255,255,0.45),0_10px_40px_rgba(124,97,255,0.35)] min-h-[54px] sm:min-h-[60px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                  style={{
+                    boxShadow:
+                      "0 0 40px rgba(255,255,255,0.22), 0 10px 40px rgba(255,255,255,0.12)",
+                  }}
                 >
-                  dominating your market?
-                </motion.span>
-              </span>
-            </motion.h2>
-
-            {/* 3. Subtext */}
-            <motion.p
-              variants={itemVariants}
-              className="text-sm sm:text-lg md:text-xl lg:text-2xl text-white/70 font-body font-light mb-10 sm:mb-14 max-w-3xl mx-auto leading-relaxed"
-            >
-              Stop bleeding cash on broken marketing and weak templates. We build{" "}
-              <strong className="text-white font-medium">lethal growth systems</strong> that crush
-              your competition and scale your revenue on autopilot.
-            </motion.p>
-
-            {/* 4. Interactive Action Buttons with Magnetic Pull */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full sm:w-auto"
-            >
-              {/* Button 1: Connect With Us */}
-              <MagneticButton disabled={!!prefersReducedMotion || isMobile}>
-                <motion.div
-                  initial="initial"
-                  whileHover="hover"
-                  whileTap={{ scale: 0.97 }}
-                  animate={{ scale: 1 }}
-                >
-                  <Link
-                    href="/contact"
-                    onClick={() => {
-                      gtag("event", "connect_with_us_click", {
-                        event_category: "engagement",
-                        event_label: "CTA Section Connect With Us",
-                      });
+                  {/* Animated gradient sheen on hover */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-gray-100 via-white to-gray-100 bg-[length:200%_100%]"
+                    initial={{ opacity: 0 }}
+                    whileHover={{
+                      opacity: 1,
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
                     }}
-                    className="group relative inline-flex items-center justify-center gap-3 bg-white text-black px-8 sm:px-12 py-4 sm:py-6 rounded-full font-black text-base sm:text-lg tracking-wide w-full sm:w-auto uppercase overflow-hidden transition-all duration-300 hover:shadow-[0_0_50px_rgba(255,255,255,0.4),0_10px_40px_rgba(124,97,255,0.3)] min-h-[52px] sm:min-h-[64px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-                    style={{
-                      boxShadow:
-                        "0 0 40px rgba(255,255,255,0.2), 0 10px 40px rgba(255,255,255,0.1)",
-                    }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  {/* Glow expansion on hover */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full shadow-[0_0_60px_rgba(255,255,255,0.45)]" />
+
+                  {/* Animated Phone Icon */}
+                  <motion.span
+                    variants={phoneIconVariants}
+                    className="relative z-10 inline-flex items-center justify-center"
                   >
-                    {/* Animated gradient sheen on hover */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-gray-100 via-white to-gray-100 bg-[length:200%_100%]"
-                      initial={{ opacity: 0 }}
-                      whileHover={{
-                        opacity: 1,
-                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                      }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                    {/* Glow expansion on hover */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full shadow-[0_0_60px_rgba(255,255,255,0.4)]" />
+                    <PhoneCall className="w-5 h-5" />
+                  </motion.span>
+                  <span className="relative z-10">Connect With Us</span>
+                </Link>
+              </motion.div>
+            </MagneticButton>
 
-                    {/* Animated Phone Icon */}
-                    <motion.span
-                      variants={phoneIconVariants}
-                      className="relative z-10 inline-flex items-center justify-center"
-                    >
-                      <PhoneCall className="w-5 h-5" />
-                    </motion.span>
-                    <span className="relative z-10">Connect With Us</span>
-                  </Link>
-                </motion.div>
-              </MagneticButton>
-
-              {/* Button 2: See Pricing */}
-              <MagneticButton disabled={!!prefersReducedMotion || isMobile}>
-                <motion.div
-                  initial="initial"
-                  whileHover="hover"
-                  whileTap={{ scale: 0.97 }}
-                  animate={{ scale: 1 }}
+            {/* Button 2: See Pricing */}
+            <MagneticButton disabled={!!prefersReducedMotion || isMobile}>
+              <motion.div
+                initial="initial"
+                whileHover="hover"
+                whileTap={{ scale: 0.96 }}
+                animate={{ scale: 1 }}
+              >
+                <motion.a
+                  href="/#pricing"
+                  onClick={() => {
+                    pushToDataLayer("see_pricing_click", {
+                      event_category: "engagement",
+                      event_label: "CTA Section See Pricing",
+                    });
+                  }}
+                  className="group relative inline-flex items-center justify-center gap-3 bg-white/[0.05] hover:bg-white/[0.1] border border-white/20 hover:border-[#A78BFA]/70 text-white px-9 sm:px-12 py-4 sm:py-5 rounded-full font-bold text-base sm:text-lg backdrop-blur-md tracking-wide w-full sm:w-auto uppercase overflow-hidden transition-all duration-300 hover:shadow-[0_0_35px_rgba(124,97,255,0.35)] min-h-[54px] sm:min-h-[60px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A78BFA] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 >
-                  <motion.a
-                    href="/#pricing"
-                    onClick={() => {
-                      gtag("event", "see_pricing_click", {
-                        event_category: "engagement",
-                        event_label: "CTA Section See Pricing",
-                      });
-                    }}
-                    className="group relative inline-flex items-center justify-center gap-3 bg-transparent border border-white/20 hover:border-[#7C61FF]/60 hover:bg-white/[0.06] text-white px-8 sm:px-12 py-4 sm:py-6 rounded-full font-bold text-base sm:text-lg backdrop-blur-md tracking-wide w-full sm:w-auto uppercase overflow-hidden transition-all duration-300 hover:shadow-[0_0_35px_rgba(124,97,255,0.25)] min-h-[52px] sm:min-h-[64px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A78BFA] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-                  >
-                    {/* Shimmer sweep effect on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                    <span className="relative z-10">See Pricing</span>
+                  {/* Shimmer sweep effect on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  <span className="relative z-10">See Pricing</span>
 
-                    {/* Animated Arrow Icon */}
-                    <motion.span
-                      variants={arrowIconVariants}
-                      className="relative z-10 inline-flex items-center justify-center"
-                    >
-                      <ArrowRight className="w-5 h-5" />
-                    </motion.span>
-                  </motion.a>
-                </motion.div>
-              </MagneticButton>
-            </motion.div>
+                  {/* Animated Arrow Icon */}
+                  <motion.span
+                    variants={arrowIconVariants}
+                    className="relative z-10 inline-flex items-center justify-center"
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </motion.a>
+              </motion.div>
+            </MagneticButton>
           </motion.div>
         </motion.div>
       </div>

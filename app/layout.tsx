@@ -80,15 +80,18 @@ export const metadata: Metadata = {
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import WhatsAppButton from "@/src/components/ui/WhatsAppButton";
+import BackToTop from "@/src/components/ui/BackToTop";
 import CookieConsent from "@/src/components/ui/CookieConsent";
 import SitewideAmbientBackground from "@/src/components/ui/SitewideAmbientBackground";
-import GoogleAnalytics from "@/src/components/analytics/GoogleAnalytics";
+import GoogleTagManager from "@/src/components/analytics/GoogleTagManager";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || "GTM-5GXNX9QZ";
+
   return (
     <html
       lang="en"
@@ -107,13 +110,24 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${poppins.variable} antialiased bg-background text-white overflow-x-hidden min-h-screen`}
       >
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+
         <SitewideAmbientBackground />
         {children}
+        <BackToTop />
         <WhatsAppButton />
         <CookieConsent />
         <Analytics />
         <SpeedInsights />
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-P5K8WT88DZ"} />
+        <GoogleTagManager gtmId={gtmId} />
       </body>
     </html>
   );

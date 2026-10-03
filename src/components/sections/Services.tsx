@@ -8,7 +8,7 @@ import Image from "next/image";
 import { services } from "@/src/constants/data";
 import { ServiceType } from "@/src/types";
 import TiltCard from "@/src/components/ui/TiltCard";
-import { gtag } from "@/src/lib/analytics";
+import { pushToDataLayer } from "@/src/lib/analytics";
 
 const serviceVisualMap: Record<string, string> = {
   "Brand Positioning": "/images/services/brand-positioning.svg",
@@ -94,7 +94,7 @@ export default function Services({ data }: { data?: ServiceType[] }) {
               <Link
                 href="/contact"
                 onClick={() => {
-                  gtag("event", "connect_with_us_click", {
+                  pushToDataLayer("connect_with_us_click", {
                     event_category: "engagement",
                     event_label: "Services Section Connect With Us",
                   });

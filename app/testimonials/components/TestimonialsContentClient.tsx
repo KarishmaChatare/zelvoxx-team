@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Quote, Star, MessageCircle, Heart, ThumbsUp } from "lucide-react";
 import { urlForImage } from "@/sanity/lib/image";
 import DynamicBackground from "@/src/components/ui/DynamicBackground";
+import { PHONE_CALL_URL } from "@/src/constants/data";
+import { pushToDataLayer } from "@/src/lib/analytics";
 
 interface TestimonialsContentClientProps {
   testimonialsData: any[];
@@ -176,12 +178,18 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
             <p className="text-white/60 mb-8 max-w-xl mx-auto">
               Join the growing list of businesses that have transformed their digital presence with Zelvoxx.
             </p>
-            <Link
-              href="/"
-              className="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-bold transition-all hover:scale-105"
+            <a
+              href="tel:+919810601084"
+              onClick={() => {
+                pushToDataLayer("connect_with_us_click", {
+                  event_category: "engagement",
+                  event_label: "Reviews Section Start Your Project CTA",
+                });
+              }}
+              className="inline-flex items-center justify-center bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] hover:brightness-110 text-white px-8 py-4 rounded-full font-heading font-bold text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(124,97,255,0.45)] min-h-[48px] touch-manipulation tracking-wide"
             >
               Start Your Project
-            </Link>
+            </a>
           </div>
         </section>
       </div>

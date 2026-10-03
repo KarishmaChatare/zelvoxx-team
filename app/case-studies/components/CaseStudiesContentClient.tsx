@@ -130,7 +130,25 @@ export default function CaseStudiesContentClient({ caseStudiesData }: CaseStudie
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {caseStudiesData.map((study: any, idx: number) => {
-                const imageUrl = urlForImage(study.image);
+                const clientName = study.clientName || study.title || "";
+                const visualMapping: Record<string, string> = {
+                  "Avora Luxury": "/images/case-studies/ecommerce-growth.webp",
+                  "Hexabit Technologies": "/images/case-studies/saas-scale.webp",
+                  "Pulse Fitness": "/images/case-studies/pulse-fitness.webp",
+                  "Lumen Analytics": "/images/case-studies/lumen-analytics.webp",
+                  "E-commerce Brand": "/images/case-studies/ecommerce-growth.webp",
+                  "B2B SaaS Startup": "/images/case-studies/saas-scale.webp",
+                };
+
+                let imageUrl: string | null = null;
+                if (study.thumbnail || study.image) {
+                  try {
+                    imageUrl = urlForImage(study.thumbnail || study.image)?.url() || null;
+                  } catch {}
+                }
+                if (!imageUrl) {
+                  imageUrl = visualMapping[clientName] || (idx % 2 === 0 ? "/images/case-studies/ecommerce-growth.webp" : "/images/case-studies/saas-scale.webp");
+                }
                 
                 return (
                   <motion.div
@@ -146,25 +164,20 @@ export default function CaseStudiesContentClient({ caseStudiesData }: CaseStudie
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
                     
                     {/* Image */}
-                    {imageUrl ? (
-                      <div className="relative h-[200px] overflow-hidden">
-                        <Image
-                          src={imageUrl.url()}
-                          alt={study.clientName || study.title}
-                          fill
-                          loading="lazy"
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                          className="object-cover group-hover:scale-110 transition duration-700"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f14] to-transparent" />
-                        {/* Shine effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                      </div>
-                    ) : (
-                      <div className="h-[200px] bg-gradient-to-br from-primary/20 to-accent/20 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                      </div>
-                    )}
+                    <div className="relative h-[220px] overflow-hidden bg-[#07070B]">
+                      <Image
+                        src={imageUrl}
+                        alt={clientName}
+                        fill
+                        loading="lazy"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        quality={95}
+                        className="object-cover group-hover:scale-108 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f14] via-[#0f0f14]/40 to-transparent" />
+                      {/* Shine effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    </div>
 
                     {/* Content */}
                     <div className="p-6">
