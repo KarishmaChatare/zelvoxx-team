@@ -56,20 +56,29 @@ export { projects } from "@/src/data/projects";
 
 export const testimonials: TestimonialType[] = [
   {
-    name: "Sarah J.",
-    role: "Founder, E-commerce Brand",
-    content: "The clarity in their system is what stood out. They didn't just build us a website. They handed us a machine that prints money. Our conversion rate literally doubled in 45 days.",
+    name: "Shubham",
+    company: "Unisafe Cookware",
+    role: "Unisafe Cookware",
+    content: "Working with Zelvoxx on our website development was a great experience. The team understood our requirements and helped us build a professional e-commerce website for Unisafe Cookware, with a strong focus on product presentation, navigation, and customer experience. Their attention to detail and willingness to customise the website according to our needs made the process smooth and convenient. We appreciate their efforts in helping us strengthen our online presence and showcase our products more effectively.",
   },
   {
-    name: "Marcus T.",
-    role: "Startup Founder",
-    content: "The level of engineering and psychology that went into our funnels is insane. We closed our Series A off the back of the growth system they built. It permanently solves lead generation.",
+    name: "Rishabh",
+    company: "Primus Cosmetics",
+    role: "Primus Cosmetics",
+    content: "Working with Zelvoxx on our website development was a positive experience. The team took the time to understand our requirements and worked towards creating a professional online presence for Primus Cosmetics. We appreciated their attention to design, product presentation, and the overall user experience. Their approach was collaborative, and they were willing to make adjustments to align the website with our expectations. We're glad to have worked with a team that values both presentation and functionality.",
   },
   {
-    name: "David C.",
-    role: "Local Business Owner",
-    content: "If you want a pretty site, go somewhere else. If you want a scalable infrastructure that predictably generates revenue and scales on autopilot, hire Zelvoxx.",
-  }
+    name: "Naresh Tyagi",
+    company: "New Sandeep Garments",
+    role: "New Sandeep Garments",
+    content: "Zelvoxx worked with us on developing a website for New Sandeep Garments, with a focus on creating a professional online presence for our clothing business. The project involved custom design elements, organised product categories, and a layout tailored to our brand. The team worked on bringing our requirements into the website and building a foundation for showcasing our men's, women's, and kids' collections online. We appreciate the effort invested in the website development process.",
+  },
+  {
+    name: "Deepali Jain",
+    company: "Marffil",
+    role: "Marffil",
+    content: "Working with Zelvoxx on Marffil's website development was a valuable step towards strengthening our brand's digital presence. The team worked on translating our brand's premium identity into a professional online experience, with attention to visual presentation, brand consistency, and the way our products are showcased. We appreciated the focus on understanding our brand and creating a digital platform aligned with the quality and elegance we want Marffil to represent. It was a pleasure collaborating on building our online presence.",
+  },
 ];
 
 export const socialLinks = [
