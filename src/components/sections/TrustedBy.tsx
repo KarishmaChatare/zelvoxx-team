@@ -1,24 +1,52 @@
 
-const companies = [
-  { name: "Apex Financial", icon: "▲" },
-  { name: "Luminary MedSpa", icon: "✦" },
-  { name: "Velocity SaaS", icon: "⚡" },
-  { name: "Strata Real Estate", icon: "⬡" },
-  { name: "Evolve E-commerce", icon: "◈" },
-  { name: "Nexus Tech Solutions", icon: "❖" },
-];
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { projects } from "@/src/data/projects";
+
+// Distinct geometric glyph separators matching the design system
+const GLYPHS = ["▲", "✦", "⚡", "⬡", "◈", "❖"];
+
+const companies = projects.map((project, idx) => ({
+  name: project.name,
+  icon: GLYPHS[idx % GLYPHS.length],
+}));
 
 export default function TrustedBy() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(true);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { rootMargin: "200px 0px 200px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="py-12 border-b border-[#7C61FF]/10 relative z-10 bg-transparent overflow-hidden">
+    <section
+      ref={containerRef}
+      className="py-12 border-b border-[#7C61FF]/10 relative z-10 bg-transparent overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-16">
         <p className="text-white/50 font-body uppercase tracking-widest text-xs sm:text-sm font-semibold whitespace-nowrap shrink-0">
           Built for growing businesses
         </p>
         
-        {/* Pure CSS Hardware-Accelerated Continuous Marquee */}
+        {/* Pure CSS Hardware-Accelerated Continuous Marquee gated by viewport visibility */}
         <div className="relative flex overflow-hidden w-full mask-image-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-          <div className="animate-marquee-css flex items-center">
+          <div
+            className="animate-marquee-css flex items-center"
+            style={{ animationPlayState: isInView ? "running" : "paused" }}
+          >
             {/* First Set */}
             <div className="flex gap-16 items-center whitespace-nowrap pr-16 shrink-0">
               {companies.map((company, idx) => (

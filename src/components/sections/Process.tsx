@@ -72,13 +72,13 @@ export default function Process() {
           <div className="hidden lg:block absolute top-12 left-[10%] right-[10%] h-[2px] bg-white/5 z-0" />
           
           {processes.map((step, idx) => (
-            <TiltCard key={idx} className="h-full">
+            <TiltCard key={idx} className="h-full bg-[#12111E] rounded-2xl">
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: isMobile ? 0.3 : 0.5, delay: 0 }}
-                className="relative z-10 flex flex-col justify-between h-full p-6 rounded-2xl bg-[#12111E]/80 border border-white/10 hover:border-[#7C61FF]/40 transition-all duration-500 group"
+                className="relative z-10 flex flex-col justify-between h-full p-6 rounded-2xl bg-[#12111E] border border-white/10 hover:border-[#7C61FF]/40 transition-all duration-500 group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
@@ -95,6 +95,8 @@ export default function Process() {
                       width={280}
                       height={160}
                       loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDUiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjUiIGZpbGw9IiMwOTA4MEUiLz48L3N2Zz4="
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 280px"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

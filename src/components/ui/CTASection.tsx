@@ -22,7 +22,7 @@ export default function CTASection({
   primaryCtaText = `Call ${PHONE_NUMBER}`,
   primaryCtaLink = PHONE_CALL_URL,
   secondaryCtaText = "View Our Work",
-  secondaryCtaLink = "/portfolio",
+  secondaryCtaLink = "/our-work",
   variant = "default",
 }: CTASectionProps) {
   const isLarge = variant === "large";

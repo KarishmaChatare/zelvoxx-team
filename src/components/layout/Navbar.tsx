@@ -8,8 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { pushToDataLayer } from "@/src/lib/analytics";
 
 const NAV_ITEMS = [
-  { label: "OUR WORK", href: "/portfolio" },
-  { label: "CASE STUDIES", href: "/case-studies" },
+  { label: "OUR WORK", href: "/our-work" },
   { label: "WHY Zelvoxx", href: "/why-Zelvoxx" },
   { label: "OUR TEAM", href: "/team" },
   { label: "CAREERS", href: "/work-with-us" },

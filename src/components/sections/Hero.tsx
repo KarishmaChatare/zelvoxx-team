@@ -4,8 +4,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import HeroIsometricCards from "@/src/components/ui/HeroIsometricCards";
+import { projects } from "@/src/data/projects";
 
-const logos = ["LUMEN", "PULSE", "HEXABIT", "AVORA", "NEXORA", "VERTEX"];
+// Show the first 6 real company names from Our Work for the hero trusted brands row
+const heroBrands = projects.slice(0, 6);
 
 // Floating particles configuration
 const particles = [
@@ -75,8 +77,9 @@ export default function Hero({ data, stats }: HeroProps) {
           alt="Zelvoxx Cinematic Workspace"
           fill
           priority
-          unoptimized
           sizes="100vw"
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDUiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjUiIGZpbGw9IiMwODA4MEMiLz48L3N2Zz4="
           className="object-cover object-[center_right] sm:object-center opacity-45 sm:opacity-50 select-none"
           style={{
             transform: "translateZ(0)",
@@ -88,70 +91,41 @@ export default function Hero({ data, stats }: HeroProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background" />
 
         {/* Animated gradient orbs - GPU-composited, hardware accelerated */}
-        <motion.div
+        <div
           style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
-          animate={{ 
-            scale: [1, 1.15, 1], 
-            opacity: [0.35, 0.55, 0.35],
-            x: [0, 30, 0],
-          }}
-          transition={{ duration: 12, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-          className="absolute top-0 right-0 w-[700px] h-[700px] bg-primary/20 blur-[120px] rounded-full"
+          className="absolute top-0 right-0 w-[700px] h-[700px] bg-primary/20 blur-[120px] rounded-full animate-hero-orb-1 pointer-events-none"
         />
-        <motion.div
+        <div
           style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
-          animate={{ 
-            scale: [1, 1.2, 1], 
-            opacity: [0.25, 0.45, 0.25],
-            y: [0, -40, 0],
-          }}
-          transition={{ duration: 15, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/15 blur-[120px] rounded-full"
+          className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/15 blur-[120px] rounded-full animate-hero-orb-2 pointer-events-none"
         />
-        <motion.div
+        <div
           style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
-          animate={{ 
-            scale: [1, 1.1, 1], 
-            opacity: [0.15, 0.3, 0.15],
-          }}
-          transition={{ duration: 10, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 4 }}
-          className="absolute top-1/3 left-1/4 w-[450px] h-[450px] bg-primary/10 blur-[100px] rounded-full"
+          className="absolute top-1/3 left-1/4 w-[450px] h-[450px] bg-primary/10 blur-[100px] rounded-full animate-hero-orb-3 pointer-events-none"
         />
 
         {/* Slow animated gradient beam */}
-        <motion.div
+        <div
           aria-hidden="true"
           style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}
-          animate={{ x: [-30, 30, -30], opacity: [0.05, 0.15, 0.05] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute inset-y-0 left-1/2 w-[40vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/20 to-transparent blur-3xl"
+          className="absolute inset-y-0 left-1/2 w-[40vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/20 to-transparent blur-3xl animate-hero-beam pointer-events-none"
         />
 
         {/* Floating particles layer - low opacity for depth */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ contain: "strict" }}>
           {particles.map((particle, idx) => (
-            <motion.div
+            <div
               key={idx}
-              className="absolute rounded-full bg-white"
+              className="absolute rounded-full bg-white animate-hero-particle pointer-events-none"
               style={{
                 width: particle.size,
                 height: particle.size,
                 left: particle.x,
                 top: particle.y,
                 filter: "blur(1px)",
+                animationDuration: `${particle.duration}s`,
+                animationDelay: `${particle.delay}s`,
                 willChange: "transform, opacity",
-              }}
-              animate={{
-                y: [0, -30, 0, 20, 0],
-                x: [0, 15, -10, 5, 0],
-                opacity: [0.1, 0.25, 0.15, 0.3, 0.1],
-                scale: [1, 1.2, 0.9, 1.1, 1],
-              }}
-              transition={{
-                duration: particle.duration,
-                delay: particle.delay,
-                repeat: Infinity,
-                ease: "easeInOut",
               }}
             />
           ))}
@@ -165,23 +139,21 @@ export default function Hero({ data, stats }: HeroProps) {
             transform: "translateZ(0)",
           }}
         />
-        <motion.div
-          animate={{ opacity: [0.3, 0.8, 0.3] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        <div
           style={{
             background: "radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 50%)",
             willChange: "opacity",
             transform: "translateZ(0)",
           }}
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none opacity-50"
         />
       </div>
 
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 w-full flex flex-col items-center">
-        {/* 1. Main Hero Headline & Subtext Block */}
+        {/* 1. Main Hero Headline & Subtext Block - initial={false} ensures immediate SSR visibility for instant LCP */}
         <div className="flex flex-col items-center justify-center text-center w-full">
           <motion.h1
-            initial={{ opacity: 0, y: 12 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: animDuration, delay: baseDelay }}
             className="text-xs sm:text-sm md:text-base lg:text-lg font-heading font-bold tracking-[0.25em] sm:tracking-[0.35em] uppercase whitespace-normal sm:whitespace-nowrap text-center"
@@ -193,7 +165,7 @@ export default function Hero({ data, stats }: HeroProps) {
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: animDuration, delay: baseDelay + 0.1 }}
             className="mt-2.5 sm:mt-3 max-w-[680px] text-xs sm:text-sm md:text-[15px] text-gray-400 font-normal leading-relaxed text-center px-4"
@@ -212,22 +184,27 @@ export default function Hero({ data, stats }: HeroProps) {
           <p className="text-[10px] sm:text-[11px] font-bold tracking-[0.25em] text-white/60 uppercase mb-2 sm:mb-2.5">
             Trusted By Growing Brands Worldwide
           </p>
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-3.5 items-center">
-            {logos.map((logo, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: isMobile ? 0.1 : 0.35 + idx * 0.05, ease: "easeOut" }}
-                whileHover={{ y: -3, scale: 1.05 }}
-                className="group relative flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 min-h-[36px] rounded-full glass-premium border border-white/10 bg-[#0E0D17]/70 hover:bg-[#141322]/90 hover:border-[#7C61FF]/40 shadow-sm hover:shadow-[0_0_20px_rgba(124,97,255,0.35)] transition-all duration-300 cursor-pointer touch-manipulation"
-              >
-                <div className="w-1.5 h-1.5 rounded-full bg-white/30 group-hover:bg-[#7C61FF] group-hover:shadow-[0_0_8px_rgba(124,97,255,0.9)] group-hover:scale-125 transition-all duration-300 shrink-0" />
-                <span className="font-heading font-bold text-[10px] sm:text-[11px] tracking-widest text-white/50 group-hover:text-white transition-colors duration-300">
-                  {logo}
-                </span>
-              </motion.div>
-            ))}
+          <div
+            className="w-full overflow-x-auto no-scrollbar py-1"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            <div className="flex items-center gap-2 sm:gap-3 md:gap-3.5 justify-start md:justify-center flex-nowrap md:flex-wrap px-4 min-w-max md:min-w-0 mx-auto">
+              {heroBrands.map((brand, idx) => (
+                <motion.div
+                  key={brand.slug || idx}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: isMobile ? 0.1 : 0.35 + idx * 0.05, ease: "easeOut" }}
+                  whileHover={{ y: -3, scale: 1.05 }}
+                  className="group relative flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 min-h-[36px] rounded-full glass-premium border border-white/10 bg-[#0E0D17]/70 hover:bg-[#141322]/90 hover:border-[#7C61FF]/40 shadow-sm hover:shadow-[0_0_20px_rgba(124,97,255,0.35)] transition-all duration-300 cursor-pointer touch-manipulation shrink-0"
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/30 group-hover:bg-[#7C61FF] group-hover:shadow-[0_0_8px_rgba(124,97,255,0.9)] group-hover:scale-125 transition-all duration-300 shrink-0" />
+                  <span className="font-heading font-bold text-[10px] sm:text-[11px] tracking-widest text-white/50 group-hover:text-white transition-colors duration-300 whitespace-nowrap">
+                    {brand.name}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

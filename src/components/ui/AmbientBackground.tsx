@@ -56,7 +56,9 @@ export default function AmbientBackground({ opacity = 0.24, fixed = true }: Ambi
             sizes="100vw"
             className="object-cover object-center pointer-events-none select-none"
             style={{ opacity: opacity * 1.15 }}
-            priority={false}
+            priority={true}
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDUiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjUiIGZpbGw9IiMwODA4MEMiLz48L3N2Zz4="
           />
 
           {/* High-contrast gradient overlays to preserve deep dark aesthetic and readability */}

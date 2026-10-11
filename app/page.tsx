@@ -6,7 +6,6 @@ import SystemFlow from "@/src/components/sections/SystemFlow";
 import BuiltForGrowth from "@/src/components/sections/BuiltForGrowth";
 import Services from "@/src/components/sections/Services";
 import Portfolio from "@/src/components/sections/Portfolio";
-import CaseStudies from "@/src/components/sections/CaseStudies";
 import Testimonials from "@/src/components/sections/Testimonials";
 import Pricing from "@/src/components/sections/Pricing";
 import Process from "@/src/components/sections/Process";
@@ -22,7 +21,7 @@ import {
   heroQuery,
   statsQuery,
   servicesQuery,
-  caseStudiesQuery,
+  portfolioQuery,
   testimonialsQuery,
   teamMembersQuery,
 } from "@/sanity/lib/queries";
@@ -34,14 +33,14 @@ export default async function Home() {
     rawHeroData,
     statsData,
     servicesData,
-    caseStudiesData,
+    portfolioData,
     testimonialsData,
     teamMembersData,
   ] = await Promise.all([
     client.fetch(heroQuery).catch(() => null),
     client.fetch(statsQuery).catch(() => []),
     client.fetch(servicesQuery).catch(() => []),
-    client.fetch(caseStudiesQuery).catch(() => []),
+    client.fetch(portfolioQuery).catch(() => []),
     client.fetch(testimonialsQuery).catch(() => []),
     client.fetch(teamMembersQuery).catch(() => []),
   ]);
@@ -75,22 +74,23 @@ export default async function Home() {
       <Hero data={heroData} stats={statsData} />
 
       {/* Subtle ambient visual texture with gentle parallax across all sections from Built for Growing Businesses down to Footer */}
-      <div className="relative">
+      <div className="relative bg-[#08080C]">
         <AmbientBackground opacity={0.24} fixed={true} />
-        <TrustedBy />
-        <Problem />
-        <SystemFlow />
-        <BuiltForGrowth />
-        <Services data={servicesData} />
-        <Portfolio data={caseStudiesData} />
-        <CaseStudies data={caseStudiesData} />
-        <Testimonials data={testimonialsData} />
-        <Pricing />
-        <Process />
-        <HomeWhyZelvoxx />
-        <HomeTeam members={teamMembersData} />
-        <CTA />
-        <Footer />
+        <div className="relative z-10">
+          <TrustedBy />
+          <Problem />
+          <SystemFlow />
+          <BuiltForGrowth />
+          <Services data={servicesData} />
+          <Portfolio data={portfolioData} />
+          <Testimonials data={testimonialsData} />
+          <Pricing />
+          <Process />
+          <HomeWhyZelvoxx />
+          <HomeTeam members={teamMembersData} />
+          <CTA />
+          <Footer />
+        </div>
       </div>
 
     </main>

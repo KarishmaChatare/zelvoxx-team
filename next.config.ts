@@ -24,13 +24,28 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/case-study",
-        destination: "/case-studies",
+        source: "/testimonial",
+        destination: "/testimonials",
         permanent: true,
       },
       {
-        source: "/testimonial",
-        destination: "/testimonials",
+        source: "/portfolio",
+        destination: "/our-work",
+        permanent: true,
+      },
+      {
+        source: "/portfolio/:slug",
+        destination: "/our-work/:slug",
+        permanent: true,
+      },
+      {
+        source: "/connect",
+        destination: "/contact",
+        permanent: true,
+      },
+      {
+        source: "/connect-with-us",
+        destination: "/contact",
         permanent: true,
       },
     ];
@@ -43,6 +58,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  compress: true,
   async headers() {
     return [
       {
@@ -66,10 +82,20 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: "/images/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: "https",

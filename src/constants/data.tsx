@@ -7,7 +7,7 @@ import {
   Search, 
   Bot 
 } from "lucide-react";
-import { ServiceType, ProjectType, CaseStudyType, TestimonialType } from "@/src/types";
+import { ServiceType, TestimonialType } from "@/src/types";
 
 export const PHONE_NUMBER = "+91 98106 01084";
 export const PHONE_CALL_URL = "tel:+919810601084";
@@ -52,49 +52,7 @@ export const services: ServiceType[] = [
   },
 ];
 
-export const projects: ProjectType[] = [
-  {
-    client: "Apex Financial",
-    niche: "FinTech App",
-    result: "+340% Lead Volume",
-    color: "from-blue-500/20 to-purple-500/20",
-  },
-  {
-    client: "Luminary MedSpa",
-    niche: "Local Business",
-    result: "$100k Monthly Added Revenue",
-    color: "from-pink-500/20 to-rose-500/20",
-  },
-  {
-    client: "Velocity SaaS",
-    niche: "B2B Software",
-    result: "4.2x ROI on Ads",
-    color: "from-emerald-500/20 to-teal-500/20",
-  },
-  {
-    client: "Strata Real Estate",
-    niche: "Luxury Agency",
-    result: "$12M in closed volume",
-    color: "from-amber-500/20 to-orange-500/20",
-  },
-];
-
-export const caseStudies: CaseStudyType[] = [
-  {
-    client: "E-commerce Brand",
-    industry: "DTC Apparel",
-    problem: "Burning $10k/mo on ads with a 0.8x ROAS and a clunky outdated theme hurting conversions.",
-    solution: "Complete custom headless build + A/B testing framework + structured Google Shopping & Meta funnels.",
-    result: "$120k/mo added revenue. ROAS skyrocketed to 3.4x within 45 days. Conversion rate doubled.",
-  },
-  {
-    client: "B2B SaaS Startup",
-    industry: "B2B Software",
-    problem: "Stuck at $30k MRR. Leads were unqualified, and the sales cycle was over 4 months long.",
-    solution: "Rebuilt the entire front-end brand positioning. Implemented automated VSL funnels and CRM cadences.",
-    result: "Secured $2M Series A funding. Scaled to $110k MRR in 6 months using the automated systems.",
-  }
-];
+export { projects } from "@/src/data/projects";
 
 export const testimonials: TestimonialType[] = [
   {
@@ -141,8 +99,7 @@ export const legalLinks = [
 
 export const footerNavLinks = [
   { label: "Services", url: "/#services" },
-  { label: "Our Work", url: "/portfolio" },
-  { label: "Case Studies", url: "/case-studies" },
+  { label: "Our Work", url: "/our-work" },
   { label: "Why Zelvoxx", url: "/why-Zelvoxx" },
   { label: "Our Team", url: "/team" },
   { label: "Careers", url: "/work-with-us" },

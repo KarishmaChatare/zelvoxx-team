@@ -54,11 +54,13 @@ function FastExecutionGraphic({ prefersReducedMotion }: { prefersReducedMotion: 
       <motion.rect
         x="24"
         y="115"
+        width="280"
         height="6"
         rx="3"
         fill="url(#purpleGlowLine)"
-        initial={prefersReducedMotion ? { width: 280 } : { width: 0 }}
-        whileInView={{ width: 280 }}
+        style={{ transformOrigin: "24px 115px" }}
+        initial={prefersReducedMotion ? { scaleX: 1 } : { scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
       />
@@ -246,18 +248,21 @@ function CompoundingGainsGraphic({ prefersReducedMotion }: { prefersReducedMotio
       {/* Compounding Bars: Animating upward from baseline y=200 */}
       {bars.map((bar, idx) => {
         const initialProps = prefersReducedMotion
-          ? { y: bar.y, height: bar.h }
-          : { y: 200, height: 0 };
+          ? { scaleY: 1 }
+          : { scaleY: 0 };
 
         return (
           <g key={bar.label}>
             <motion.rect
               x={bar.x}
+              y={bar.y}
               width={bar.w}
+              height={bar.h}
               rx={5}
               fill={bar.fill}
+              style={{ transformOrigin: `${bar.x}px 200px` }}
               initial={initialProps}
-              whileInView={{ y: bar.y, height: bar.h }}
+              whileInView={{ scaleY: 1 }}
               viewport={{ once: true }}
               transition={{
                 duration: 0.6,
@@ -395,7 +400,7 @@ export default function BuiltForGrowth() {
         {/* 3 Interactive Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {pillars.map((item, idx) => (
-            <TiltCard key={item.title} className="h-full">
+            <TiltCard key={item.title} className="h-full bg-gradient-to-b from-[#141322] to-[#0A0912] rounded-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

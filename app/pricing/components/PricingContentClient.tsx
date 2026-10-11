@@ -60,13 +60,13 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
           
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               className="text-center max-w-3xl mx-auto"
             >
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
+                initial={false}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
@@ -80,7 +80,7 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={false}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6"
@@ -90,7 +90,7 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
               </motion.div>
 
               <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
                 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black text-white leading-tight mb-6"
@@ -102,7 +102,7 @@ export default function PricingContentClient({ plans }: PricingContentClientProp
               </motion.h1>
               
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed"

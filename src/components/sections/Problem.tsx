@@ -56,7 +56,7 @@ export default function Problem() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="mt-4 sm:mt-5 rounded-2xl overflow-hidden border border-[#7C61FF]/25 shadow-[0_12px_40px_rgba(0,0,0,0.6)] group hover:border-[#A78BFA]/40 transition-all duration-500"
+              className="mt-4 sm:mt-5 rounded-2xl overflow-hidden border border-[#7C61FF]/25 shadow-[0_12px_40px_rgba(0,0,0,0.6)] group hover:border-[#A78BFA]/40 transition-all duration-500 bg-[#0E0D17]"
             >
               <Image
                 src="/images/problem/system-leak-diagram.svg"
@@ -64,6 +64,8 @@ export default function Problem() {
                 width={600}
                 height={400}
                 loading="lazy"
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDUiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjUiIGZpbGw9IiMwRTBENDE3Ii8+PC9zdmc+"
                 sizes="(max-width: 1024px) 100vw, 600px"
                 className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500"
               />
@@ -73,9 +75,9 @@ export default function Problem() {
           {/* Right Column: 2x2 Grid with 3D Tilt Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full">
             {painPoints.map((point, idx) => (
-              <TiltCard key={idx} className="h-full">
+              <TiltCard key={idx} className="h-full bg-[#0E0D17] rounded-2xl">
                 <motion.div
-                  initial={{ opacity: 0, y: 25 }}
+                  initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-30px" }}
                   transition={{ duration: 0.4, delay: idx * 0.08 }}

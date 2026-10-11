@@ -397,7 +397,7 @@ export default function WorkWithUsContent() {
 
         <motion.div
           className="relative max-w-5xl mx-auto text-center"
-          initial="hidden"
+          initial={false}
           animate="visible"
           variants={staggerContainer}
         >

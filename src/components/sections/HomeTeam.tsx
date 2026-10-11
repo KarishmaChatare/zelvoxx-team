@@ -240,7 +240,7 @@ export default function HomeTeam({ members }: Props) {
                   variants={scaleIn}
                   className={`group relative ${isThird ? "md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto lg:max-w-none w-full" : "w-full"}`}
                 >
-                  <TiltCard maxTilt={6} glareOpacity={0.15} className="h-full">
+                  <TiltCard maxTilt={6} glareOpacity={0.15} className="h-full bg-[#0f0f14] rounded-3xl">
                     {/* Animated Border */}
                     <motion.div
                       className="absolute -inset-[1px] rounded-3xl bg-gradient-to-r from-primary via-accent to-primary opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-500"
@@ -255,7 +255,7 @@ export default function HomeTeam({ members }: Props) {
                     />
 
                     {/* Card */}
-                    <div className="relative h-full p-6 sm:p-7 xl:p-8 bg-[#0f0f14]/90 backdrop-blur-xl rounded-3xl border border-white/10 group-hover:border-primary/40 transition-all duration-500 overflow-hidden flex flex-col justify-between">
+                    <div className="relative h-full p-6 sm:p-7 xl:p-8 bg-[#0f0f14] backdrop-blur-xl rounded-3xl border border-white/10 group-hover:border-primary/40 transition-all duration-500 overflow-hidden flex flex-col justify-between">
                       {/* Hover Glow */}
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
@@ -275,7 +275,7 @@ export default function HomeTeam({ members }: Props) {
                         >
                           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-accent opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-500" />
                           
-                          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/50 transition-colors duration-500">
+                          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/50 transition-colors duration-500 bg-[#141322]">
                             {photoSrc ? (
                               <Image
                                 src={photoSrc}
@@ -283,6 +283,8 @@ export default function HomeTeam({ members }: Props) {
                                 fill
                                 sizes="112px"
                                 loading="lazy"
+                                placeholder="blur"
+                                blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDUiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjUiIGZpbGw9IiMxNDEzMjIiLz48L3N2Zz4="
                                 className="object-cover group-hover:scale-110 transition-transform duration-700"
                               />
                             ) : (

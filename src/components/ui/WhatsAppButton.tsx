@@ -24,7 +24,7 @@ export default function WhatsAppButton() {
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        initial={{ opacity: 0, scale: 0.8, y: 20 }}
+        initial={false}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         whileHover={{ scale: 1.08 }}
@@ -32,21 +32,8 @@ export default function WhatsAppButton() {
         className="group relative flex items-center justify-center w-[50px] h-[50px] sm:w-[56px] sm:h-[56px] rounded-full bg-[#0E0D17]/90 hover:bg-[#141322] border border-[#25D366]/40 hover:border-[#25D366] shadow-[0_8px_24px_rgba(0,0,0,0.6),0_0_15px_rgba(37,211,102,0.25)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.8),0_0_28px_rgba(37,211,102,0.5)] backdrop-blur-xl transition-all duration-300"
       >
         {/* Subtle idle pulsing outer ring / halo */}
-        <motion.span
-          className="absolute inset-0 rounded-full border border-[#25D366]/50 pointer-events-none"
-          animate={
-            prefersReducedMotion
-              ? {}
-              : {
-                  scale: [1, 1.32, 1],
-                  opacity: [0.65, 0, 0.65],
-                }
-          }
-          transition={{
-            duration: 2.8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+        <span
+          className="absolute inset-0 rounded-full border border-[#25D366]/50 pointer-events-none animate-pulse"
         />
 
         {/* Ambient soft glow pulse */}

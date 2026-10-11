@@ -113,17 +113,17 @@ export default function Services({ data }: { data?: ServiceType[] }) {
               const visualImage = serviceVisualMap[service.title] || "/images/services/web-design.svg";
 
               return (
-                <TiltCard key={idx} className="h-full">
+                <TiltCard key={idx} className="h-full bg-[#12111E] rounded-2xl sm:rounded-3xl">
                   <Link
                     href={service.slug ? `/service/${service.slug}` : "#"}
                     className="flex flex-col h-full group block"
                   >
                     <motion.div
-                      initial={{ opacity: 0, y: 25 }}
+                      initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-40px" }}
                       transition={{ duration: 0.4, delay: idx * 0.07 }}
-                      className="flex flex-col justify-between h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/10 bg-[#12111E]/80 backdrop-blur-md group-hover:border-[#7C61FF]/50 transition-all duration-300 relative overflow-hidden group-hover:shadow-xl group-hover:shadow-[#7C61FF]/10"
+                      className="flex flex-col justify-between h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/10 bg-[#12111E] backdrop-blur-md group-hover:border-[#7C61FF]/50 transition-all duration-300 relative overflow-hidden group-hover:shadow-xl group-hover:shadow-[#7C61FF]/10"
                     >
                       {/* Subtle inner hover glow */}
                       <div className="absolute inset-0 bg-gradient-to-br from-[#7C61FF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -137,6 +137,8 @@ export default function Services({ data }: { data?: ServiceType[] }) {
                             width={320}
                             height={100}
                             loading="lazy"
+                            placeholder="blur"
+                            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDUiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjUiIGZpbGw9IiMwOTA4MEUiLz48L3N2Zz4="
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />

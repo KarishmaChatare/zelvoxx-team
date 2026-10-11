@@ -201,48 +201,6 @@ export default async function ServicePage({ params }: Props) {
         </section>
       )}
 
-      {/* Related Case Studies */}
-      {service.relatedCaseStudies && service.relatedCaseStudies.length > 0 && (
-        <section className="py-16 border-t border-white/5">
-          <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-2xl font-bold text-white mb-8">See This Service in Action</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {service.relatedCaseStudies.map((study: any) => {
-                const thumbUrl = study.thumbnail ? urlForImage(study.thumbnail) : null;
-                return (
-                  <Link
-                    key={study._id}
-                    href={`/case-study/${study.slug}`}
-                    className="group block bg-[#0f0f14] rounded-xl overflow-hidden border border-white/5 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
-                  >
-                    {thumbUrl && (
-                      <div className="relative h-48 overflow-hidden">
-                        <Image
-                          src={thumbUrl.url()}
-                          alt={study.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f14] to-transparent" />
-                      </div>
-                    )}
-                    <div className="p-6">
-                      <h3 className="text-lg font-bold text-white group-hover:text-primary transition-colors">
-                        {study.title}
-                      </h3>
-                      <p className="text-white/50 text-sm mt-2 line-clamp-2">{study.excerpt}</p>
-                      {study.result && (
-                        <p className="text-primary text-sm mt-4 font-semibold">{study.result}</p>
-                      )}
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* CTA Section */}
       <CTASection
         title={`Ready to get started with ${service.title}?`}

@@ -15,8 +15,14 @@ export default function CookieConsent() {
     try {
       const storedConsent = localStorage.getItem(CONSENT_STORAGE_KEY);
       if (!storedConsent) {
-        // Delay slightly for smooth page entry
-        const timer = setTimeout(() => setIsVisible(true), 1200);
+        // Defer banner until page is fully painted and idle so it does not hijack LCP
+        const timer = setTimeout(() => {
+          if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+            (window as any).requestIdleCallback(() => setIsVisible(true));
+          } else {
+            setIsVisible(true);
+          }
+        }, 3800);
         return () => clearTimeout(timer);
       }
     } catch {

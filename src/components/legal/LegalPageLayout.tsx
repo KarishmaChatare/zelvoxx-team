@@ -83,7 +83,7 @@ export default function LegalPageLayout({
       <div className="relative z-10">
         <motion.header
           variants={headerStagger}
-          initial="hidden"
+          initial={false}
           animate="visible"
           className="mb-10 sm:mb-12"
         >
@@ -141,7 +141,7 @@ export default function LegalPageLayout({
 
         <motion.div
           variants={contentReveal}
-          initial="hidden"
+          initial={false}
           animate="visible"
           className="space-y-8 sm:space-y-12 [&>section]:scroll-mt-24 [&>section]:transition-transform [&>section]:duration-300 [&>section]:hover:-translate-y-0.5"
         >

@@ -67,23 +67,20 @@ export default function CTA() {
   const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Extend scroll-parallax "sink" motion through this CTA section
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
+  // Zero-reflow scroll-parallax sink motion mapped to CTA viewport range
+  const { scrollYProgress } = useScroll();
 
   // Local parallax sink: shifts the ambient violet bloom downward with page scroll
   const sinkY = useTransform(
     scrollYProgress,
-    [0, 1],
-    prefersReducedMotion ? ["0px", "0px"] : ["-50px", "70px"]
+    [0.75, 1],
+    prefersReducedMotion ? ["0px", "0px"] : ["-40px", "50px"]
   );
 
   const sinkYDeep = useTransform(
     scrollYProgress,
-    [0, 1],
-    prefersReducedMotion ? ["0px", "0px"] : ["-80px", "100px"]
+    [0.75, 1],
+    prefersReducedMotion ? ["0px", "0px"] : ["-60px", "80px"]
   );
 
   // Subtle mouse-parallax within this section

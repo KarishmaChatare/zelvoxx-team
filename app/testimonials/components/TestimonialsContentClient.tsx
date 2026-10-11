@@ -56,13 +56,13 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
           
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               className="text-center max-w-3xl mx-auto"
             >
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
+                initial={false}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
@@ -76,7 +76,7 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={false}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6"
@@ -86,7 +86,7 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
               </motion.div>
 
               <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
                 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black text-white leading-tight mb-6"
@@ -98,7 +98,7 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
               </motion.h1>
               
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed"
@@ -178,8 +178,8 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
             <p className="text-white/60 mb-8 max-w-xl mx-auto">
               Join the growing list of businesses that have transformed their digital presence with Zelvoxx.
             </p>
-            <a
-              href="tel:+919810601084"
+            <Link
+              href="/contact"
               onClick={() => {
                 pushToDataLayer("connect_with_us_click", {
                   event_category: "engagement",
@@ -189,7 +189,7 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
               className="inline-flex items-center justify-center bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] hover:brightness-110 text-white px-8 py-4 rounded-full font-heading font-bold text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(124,97,255,0.45)] min-h-[48px] touch-manipulation tracking-wide"
             >
               Start Your Project
-            </a>
+            </Link>
           </div>
         </section>
       </div>

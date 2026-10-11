@@ -14,42 +14,11 @@ export interface ServiceType {
   benefits?: Array<{ title: string; description: string }>;
   process?: Array<{ step: number; title: string; description: string }>;
   ctaText?: string;
-  relatedCaseStudies?: any[];
   heroImage?: any;
 }
 
-export interface ProjectType {
-  client?: string; // local fallback shape
-  clientName?: string; // sanity shape
-  niche?: string;
-  result?: string;
-  color?: string; // local fallback shape
-  colorGradient?: string; // sanity shape
-  image?: any; // Sanity image ref
-  slug?: { current: string };
-}
-
-export interface CaseStudyType {
-  _id?: string; // sanity document id
-  client?: string; // local fallback
-  clientName?: string; // sanity data
-  title?: string;
-  industry?: string;
-  problem?: string;
-  solution?: string;
-  result?: string;
-  excerpt?: string;
-  slug?: string;
-  thumbnail?: any;
-  heroImage?: any;
-  clientLogo?: any;
-  duration?: string;
-  technologies?: string[];
-  results?: Array<{ label: string; value: string }>;
-  testimonial?: any;
-  featured?: boolean;
-  publishedAt?: string;
-}
+export type { Project } from "@/src/data/projects";
+export type ProjectType = import("@/src/data/projects").Project;
 
 export interface TestimonialType {
   name: string;

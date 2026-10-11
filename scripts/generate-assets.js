@@ -49,7 +49,7 @@ async function generateFavicons() {
 
 async function generateOgImage() {
   console.log("Generating Open Graph 1200x630 social preview card...");
-  const funnelPath = path.join(imagesDir, "abstract-glass-widescreen.jpg");
+  const funnelPath = path.join(imagesDir, "bg/abstract-glass-1920.webp");
   const funnelBuffer = fs.readFileSync(funnelPath);
 
   // Create SVG overlay with high-end typography

@@ -187,7 +187,7 @@ export default function HomeWhyZelvoxx() {
           {/* Main Cards Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {reasons.map((reason, idx) => (
-              <TiltCard key={idx} className="h-full">
+              <TiltCard key={idx} className="h-full bg-[#12111E] rounded-2xl">
                 <motion.div
                   variants={cardVariants}
                   className="group relative h-full"
@@ -196,7 +196,7 @@ export default function HomeWhyZelvoxx() {
                   <div className={`absolute -inset-[1px] rounded-2xl bg-gradient-to-r ${reason.color} opacity-0 group-hover:opacity-40 blur-sm transition-opacity duration-500`} />
                   
                   {/* Card */}
-                  <div className="relative h-full p-6 lg:p-8 bg-[#12111E]/80 backdrop-blur-sm rounded-2xl border border-white/10 group-hover:border-[#7C61FF]/40 transition-all duration-500 overflow-hidden flex flex-col justify-between">
+                  <div className="relative h-full p-6 lg:p-8 bg-[#12111E] backdrop-blur-sm rounded-2xl border border-white/10 group-hover:border-[#7C61FF]/40 transition-all duration-500 overflow-hidden flex flex-col justify-between">
                     {/* Hover Background */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${reason.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
 

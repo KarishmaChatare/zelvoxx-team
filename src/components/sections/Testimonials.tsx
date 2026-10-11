@@ -103,17 +103,17 @@ export default function Testimonials({ data }: { data?: TestimonialType[] }) {
               const metric = testimonialMetrics[test.name] || { stat: "3.5x+", label: "Verified Revenue Growth" };
 
               return (
-                <TiltCard key={idx} className="snap-center shrink-0">
+                <TiltCard key={idx} className="snap-center shrink-0 rounded-2xl sm:rounded-[2.5rem] bg-gradient-to-b from-[#141322] to-[#0A0912]">
                   <Link
                     href={test.slug ? `/testimonial/${test.slug}` : "#"}
                     className="block"
                   >
                     <motion.div
-                      initial={{ opacity: 0, x: 60, y: 20 }}
+                      initial={{ opacity: 0, x: 20, y: 10 }}
                       whileInView={{ opacity: 1, x: 0, y: 0 }}
                       viewport={{ once: true, margin: "-50px" }}
-                      transition={{ duration: isMobile ? 0.4 : 0.7, delay: 0, ease: [0.25, 0.4, 0.25, 1] }}
-                      className="w-[78vw] sm:w-[440px] min-h-[360px] sm:min-h-[400px] glass-premium premium-border p-6 sm:p-9 rounded-2xl sm:rounded-[2.5rem] relative group bg-gradient-to-b from-[#141322]/85 to-[#0A0912]/85 flex flex-col justify-between transition-all duration-500 touch-manipulation hover:border-[#7C61FF]/40"
+                      transition={{ duration: isMobile ? 0.35 : 0.5, delay: 0, ease: [0.25, 0.4, 0.25, 1] }}
+                      className="w-[78vw] sm:w-[440px] min-h-[360px] sm:min-h-[400px] glass-premium premium-border p-6 sm:p-9 rounded-2xl sm:rounded-[2.5rem] relative group bg-gradient-to-b from-[#141322] to-[#0A0912] flex flex-col justify-between transition-all duration-500 touch-manipulation hover:border-[#7C61FF]/40"
                       style={{
                         boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)",
                       }}
