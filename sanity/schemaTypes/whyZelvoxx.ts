@@ -31,7 +31,7 @@ export const whyZelvoxxType = defineType({
       title: 'Hero CTA Link',
       type: 'string',
       description: 'URL for the hero CTA button',
-      initialValue: 'https://calendly.com/Zelvoxx',
+      initialValue: 'tel:+919810601084',
     }),
     defineField({
       name: 'problemText',
@@ -104,8 +104,8 @@ export const whyZelvoxxType = defineType({
       name: 'whatsappNumber',
       title: 'WhatsApp Number',
       type: 'string',
-      description: 'WhatsApp number for contact (with country code, e.g., +1234567890)',
-      initialValue: '+1234567890',
+      description: 'WhatsApp number for contact (with country code, e.g., +919810601084)',
+      initialValue: '+919810601084',
     }),
     defineField({
       name: 'whatsappCtaText',

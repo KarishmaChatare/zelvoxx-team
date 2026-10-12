@@ -1,164 +1,122 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, TrendingUp, ArrowRight } from "lucide-react";
+import { ArrowRight, FolderGit2, Sparkles, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import { urlForImage } from "@/sanity/lib/image";
+import { projects, type Project } from "@/src/data/projects";
+import CurvedGallery from "./CurvedGallery";
 
 interface PortfolioContentProps {
-  data: any[];
+  data?: Project[];
 }
 
 export default function PortfolioContent({ data }: PortfolioContentProps) {
-  // Limit to first 3 items
-  const displayData = data?.slice(0, 3) || [];
-  const hasMore = data?.length > 3;
-
-  // Mobile detection for faster animations
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  // Use data if provided, otherwise default to src/data/projects.ts
+  const sourceData: Project[] = data && data.length > 0 ? data : projects;
 
   return (
-    <section className="py-20 sm:py-32 md:py-44 bg-background relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section
+      id="portfolio"
+      className="pt-10 sm:pt-14 md:pt-16 pb-12 sm:pb-20 relative overflow-hidden border-t border-white/5 scroll-mt-20"
+    >
+      {/* Centered Stacked Section Header: Subtext directly BELOW the Heading */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 mb-4 sm:mb-6 md:mb-8 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="inline-block mb-3 sm:mb-4"
+        >
+          <span className="text-xs font-bold tracking-[0.2em] text-[#A78BFA] uppercase px-3.5 py-1.5 rounded-full bg-[#7C61FF]/10 border border-[#7C61FF]/25 shadow-sm">
+            Our Work
+          </span>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl sm:text-5xl md:text-6xl font-heading font-black text-white tracking-tight leading-[1.1] mb-4 sm:mb-5"
+        >
+          Results that{" "}
+          <span className="bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] bg-clip-text text-transparent">
+            speak for themselves.
+          </span>
+        </motion.h2>
 
-          {/* LEFT */}
-          <div className="lg:sticky lg:top-32 space-y-6 text-center lg:text-left">
-            <span className="text-xs font-bold tracking-[0.2em] text-primary uppercase">
-              Our Work
-            </span>
-
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight">
-              Results that <br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                speak for themselves.
-              </span>
-            </h2>
-
-            <p className="text-white/60 max-w-sm mx-auto lg:mx-0">
-              Conversion-focused systems, measured by revenue and growth.
-            </p>
-          </div>
-
-          {/* GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-
-            {displayData.map((project, idx) => {
-              const imageUrl = urlForImage(project.thumbnail || project.image);
-              const displayName = project.clientName || project.title || "Project";
-              const hasContent = project.niche || project.result || project.excerpt;
-              // Use slug if available, otherwise fallback to _id for testing
-              const projectSlug = project.slug || project._id;
-              const href = projectSlug ? `/case-study/${projectSlug}` : "#";
-
-              // No delay on mobile
-              const delay = isMobile ? 0 : idx * 0.1;
-
-              return (
-                <Link
-                  key={idx}
-                  href={href}
-                  className="group block"
-                >
-                  <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay }}
-                    whileHover={{ y: -5, scale: 1.01 }}
-                    className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-[#0f0f14] border border-white/10 hover:border-primary/40 transition-all duration-300 h-full touch-manipulation"
-                  >
-
-                    {/* IMAGE */}
-                    {imageUrl ? (
-                      <div className="relative h-[200px] sm:h-[240px]">
-                        <Image
-                          src={imageUrl.url()}
-                          alt={displayName}
-                          fill
-                          sizes="100vw"
-                          className="object-cover group-hover:scale-105 transition duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f14] via-transparent to-transparent" />
-                      </div>
-                    ) : (
-                      <div className="h-[200px] sm:h-[240px] bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                        <span className="text-4xl font-black text-white/20">{displayName.charAt(0)}</span>
-                      </div>
-                    )}
-
-                    {/* CONTENT */}
-                    <div className="p-6 space-y-4">
-
-                      {/* TAG */}
-                      {project.niche && (
-                        <span className="inline-block text-xs px-3 py-1 bg-white/10 rounded-full text-white/70">
-                          {project.niche}
-                        </span>
-                      )}
-
-                      {/* TITLE */}
-                      <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">
-                        {displayName}
-                      </h3>
-
-                      {/* EXCERPT */}
-                      {project.excerpt && (
-                        <p className="text-white/60 text-sm line-clamp-2">{project.excerpt}</p>
-                      )}
-
-                      {/* RESULT */}
-                      {project.result && (
-                        <div className="flex items-center gap-2 text-white/90">
-                          <TrendingUp className="w-4 h-4 text-primary" />
-                          <span className="text-sm">{project.result}</span>
-                        </div>
-                      )}
-
-                      {/* CTA */}
-                      <div className="flex items-center gap-2 mt-2 text-sm font-semibold text-primary">
-                        View Case Study
-                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                      </div>
-
-                    </div>
-
-                  </motion.div>
-                </Link>
-              );
-            })}
-
-            {/* View All Button */}
-            {hasMore && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0 }}
-                className="col-span-1 sm:col-span-2 flex justify-center mt-4 sm:mt-6"
-              >
-                <Link
-                  href="/portfolio"
-                  className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/10 transition-all duration-300"
-                >
-                  <span className="text-white font-semibold text-sm sm:text-base">View All Projects</span>
-                  <ArrowRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </motion.div>
-            )}
-
-          </div>
-
-        </div>
+        {/* Subtext placed directly BELOW the heading */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed"
+        >
+          Conversion-focused systems, measured by revenue and growth.
+        </motion.p>
       </div>
+
+      {/* Large Curved 3D Gallery or Clean Empty State */}
+      {sourceData.length > 0 ? (
+        <div className="relative w-full">
+          {/* Curved Gallery Arc */}
+          <CurvedGallery projects={sourceData} />
+
+          {/* View More Button below gallery */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex justify-center mt-10 sm:mt-14"
+          >
+            <Link
+              href="/our-work"
+              className="group inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-white/[0.04] border border-white/10 hover:border-[#7C61FF]/60 hover:bg-[#7C61FF]/15 text-white font-semibold text-sm sm:text-base transition-all duration-300 shadow-xl hover:shadow-[#7C61FF]/25 hover:scale-[1.02]"
+            >
+              <span>View More</span>
+              <ArrowRight className="w-4 h-4 text-[#A78BFA] group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
+        </div>
+      ) : (
+        /* Clean Empty State */
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-b from-[#141322]/90 via-[#0e0d1a]/90 to-[#0A0912]/95 backdrop-blur-xl p-8 sm:p-14 text-center flex flex-col items-center justify-center min-h-[380px] shadow-2xl"
+          >
+            <div className="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#A78BFA] mb-6 shadow-inner relative z-10">
+              <FolderGit2 className="w-7 h-7 text-[#A78BFA]" />
+            </div>
+
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#7C61FF]/10 border border-[#7C61FF]/30 text-xs font-semibold uppercase tracking-wider text-[#A78BFA] mb-4 relative z-10 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Projects Curation</span>
+            </div>
+
+            <h3 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-3 relative z-10">
+              Projects coming soon.
+            </h3>
+
+            <p className="text-sm sm:text-base text-gray-400 max-w-lg mx-auto leading-relaxed mb-8 relative z-10">
+              We are currently curating and documenting our client flagships and conversion architectures.
+            </p>
+
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/15 hover:border-[#7C61FF]/50 hover:bg-[#7C61FF]/15 text-white text-sm font-semibold transition-all duration-300 relative z-10 group"
+            >
+              <span>Inquire About Recent Work</span>
+              <ArrowUpRight className="w-4 h-4 text-[#A78BFA] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 }

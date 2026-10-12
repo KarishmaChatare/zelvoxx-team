@@ -34,8 +34,8 @@ export default function DynamicBackground({
     },
     mixed: {
       primary: "rgba(123, 97, 255,",
-      secondary: "rgba(59, 130, 246,",
-      accent: "rgba(139, 92, 246,"
+      secondary: "rgba(139, 92, 246,",
+      accent: "rgba(167, 139, 250,"
     }
   };
 
@@ -44,13 +44,15 @@ export default function DynamicBackground({
   const opacity = intensity === "high" ? 0.4 : intensity === "medium" ? 0.25 : 0.15;
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Animated gradient orbs */}
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0" style={{ contain: "strict" }}>
+      {/* Animated gradient orbs with hardware acceleration */}
       <motion.div
         className="absolute w-[800px] h-[800px] rounded-full"
         style={{
           background: `radial-gradient(circle, ${colors.primary} ${opacity * 100}%) 0%, transparent 70%)`,
           filter: `blur(${blurAmount})`,
+          willChange: "transform",
+          transform: "translateZ(0)",
         }}
         animate={{
           x: ["-20%", "10%", "-20%"],
@@ -69,6 +71,8 @@ export default function DynamicBackground({
         style={{
           background: `radial-gradient(circle, ${colors.secondary} ${opacity * 80}%) 0%, transparent 70%)`,
           filter: `blur(${blurAmount})`,
+          willChange: "transform",
+          transform: "translateZ(0)",
         }}
         animate={{
           x: ["10%", "-15%", "10%"],
@@ -88,6 +92,8 @@ export default function DynamicBackground({
         style={{
           background: `radial-gradient(circle, ${colors.accent} ${opacity * 60}%) 0%, transparent 70%)`,
           filter: `blur(${blurAmount})`,
+          willChange: "transform",
+          transform: "translateZ(0)",
         }}
         animate={{
           x: ["0%", "20%", "0%"],
@@ -102,47 +108,51 @@ export default function DynamicBackground({
         }}
       />
 
-      {/* Floating particles */}
-      {[...Array(20)].map((_, i) => (
+      {/* Floating particles - lightweight subset */}
+      {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 rounded-full"
           style={{
             background: colors.primary,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${10 + i * 11}%`,
+            top: `${15 + (i % 4) * 20}%`,
+            willChange: "transform, opacity",
           }}
           animate={{
-            y: [0, -100, 0],
-            opacity: [0.2, 0.6, 0.2],
-            scale: [1, 1.5, 1],
+            y: [0, -60, 0],
+            opacity: [0.2, 0.5, 0.2],
+            scale: [1, 1.3, 1],
           }}
           transition={{
-            duration: 5 + Math.random() * 5,
+            duration: 6 + i * 1.5,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: Math.random() * 5,
+            delay: i * 0.8,
           }}
         />
       ))}
 
       {/* Gradient mesh overlay */}
       <div 
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0 opacity-30 pointer-events-none"
         style={{
           background: `
             radial-gradient(ellipse at 20% 30%, ${colors.primary} 0.15) 0%, transparent 50%),
             radial-gradient(ellipse at 80% 70%, ${colors.secondary} 0.1) 0%, transparent 50%),
             radial-gradient(ellipse at 50% 50%, ${colors.accent} 0.05) 0%, transparent 70%)
           `,
+          transform: "translateZ(0)",
         }}
       />
 
-      {/* Noise texture overlay */}
+      {/* Static GPU-accelerated noise texture overlay (zero SVG filter computation) */}
       <div 
-        className="absolute inset-0 opacity-[0.02] mix-blend-overlay"
+        className="absolute inset-0 opacity-[0.025] pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundImage: "url('/images/noise.png')",
+          backgroundRepeat: "repeat",
+          transform: "translateZ(0)",
         }}
       />
     </div>

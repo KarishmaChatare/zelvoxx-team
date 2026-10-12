@@ -96,12 +96,6 @@ export default function CookiePolicyPage() {
               <li className="flex items-start gap-3">
                 <span className="text-primary mt-1">•</span>
                 <span>
-                  <strong className="text-white">Calendly</strong> — scheduling embeds and related functionality
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-primary mt-1">•</span>
-                <span>
                   <strong className="text-white">Stripe</strong> — payment-related sessions and fraud prevention when you pay through our flows
                 </span>
               </li>

@@ -12,71 +12,88 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-// Default pricing plans if Sanity data is empty
+// Canonical pricing plans matching homepage Investment section exactly
 const defaultPlans = [
   {
-    _id: "starter",
-    name: "Starter",
-    slug: "starter",
-    description: "Perfect for small businesses getting started with digital growth.",
-    price: "$2,999",
-    priceNote: "Starting at",
-    popular: false,
-    features: [
-      "Custom Landing Page",
-      "Basic SEO Setup",
-      "Google Analytics",
-      "Mobile Responsive",
-      "2 Revision Rounds",
-      "14-Day Delivery"
-    ],
-    ctaText: "Get Started"
-  },
-  {
-    _id: "growth",
-    name: "Growth",
-    slug: "growth",
-    description: "Comprehensive solution for businesses ready to scale.",
-    price: "$7,999",
-    priceNote: "Starting at",
-    popular: true,
-    features: [
-      "Full Website (5-7 pages)",
-      "Advanced SEO & Blog Setup",
-      "Conversion Tracking",
-      "Sales Funnel Design",
-      "Email Capture System",
-      "A/B Testing Setup",
-      "5 Revision Rounds",
-      "30-Day Support"
-    ],
-    ctaText: "Most Popular"
-  },
-  {
-    _id: "enterprise",
-    name: "Enterprise",
-    slug: "enterprise",
-    description: "Custom solutions for established brands and complex projects.",
-    price: "Custom",
+    _id: "foundations",
+    name: "Growth Foundations",
+    slug: "growth-foundations",
+    description: "For businesses who need a high-converting digital storefront.",
+    price: "₹15,000",
     priceNote: "",
     popular: false,
     features: [
-      "Everything in Growth",
-      "Custom Web Application",
-      "CRM Integration",
-      "Marketing Automation",
-      "Advanced Analytics",
-      "Priority Support",
-      "Dedicated Manager",
-      "Unlimited Revisions"
+      "Custom UI/UX Design",
+      "Next.js Lightning Fast Build",
+      "Basic SEO Implementation",
+      "CMS Integration",
+      "1x Conversion Funnel",
+      "30 Days Support"
     ],
-    ctaText: "Contact Us"
+    ctaText: "Connect With Us",
+    tierNumber: "01",
+    tagline: "FOUNDATIONS"
+  },
+  {
+    _id: "revenue",
+    name: "Revenue System",
+    slug: "revenue-system",
+    description: "The complete digital growth engine for aggressive scaling.",
+    price: "₹49,000",
+    priceNote: "",
+    popular: true,
+    features: [
+      "Everything in Foundations",
+      "Advanced Funnel Architectures",
+      "Custom E-commerce/SaaS Logic",
+      "CRM & Sales Automation",
+      "Meta & Google Ads Setup",
+      "Conversion Rate Optimization (CRO)",
+      "90 Days VIP Support"
+    ],
+    ctaText: "Start Scaling Now",
+    tierNumber: "02",
+    tagline: "SCALE ENGINE"
+  },
+  {
+    _id: "enterprise",
+    name: "Enterprise Partner",
+    slug: "enterprise-partner",
+    description: "Bespoke engineering and fractional CMO-level guidance.",
+    price: "₹99,000",
+    priceNote: "",
+    popular: false,
+    features: [
+      "Everything in Revenue System",
+      "Dedicated Full-Stack Team",
+      "Custom Web Apps & AI Tools",
+      "Omnichannel Ads Management",
+      "Continuous A/B Testing",
+      "Priority 24/7 Slack Channel"
+    ],
+    ctaText: "Apply for Partnership",
+    tierNumber: "03",
+    tagline: "BESPOKE PARTNER"
   }
 ];
 
 export default async function PricingPage() {
   const pricingData = await client.fetch(pricingQuery).catch(() => []);
-  const plans = pricingData.length > 0 ? pricingData : defaultPlans;
+  
+  // Use canonical tiers and ensure price always uses ₹ and matches homepage exactly
+  const plans = defaultPlans.map((canonicalPlan, idx) => {
+    const fetched = Array.isArray(pricingData) && pricingData[idx] ? pricingData[idx] : null;
+    return {
+      ...canonicalPlan,
+      ...(fetched ? {
+        ...fetched,
+        name: canonicalPlan.name,
+        price: canonicalPlan.price,
+        features: canonicalPlan.features,
+      } : {}),
+      price: canonicalPlan.price, // Guarantee ₹15,000, ₹49,000, ₹99,000
+    };
+  });
 
   return (
     <>

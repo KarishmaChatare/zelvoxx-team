@@ -3,6 +3,7 @@
 import { motion, type Variants, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   ArrowRight, 
   Mail, 
@@ -20,9 +21,9 @@ import {
   Loader2,
   AlertCircle
 } from "lucide-react";
-import { client } from "@/sanity/lib/client";
-import { CALENDLY_URL, legalSiteInfo } from "@/src/constants/data";
+import { PHONE_CALL_URL, PHONE_NUMBER, legalSiteInfo } from "@/src/constants/data";
 import DynamicBackground from "@/src/components/ui/DynamicBackground";
+import { trackEvent } from "@/src/lib/analytics";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -96,6 +97,7 @@ export default function ContactContent() {
     timeline: "",
     discoverySource: "",
     message: "",
+    website_url_hp: "",
     services: [] as string[],
   });
 
@@ -126,11 +128,11 @@ export default function ContactContent() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.name.trim()) newErrors.name = "Full name is required";
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = "Email address is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      newErrors.email = "Please enter a valid business email address";
     }
     if (formData.services.length === 0) newErrors.services = "Please select at least one service";
     if (!formData.budget) newErrors.budget = "Please select a budget range";
@@ -144,15 +146,28 @@ export default function ContactContent() {
 
     setIsSubmitting(true);
     try {
-      await client.create({
-        _type: "contactSubmission",
-        ...formData,
-        submittedAt: new Date().toISOString(),
-        status: "new",
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (data.errors) {
+          setErrors(data.errors);
+        } else {
+          setErrors({ form: data.error || "Submission failed. Please try again." });
+        }
+        return;
+      }
+      trackEvent("contact_form_submitted", {
+        services_count: formData.services.length,
+        budget: formData.budget || "unspecified",
       });
       setIsSubmitted(true);
     } catch (error) {
       console.error("Form submission error:", error);
+      setErrors({ form: "Network error. Please check your connection and try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -161,6 +176,18 @@ export default function ContactContent() {
   if (isSubmitted) {
     return (
       <section className="relative min-h-screen pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <Image
+            src="/images/contact-bg.webp"
+            alt="Zelvoxx Workspace"
+            fill
+            sizes="100vw"
+            className="object-cover object-center opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background" />
+        </div>
+
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <motion.div
@@ -212,13 +239,11 @@ export default function ContactContent() {
               Back to Home
             </Link>
             <a
-              href={CALENDLY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={PHONE_CALL_URL}
               className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold transition-all hover:scale-105"
             >
-              <Calendar className="w-5 h-5" />
-              Book a Call Now
+              <Phone className="w-5 h-5" />
+              Call {PHONE_NUMBER}
             </a>
           </motion.div>
         </div>
@@ -228,8 +253,23 @@ export default function ContactContent() {
 
   return (
     <section className="relative min-h-screen pt-28 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Background Image & Overlays */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <Image
+          src="/images/contact-bg.webp"
+          alt="Zelvoxx Workspace & Holographic UI"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-40 sm:opacity-50"
+        />
+        {/* Subtle cinematic gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-background/70" />
+      </div>
+
       {/* Dynamic Background */}
-      <DynamicBackground variant="mixed" intensity="high" />
+      <DynamicBackground variant="purple" intensity="low" />
 
       <div className="max-w-7xl mx-auto relative">
         <motion.div
@@ -295,7 +335,12 @@ export default function ContactContent() {
                     </div>
                     <div>
                       <p className="text-sm text-white/40 mb-1">Call Us</p>
-                      <p className="text-white font-medium">+91 9810 601 084</p>
+                      <a
+                        href={PHONE_CALL_URL}
+                        className="text-white font-medium hover:text-primary transition-colors"
+                      >
+                        {PHONE_NUMBER}
+                      </a>
                     </div>
                   </motion.div>
 
@@ -322,15 +367,13 @@ export default function ContactContent() {
                 transition={{ type: "spring", stiffness: 400 }}
               >
                 <h4 className="text-xl font-bold text-white mb-3">Prefer to Talk?</h4>
-                <p className="text-white/60 mb-6">Schedule a free 15-minute discovery call with our team.</p>
+                <p className="text-white/60 mb-6">Call directly to speak with our strategy team.</p>
                 <a
-                  href={CALENDLY_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={PHONE_CALL_URL}
                   className="inline-flex items-center gap-2 w-full justify-center px-6 py-4 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold transition-all hover:scale-105"
                 >
-                  <Calendar className="w-5 h-5" />
-                  Book a Call
+                  <Phone className="w-5 h-5" />
+                  {PHONE_NUMBER}
                 </a>
               </motion.div>
             </motion.div>
@@ -338,6 +381,27 @@ export default function ContactContent() {
             {/* Form */}
             <motion.div variants={scaleIn} className="lg:col-span-3">
               <form onSubmit={handleSubmit} className="p-5 sm:p-8 lg:p-10 bg-white/[0.03] backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-white/10">
+                {/* Honeypot Spam Field - hidden from real users */}
+                <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+                  <label htmlFor="website_url_hp">Do not fill this field</label>
+                  <input
+                    type="text"
+                    id="website_url_hp"
+                    name="website_url_hp"
+                    value={formData.website_url_hp}
+                    onChange={handleInputChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
+                {errors.form && (
+                  <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm flex items-center gap-2">
+                    <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-400" />
+                    <span>{errors.form}</span>
+                  </div>
+                )}
+
                 <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                   {/* Name */}
                   <div className="sm:col-span-2">

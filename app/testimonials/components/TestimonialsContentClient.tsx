@@ -6,16 +6,28 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Quote, Star, MessageCircle, Heart, ThumbsUp } from "lucide-react";
 import { urlForImage } from "@/sanity/lib/image";
 import DynamicBackground from "@/src/components/ui/DynamicBackground";
+import { PHONE_CALL_URL } from "@/src/constants/data";
+import { pushToDataLayer } from "@/src/lib/analytics";
+
+import { testimonials } from "@/src/constants/data";
+
+const getInitials = (name: string) => {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length >= 2) return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+  return (parts[0]?.[0] || "").toUpperCase();
+};
 
 interface TestimonialsContentClientProps {
-  testimonialsData: any[];
+  testimonialsData?: any[];
 }
 
 export default function TestimonialsContentClient({ testimonialsData }: TestimonialsContentClientProps) {
+  // Use real client testimonials from constants
+  const displayData = testimonials;
   return (
     <main className="min-h-screen bg-background text-white selection:bg-primary/30 relative">
       {/* Dynamic Background */}
-      <DynamicBackground variant="green" intensity="medium" />
+      <DynamicBackground variant="purple" intensity="medium" />
 
       {/* Page Content */}
       <div className="relative z-10 pt-24">
@@ -54,13 +66,13 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
           
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               className="text-center max-w-3xl mx-auto"
             >
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
+                initial={false}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
@@ -74,7 +86,7 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={false}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6"
@@ -84,7 +96,7 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
               </motion.div>
 
               <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
                 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black text-white leading-tight mb-6"
@@ -96,7 +108,7 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
               </motion.h1>
               
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed"
@@ -110,57 +122,62 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
         {/* Testimonials Grid */}
         <section className="py-20 pb-32">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {testimonialsData.map((testimonial: any, idx: number) => {
-                const imageUrl = urlForImage(testimonial.image);
-                
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {displayData.map((testimonial: any, idx: number) => {
                 return (
                   <motion.div
                     key={testimonial._id || idx}
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.6, delay: idx * 0.1 }}
-                    className="relative p-8 rounded-2xl bg-[#0f0f14] border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-2 group"
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="relative p-8 rounded-2xl bg-[#0f0f14] border border-white/10 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 group flex flex-col justify-between"
                   >
-                    {/* Stars */}
-                    <div className="flex gap-1 mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                      ))}
+                    {/* Top bar: Client Index + Verified Partner Badge */}
+                    <div className="flex items-center justify-between gap-3 mb-6">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-[#A78BFA]">
+                        <span>0{idx + 1}</span>
+                        <span className="text-white/20">/</span>
+                        <span className="text-white/40">04</span>
+                      </div>
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+                        <span>Verified Partner</span>
+                      </div>
                     </div>
                     
                     {/* Quote Icon */}
-                    <Quote className="w-10 h-10 text-primary/20 mb-4" />
+                    <Quote className="w-9 h-9 text-primary/20 mb-4" />
                     
-                    {/* Review */}
-                    <p className="text-white/80 text-lg leading-relaxed mb-8">
-                      &quot;{testimonial.review || testimonial.content}&quot;
+                    {/* Review text */}
+                    <p className="text-white/90 text-sm sm:text-base leading-relaxed mb-8 flex-grow font-normal">
+                      &ldquo;{testimonial.content || testimonial.review}&rdquo;
                     </p>
                     
-                    {/* Author */}
-                    <div className="flex items-center gap-4">
-                      {imageUrl ? (
-                        <div className="w-12 h-12 rounded-full overflow-hidden bg-white/10">
-                          <Image
-                            src={imageUrl.url()}
-                            alt={testimonial.name}
-                            width={48}
-                            height={48}
-                            className="object-cover w-full h-full"
-                          />
+                    {/* Client Identity Footer (Initials Avatar, Client Name, Company) */}
+                    <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-4 mt-auto">
+                      <div className="flex items-center gap-3.5 min-w-0">
+                        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] p-[1.5px] shadow-[0_0_15px_rgba(124,97,255,0.3)] shrink-0">
+                          <div className="w-full h-full rounded-full bg-[#0E0D18] flex items-center justify-center text-white font-bold font-heading text-sm tracking-wider">
+                            {getInitials(testimonial.name)}
+                          </div>
                         </div>
-                      ) : (
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-lg">
-                          {testimonial.name?.charAt(0) || "C"}
+                        <div className="min-w-0">
+                          <h4 className="text-white font-bold font-heading text-base tracking-tight truncate">
+                            {testimonial.name}
+                          </h4>
+                          <p className="text-[#A78BFA] font-medium text-xs sm:text-sm tracking-wide mt-0.5 truncate">
+                            {testimonial.company}
+                          </p>
                         </div>
-                      )}
-                      <div>
-                        <h4 className="font-bold text-white">{testimonial.name}</h4>
-                        <p className="text-white/50 text-sm">{testimonial.role}</p>
-                        {testimonial.company && (
-                          <p className="text-primary text-sm">{testimonial.company}</p>
-                        )}
+                      </div>
+
+                      <div className="text-right shrink-0">
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-white/40 block">
+                          Client
+                        </span>
+                        <span className="text-xs font-semibold text-white/70">
+                          Verified
+                        </span>
                       </div>
                     </div>
                   </motion.div>
@@ -186,8 +203,14 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
               Join the growing list of businesses that have transformed their digital presence with Zelvoxx.
             </p>
             <Link
-              href="/"
-              className="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-bold transition-all hover:scale-105"
+              href="/contact"
+              onClick={() => {
+                pushToDataLayer("connect_with_us_click", {
+                  event_category: "engagement",
+                  event_label: "Reviews Section Start Your Project CTA",
+                });
+              }}
+              className="inline-flex items-center justify-center bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] hover:brightness-110 text-white px-8 py-4 rounded-full font-heading font-bold text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(124,97,255,0.45)] min-h-[48px] touch-manipulation tracking-wide"
             >
               Start Your Project
             </Link>
