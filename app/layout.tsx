@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
+import CookieBanner from "@/src/components/CookieBanner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({
@@ -119,27 +120,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${poppins.variable} antialiased bg-background text-white overflow-x-hidden min-h-screen`}
       >
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
-
-        <SmoothScrollProvider>
-          <CustomCursor />
-          <SitewideAmbientBackground />
-          {children}
-          <BackToTop />
-          <WhatsAppButton />
-          <CookieConsent />
-          <Analytics />
-          <SpeedInsights />
-          <GoogleTagManager gtmId={gtmId} />
-        </SmoothScrollProvider>
+        {children}
+        <Analytics />
+        <SpeedInsights />
+        <CookieBanner /> 
       </body>
     </html>
   );
