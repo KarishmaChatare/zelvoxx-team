@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { XCircle } from "lucide-react";
-import { useState, useEffect } from "react";
+import Image from "next/image";
+import TiltCard from "@/src/components/ui/TiltCard";
 
 const painPoints = [
   "Websites that look good but don't convert.",
@@ -12,62 +13,84 @@ const painPoints = [
 ];
 
 export default function Problem() {
-  // Mobile detection for faster animations (instant on mobile)
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   return (
-    <section id="problem" className="relative overflow-hidden border-t border-white/5 bg-[#0d0d12]">
-      <div className="absolute inset-0 pointer-events-none"><div className="absolute -top-24 left-0 w-[45vw] h-[45vw] bg-primary/10 blur-[140px]" /><div className="absolute bottom-0 right-0 w-[40vw] h-[40vw] bg-accent/10 blur-[140px]" /></div>
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24 items-start">
+    <section id="problem" className="relative z-10 bg-transparent overflow-hidden border-t border-white/5 py-16 sm:py-24 lg:py-32 scroll-mt-20">
+      {/* Background Ambient Glows */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-24 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-[#7C61FF]/10 blur-[140px] rounded-full" />
+        <div className="absolute bottom-0 right-0 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] bg-[#8B5CF6]/10 blur-[140px] rounded-full" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.3fr] gap-8 sm:gap-12 lg:gap-14 items-center">
           
-          {/* Left Column: Intro */}
-          <div className="sticky top-32 space-y-6">
+          {/* Left Column: Heading + Visual Diagram */}
+          <div className="space-y-3 sm:space-y-4 text-center lg:text-left">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mb-6"
+              className="inline-block"
             >
-              <span className="text-xs font-bold tracking-[0.2em] text-primary uppercase">The Problem</span>
+              <span className="text-xs font-bold tracking-[0.2em] text-[#A78BFA] uppercase">
+                The Problem
+              </span>
             </motion.div>
             
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: isMobile ? 0.3 : 0.6 }}
-              className="text-4xl md:text-5xl font-heading font-black text-white leading-[1.1] tracking-tight"
+              transition={{ duration: 0.5 }}
+              className="text-[1.5rem] sm:text-[1.75rem] md:text-[2rem] lg:text-[2.25rem] xl:text-[2.5rem] font-heading font-bold text-white leading-tight sm:leading-[1.2] tracking-tight"
             >
-              Most businesses don't have a growth problem. <br className="hidden lg:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+              Most businesses don't have a growth problem.{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] block sm:inline">
                 They have a system problem.
               </span>
             </motion.h2>
+
+            {/* Problem Section Visual Illustration Diagram */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="mt-4 sm:mt-5 rounded-2xl overflow-hidden border border-[#7C61FF]/25 shadow-[0_12px_40px_rgba(0,0,0,0.6)] group hover:border-[#A78BFA]/40 transition-all duration-500 bg-[#0E0D17]"
+            >
+              <Image
+                src="/images/problem/system-leak-diagram.svg"
+                alt="System Leak & Bottleneck Architecture Diagram"
+                width={600}
+                height={400}
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDUiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjUiIGZpbGw9IiMwRTBENDE3Ii8+PC9zdmc+"
+                sizes="(max-width: 1024px) 100vw, 600px"
+                className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500"
+              />
+            </motion.div>
           </div>
 
-          {/* Right Column: Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Right Column: 2x2 Grid with 3D Tilt Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full">
             {painPoints.map((point, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: isMobile ? 0.3 : 0.5, delay: isMobile ? 0 : idx * 0.1 }}
-                className="glass-premium premium-border soft-glow p-8 rounded-2xl hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] group bg-gradient-to-b from-white/[0.04] to-transparent touch-manipulation"
-              >
-                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
-                  <XCircle className="w-6 h-6 text-white/50 group-hover:text-primary transition-colors" />
-                </div>
-                <p className="text-lg text-white/80 font-medium font-body leading-relaxed">{point}</p>
-              </motion.div>
+              <TiltCard key={idx} className="h-full bg-[#0E0D17] rounded-2xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-30px" }}
+                  transition={{ duration: 0.4, delay: idx * 0.08 }}
+                  className="p-6 sm:p-7 rounded-2xl border border-white/10 bg-[#0E0D17]/80 backdrop-blur-sm hover:border-[#7C61FF]/50 transition-all duration-300 hover:shadow-xl hover:shadow-[#7C61FF]/10 flex flex-col justify-start h-full"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
+                    <XCircle className="w-5 h-5 text-red-400" />
+                  </div>
+                  <p className="text-[0.8125rem] sm:text-[0.875rem] md:text-[0.9375rem] text-gray-400 font-normal leading-relaxed">
+                    {point}
+                  </p>
+                </motion.div>
+              </TiltCard>
             ))}
           </div>
 

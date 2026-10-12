@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, MessageCircle } from "lucide-react";
-import { CALENDLY_URL } from "@/src/constants/data";
+import { ArrowRight, Phone, MessageCircle } from "lucide-react";
+import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
+import { pushToDataLayer } from "@/src/lib/analytics";
 
 interface CTASectionProps {
   title?: string;
@@ -18,10 +19,10 @@ interface CTASectionProps {
 export default function CTASection({
   title = "Ready to transform your digital presence?",
   subtitle = "Let's build a system that generates predictable revenue for your business.",
-  primaryCtaText = "Book a Free Strategy Call",
-  primaryCtaLink = CALENDLY_URL,
+  primaryCtaText = `Call ${PHONE_NUMBER}`,
+  primaryCtaLink = PHONE_CALL_URL,
   secondaryCtaText = "View Our Work",
-  secondaryCtaLink = "/portfolio",
+  secondaryCtaLink = "/our-work",
   variant = "default",
 }: CTASectionProps) {
   const isLarge = variant === "large";
@@ -60,17 +61,22 @@ export default function CTASection({
           </p>
 
           <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 ${isMinimal ? "" : "flex-wrap"}`}>
-            {/* Primary CTA */}
-            <Link
+            <a
               href={primaryCtaLink}
               target={primaryCtaLink.startsWith("http") ? "_blank" : undefined}
               rel={primaryCtaLink.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="group inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-[0_0_40px_rgba(123,97,255,0.3)]"
+              onClick={() => {
+                pushToDataLayer("connect_with_us_click", {
+                  event_category: "engagement",
+                  event_label: `CTASection: ${primaryCtaText}`,
+                });
+              }}
+              className="group inline-flex items-center gap-3 bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] hover:brightness-110 text-white px-8 py-4 rounded-full font-bold text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(124,97,255,0.4)] min-h-[48px] touch-manipulation"
             >
-              <Calendar className="w-5 h-5" />
+              <Phone className="w-5 h-5" />
               {primaryCtaText}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </a>
 
             {/* Secondary CTA */}
             {!isMinimal && (

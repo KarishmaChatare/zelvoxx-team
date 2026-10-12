@@ -3,10 +3,11 @@
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Sparkles, Zap, Users, Target, MessageCircle, Calendar } from "lucide-react";
+import { ArrowRight, Sparkles, Zap, Users, Target, MessageCircle, Phone } from "lucide-react";
 import { urlForImage } from "@/sanity/lib/image";
 import CTASection from "@/src/components/ui/CTASection";
-import { CALENDLY_URL } from "@/src/constants/data";
+import { PHONE_CALL_URL, PHONE_NUMBER } from "@/src/constants/data";
+import { pushToDataLayer } from "@/src/lib/analytics";
 
 interface TeamMember {
   _id: string;
@@ -53,6 +54,7 @@ const defaultFounders: TeamMember[] = [
     role: "Co-Founder",
     isFounder: true,
     shortBio: "Systems architect. Growth strategist. Building the future of digital.",
+    image: "/images/team/founder-akshat.webp",
   },
   {
     _id: "founder-2",
@@ -60,26 +62,37 @@ const defaultFounders: TeamMember[] = [
     role: "Co-Founder",
     isFounder: true,
     shortBio: "Operations excellence. Client success. Making vision reality.",
+    image: "/images/team/founder-antara.webp",
+  },
+  {
+    _id: "operator-karishma",
+    name: "Karishma Chatare",
+    role: "CTO (Chief Technology Officer)",
+    isFounder: true,
+    shortBio: "Technical infrastructure & engineering systems",
+    image: "/images/team/operator-karishma.webp",
   },
 ];
 
-// Default team data for fallback
-const defaultTeam: TeamMember[] = [
-  { _id: "team-1", name: "Senior Developer", role: "Lead Engineer", shortBio: "Full-stack systems" },
-  { _id: "team-2", name: "Growth Specialist", role: "Google Ads Expert", shortBio: "Performance marketing" },
-  { _id: "team-3", name: "Creative Lead", role: "Social Media", shortBio: "Brand storytelling" },
-  { _id: "team-4", name: "Operations Manager", role: "Client Success", shortBio: "Delivery excellence" },
-];
-
 export default function TeamContent({ members }: Props) {
-  // Separate founders and team members
-  const founders = members.filter((m) => m.isFounder).length > 0
-    ? members.filter((m) => m.isFounder)
-    : defaultFounders;
+  // Separate founders
+  const baseFounders = members.filter((m) => m.isFounder).length > 0
+    ? members.filter((m) => m.isFounder).filter((m) => !m.name.toLowerCase().includes("karishma")).slice(0, 2)
+    : defaultFounders.slice(0, 2);
 
-  const team = members.filter((m) => !m.isFounder).length > 0
-    ? members.filter((m) => !m.isFounder)
-    : defaultTeam;
+  const karishmaFromSanity = members.find((m) => m.name.toLowerCase().includes("karishma"));
+
+  const karishmaMember: TeamMember = {
+    _id: "operator-karishma",
+    name: "Karishma Chatare",
+    role: "CTO (Chief Technology Officer)",
+    isFounder: true,
+    shortBio: "Technical infrastructure & engineering systems",
+    image: "/images/team/operator-karishma.webp",
+    ...(karishmaFromSanity ? { ...karishmaFromSanity, image: "/images/team/operator-karishma.webp" } : {}),
+  };
+
+  const founders = [...baseFounders, karishmaMember];
 
   return (
     <>
@@ -143,7 +156,7 @@ export default function TeamContent({ members }: Props) {
 
         <motion.div
           className="relative max-w-5xl mx-auto text-center"
-          initial="hidden"
+          initial={false}
           animate="visible"
           variants={staggerContainer}
         >
@@ -211,9 +224,27 @@ export default function TeamContent({ members }: Props) {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {founders.map((founder, idx) => {
-                const imageUrl = founder.image ? urlForImage(founder.image) : null;
+                let photoSrc: string | null = null;
+                if (founder.name.toLowerCase().includes("karishma")) {
+                  photoSrc = "/images/team/operator-karishma.webp";
+                } else if (founder.image) {
+                  if (typeof founder.image === "string") {
+                    photoSrc = founder.image;
+                  } else {
+                    try {
+                      photoSrc = urlForImage(founder.image)?.url() || null;
+                    } catch {
+                      photoSrc = null;
+                    }
+                  }
+                }
+                if (!photoSrc) {
+                  if (idx === 0) photoSrc = "/images/team/founder-akshat.webp";
+                  else if (idx === 1) photoSrc = "/images/team/founder-antara.webp";
+                  else if (idx === 2 || founder.name.toLowerCase().includes("karishma")) photoSrc = "/images/team/operator-karishma.webp";
+                }
                 return (
                   <motion.div
                     key={founder._id}
@@ -231,12 +262,16 @@ export default function TeamContent({ members }: Props) {
                         {/* Profile image */}
                         <div className="relative w-32 h-32 mb-6">
                           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-accent opacity-20 blur-md group-hover:opacity-40 transition-opacity" />
-                          <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/30 transition-colors">
-                            {imageUrl ? (
+                          <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/30 transition-colors bg-[#141322]">
+                            {photoSrc ? (
                               <Image
-                                src={imageUrl.url()}
+                                src={photoSrc}
                                 alt={founder.name}
                                 fill
+                                sizes="128px"
+                                loading="lazy"
+                                placeholder="blur"
+                                blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDUiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjUiIGZpbGw9IiMxNDEzMjIiLz48L3N2Zz4="
                                 className="object-cover group-hover:scale-110 transition-transform duration-700"
                               />
                             ) : (
@@ -340,152 +375,63 @@ export default function TeamContent({ members }: Props) {
         </div>
       </section>
 
-      {/* TEAM GRID SECTION */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      {/* CTA SECTION - WORK WITH US */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-[#08080C] via-[#0E0D17] to-[#08080C] border-t border-white/10">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#7C61FF]/10 rounded-full blur-[150px] pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
           >
-            <motion.div variants={fadeInUp} className="text-center mb-16">
-              <span className="text-primary font-semibold text-sm tracking-wider uppercase mb-4 block">
-                The Team
+            <motion.div
+              variants={fadeInUp}
+              className="inline-block mb-4"
+            >
+              <span className="text-xs font-bold tracking-[0.2em] text-[#A78BFA] uppercase px-4 py-1.5 rounded-full bg-[#7C61FF]/15 border border-[#7C61FF]/30 shadow-[0_0_15px_rgba(124,97,255,0.2)]">
+                Work With Us
               </span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-                Specialists & Operators
-              </h2>
-              <p className="text-white/50 text-lg max-w-2xl mx-auto">
-                Developers, marketers, and growth engineers who make the magic happen.
-              </p>
             </motion.div>
 
-            <motion.div variants={fadeInUp} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {team.map((member, idx) => {
-                const imageUrl = member.image ? urlForImage(member.image) : null;
-                return (
-                  <motion.div
-                    key={member._id}
-                    variants={scaleIn}
-                    className="group relative"
-                  >
-                    <div className="relative p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-primary/30 hover:bg-white/[0.07] transition-all duration-300 hover:-translate-y-2">
-                      {/* Image */}
-                      <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/30 transition-colors">
-                        {imageUrl ? (
-                          <Image
-                            src={imageUrl.url()}
-                            alt={member.name}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20">
-                            <span className="text-2xl font-bold text-white/30">
-                              {member.name.charAt(0)}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-
-                      <h3 className="text-lg font-bold text-white text-center mb-1 group-hover:text-primary transition-colors">
-                        {member.name}
-                      </h3>
-                      <p className="text-primary text-sm text-center mb-3">{member.role}</p>
-                      {member.shortBio && (
-                        <p className="text-white/40 text-xs text-center">{member.shortBio}</p>
-                      )}
-
-                      {/* Social links */}
-                      {member.socialLinks && (member.socialLinks.linkedin || member.socialLinks.twitter || member.socialLinks.github) && (
-                        <div className="flex items-center justify-center gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                          {member.socialLinks.linkedin && (
-                            <a
-                              href={member.socialLinks.linkedin}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 transition-colors"
-                            >
-                              <svg className="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                            </a>
-                          )}
-                          {member.socialLinks.twitter && (
-                            <a
-                              href={member.socialLinks.twitter}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 transition-colors"
-                            >
-                              <svg className="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                            </a>
-                          )}
-                          {member.socialLinks.github && (
-                            <a
-                              href={member.socialLinks.github}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 transition-colors"
-                            >
-                              <svg className="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                            </a>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA SECTION */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-primary/5" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
-
-        <div className="max-w-4xl mx-auto text-center relative">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-          >
             <motion.h2
               variants={fadeInUp}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl font-heading font-black text-white mb-6 tracking-tight leading-tight"
             >
               Work with a team that builds
               <br />
-              <span className="text-primary">real growth systems.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] drop-shadow-[0_0_30px_rgba(124,97,255,0.5)]">
+                real growth systems.
+              </span>
             </motion.h2>
 
             <motion.p
               variants={fadeInUp}
-              className="text-xl text-white/50 mb-10 max-w-2xl mx-auto"
+              className="text-lg sm:text-xl text-white/80 font-medium mb-10 max-w-2xl mx-auto leading-relaxed"
             >
               Ready to partner with operators who execute? Let&apos;s talk.
             </motion.p>
 
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
+                href="/contact"
+                onClick={() => {
+                  pushToDataLayer("connect_with_us_click", {
+                    event_category: "engagement",
+                    event_label: "Team Section Connect With Us",
+                  });
+                }}
+                className="inline-flex items-center justify-center bg-gradient-to-r from-[#7C61FF] via-[#8B5CF6] to-[#A78BFA] hover:brightness-110 text-white px-8 py-4 rounded-full font-bold text-sm sm:text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(124,97,255,0.45)] tracking-wide min-h-[48px] touch-manipulation"
               >
-                <Calendar className="w-5 h-5" />
-                Book a Strategy Call
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                Connect With Us
               </Link>
 
               <Link
-                href="https://wa.me/1234567890"
+                href="https://wa.me/919810601084"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105"
+                className="group inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 min-h-[48px] touch-manipulation"
               >
                 <MessageCircle className="w-5 h-5" />
                 Chat on WhatsApp
@@ -500,8 +446,9 @@ export default function TeamContent({ members }: Props) {
         title="Join the team?"
         subtitle="We're always looking for exceptional operators. If you think you'd fit, reach out."
         primaryCtaText="Get in Touch"
+        primaryCtaLink="/contact"
         secondaryCtaText="View Open Roles"
-        secondaryCtaLink="#"
+        secondaryCtaLink="/work-with-us#open-roles"
       />
     </>
   );

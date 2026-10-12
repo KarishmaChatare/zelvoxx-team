@@ -7,7 +7,7 @@ import PortfolioContent from "@/src/components/sections/PortfolioContent";
 import DynamicBackground from "@/src/components/ui/DynamicBackground";
 
 interface PortfolioContentClientProps {
-  caseStudiesData: any[];
+  portfolioData?: any[];
 }
 
 const stats = [
@@ -16,7 +16,7 @@ const stats = [
   { icon: Zap, value: "50+", label: "Projects Delivered" },
 ];
 
-export default function PortfolioContentClient({ caseStudiesData }: PortfolioContentClientProps) {
+export default function PortfolioContentClient({ portfolioData }: PortfolioContentClientProps) {
   return (
     <main className="min-h-screen bg-background text-white selection:bg-primary/30 relative">
       {/* Dynamic Background */}
@@ -126,7 +126,7 @@ export default function PortfolioContentClient({ caseStudiesData }: PortfolioCon
         </section>
 
         {/* Portfolio Grid */}
-        <PortfolioContent data={caseStudiesData} />
+        <PortfolioContent data={portfolioData} />
       </div>
     </main>
   );

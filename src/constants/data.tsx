@@ -7,9 +7,12 @@ import {
   Search, 
   Bot 
 } from "lucide-react";
-import { ServiceType, ProjectType, CaseStudyType, TestimonialType } from "@/src/types";
+import { ServiceType, TestimonialType } from "@/src/types";
 
-export const CALENDLY_URL = "https://calendly.com/";
+export const PHONE_NUMBER = "+91 98106 01084";
+export const PHONE_CALL_URL = "tel:+919810601084";
+export const CALENDLY_URL = PHONE_CALL_URL; // Replaced with direct phone call
+export const WHATSAPP_URL = "https://wa.me/919810601084";
 
 export const services: ServiceType[] = [
   {
@@ -49,66 +52,33 @@ export const services: ServiceType[] = [
   },
 ];
 
-export const projects: ProjectType[] = [
-  {
-    client: "Apex Financial",
-    niche: "FinTech App",
-    result: "+340% Lead Volume",
-    color: "from-blue-500/20 to-purple-500/20",
-  },
-  {
-    client: "Luminary MedSpa",
-    niche: "Local Business",
-    result: "$100k Monthly Added Revenue",
-    color: "from-pink-500/20 to-rose-500/20",
-  },
-  {
-    client: "Velocity SaaS",
-    niche: "B2B Software",
-    result: "4.2x ROI on Ads",
-    color: "from-emerald-500/20 to-teal-500/20",
-  },
-  {
-    client: "Strata Real Estate",
-    niche: "Luxury Agency",
-    result: "$12M in closed volume",
-    color: "from-amber-500/20 to-orange-500/20",
-  },
-];
-
-export const caseStudies: CaseStudyType[] = [
-  {
-    client: "E-commerce Brand",
-    industry: "DTC Apparel",
-    problem: "Burning $10k/mo on ads with a 0.8x ROAS and a clunky outdated theme hurting conversions.",
-    solution: "Complete custom headless build + A/B testing framework + structured Google Shopping & Meta funnels.",
-    result: "$120k/mo added revenue. ROAS skyrocketed to 3.4x within 45 days. Conversion rate doubled.",
-  },
-  {
-    client: "B2B SaaS Startup",
-    industry: "B2B Software",
-    problem: "Stuck at $30k MRR. Leads were unqualified, and the sales cycle was over 4 months long.",
-    solution: "Rebuilt the entire front-end brand positioning. Implemented automated VSL funnels and CRM cadences.",
-    result: "Secured $2M Series A funding. Scaled to $110k MRR in 6 months using the automated systems.",
-  }
-];
+export { projects } from "@/src/data/projects";
 
 export const testimonials: TestimonialType[] = [
   {
-    name: "Sarah J.",
-    role: "Founder, E-commerce Brand",
-    content: "The clarity in their system is what stood out. They didn't just build us a website. They handed us a machine that prints money. Our conversion rate literally doubled in 45 days.",
+    name: "Shubham",
+    company: "Unisafe Cookware",
+    role: "Unisafe Cookware",
+    content: "Working with Zelvoxx on our website development was a great experience. The team understood our requirements and helped us build a professional e-commerce website for Unisafe Cookware, with a strong focus on product presentation, navigation, and customer experience. Their attention to detail and willingness to customise the website according to our needs made the process smooth and convenient. We appreciate their efforts in helping us strengthen our online presence and showcase our products more effectively.",
   },
   {
-    name: "Marcus T.",
-    role: "Startup Founder",
-    content: "The level of engineering and psychology that went into our funnels is insane. We closed our Series A off the back of the growth system they built. It permanently solves lead generation.",
+    name: "Rishabh",
+    company: "Primus Cosmetics",
+    role: "Primus Cosmetics",
+    content: "Working with Zelvoxx on our website development was a positive experience. The team took the time to understand our requirements and worked towards creating a professional online presence for Primus Cosmetics. We appreciated their attention to design, product presentation, and the overall user experience. Their approach was collaborative, and they were willing to make adjustments to align the website with our expectations. We're glad to have worked with a team that values both presentation and functionality.",
   },
   {
-    name: "David C.",
-    role: "Local Business Owner",
-    content: "If you want a pretty site, go somewhere else. If you want a scalable infrastructure that predictably generates revenue and scales on autopilot, hire Zelvoxx.",
-  }
+    name: "Naresh Tyagi",
+    company: "New Sandeep Garments",
+    role: "New Sandeep Garments",
+    content: "Zelvoxx worked with us on developing a website for New Sandeep Garments, with a focus on creating a professional online presence for our clothing business. The project involved custom design elements, organised product categories, and a layout tailored to our brand. The team worked on bringing our requirements into the website and building a foundation for showcasing our men's, women's, and kids' collections online. We appreciate the effort invested in the website development process.",
+  },
+  {
+    name: "Deepali Jain",
+    company: "Marffil",
+    role: "Marffil",
+    content: "Working with Zelvoxx on Marffil's website development was a valuable step towards strengthening our brand's digital presence. The team worked on translating our brand's premium identity into a professional online experience, with attention to visual presentation, brand consistency, and the way our products are showcased. We appreciated the focus on understanding our brand and creating a digital platform aligned with the quality and elegance we want Marffil to represent. It was a pleasure collaborating on building our online presence.",
+  },
 ];
 
 export const socialLinks = [
@@ -119,7 +89,7 @@ export const socialLinks = [
 
 export const legalSiteInfo = {
   effectiveDate: "May 14, 2026",
-  email: "hello.Zelvoxx@gmail.com",
+  email: "enquiry.zelvoxx@gmail.com",
   website: "https://www.zelvoxx.com",
   linkedIn: "https://www.linkedin.com/company/Zelvoxx",
 } as const;
@@ -138,8 +108,7 @@ export const legalLinks = [
 
 export const footerNavLinks = [
   { label: "Services", url: "/#services" },
-  { label: "Our Work", url: "/portfolio" },
-  { label: "Case Studies", url: "/case-studies" },
+  { label: "Our Work", url: "/our-work" },
   { label: "Why Zelvoxx", url: "/why-Zelvoxx" },
   { label: "Our Team", url: "/team" },
   { label: "Careers", url: "/work-with-us" },

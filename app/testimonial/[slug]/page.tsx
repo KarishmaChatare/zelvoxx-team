@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Star, Quote, Globe, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, Star, Quote, Globe } from "lucide-react";
 import { client } from "@/sanity/lib/client";
 import { testimonialBySlugQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/image";
@@ -172,34 +172,6 @@ export default async function TestimonialPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Related Case Study */}
-      {testimonial.caseStudy && (
-        <section className="py-16 border-t border-white/5">
-          <div className="max-w-4xl mx-auto px-6">
-            <h2 className="text-2xl font-bold text-white mb-6">Related Case Study</h2>
-            <Link
-              href={`/case-study/${testimonial.caseStudy.slug}`}
-              className="group block bg-[#0f0f14] rounded-2xl p-6 border border-white/5 hover:border-primary/30 transition-all duration-300"
-            >
-              <div className="flex items-start justify-between">
-                <div>
-                  <span className="text-sm text-primary font-semibold">Case Study</span>
-                  <h3 className="text-xl font-bold text-white mt-1 group-hover:text-primary transition-colors">
-                    {testimonial.caseStudy.title}
-                  </h3>
-                  <p className="text-white/50 mt-2">{testimonial.caseStudy.excerpt}</p>
-                  {testimonial.caseStudy.result && (
-                    <p className="text-primary mt-4 font-semibold">
-                      Result: {testimonial.caseStudy.result}
-                    </p>
-                  )}
-                </div>
-                <ArrowUpRight className="w-6 h-6 text-white/30 group-hover:text-primary transition-colors" />
-              </div>
-            </Link>
-          </div>
-        </section>
-      )}
 
       {/* More Testimonials */}
       {testimonial.relatedTestimonials && testimonial.relatedTestimonials.length > 0 && (
@@ -251,8 +223,9 @@ export default async function TestimonialPage({ params }: Props) {
         title="Join our satisfied clients"
         subtitle="Experience the same results-driven approach that transformed their businesses."
         primaryCtaText="Start Your Project"
-        secondaryCtaText="View Case Studies"
-        secondaryCtaLink="/case-studies"
+        primaryCtaLink="/contact"
+        secondaryCtaText="View Our Work"
+        secondaryCtaLink="/our-work"
       />
 
       <Footer />
