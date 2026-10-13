@@ -40,7 +40,7 @@ const benefits = [
 
 export default function HomeContact() {
   return (
-    <section id="contact" className="relative z-10 bg-[#08080C] py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section id="contact" className="relative z-10 bg-[#040408] py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.03] to-transparent" />

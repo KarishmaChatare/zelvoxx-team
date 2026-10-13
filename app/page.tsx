@@ -74,7 +74,7 @@ export default async function Home() {
       <Hero data={heroData} stats={statsData} />
 
       {/* Subtle ambient visual texture with gentle parallax across all sections from Built for Growing Businesses down to Footer */}
-      <div className="relative bg-[#08080C]">
+      <div className="relative bg-[#040408]">
         <AmbientBackground opacity={0.24} fixed={true} />
         <div className="relative z-10">
           <TrustedBy />

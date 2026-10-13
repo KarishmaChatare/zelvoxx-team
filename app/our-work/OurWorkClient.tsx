@@ -162,7 +162,7 @@ export default function OurWorkClient() {
                       <Link
                         href={href}
                         data-cursor="VIEW"
-                        className="group relative block h-full w-full rounded-2xl sm:rounded-3xl p-5 sm:p-7 bg-gradient-to-b from-[#131221]/90 via-[#0F0E1B]/95 to-[#0A0912] border border-white/10 hover:border-[#7C61FF]/50 transition-all duration-500 overflow-hidden shadow-2xl flex flex-col justify-between"
+                        className="group relative block h-full w-full rounded-2xl sm:rounded-3xl p-5 sm:p-7 bg-gradient-to-b from-[#0B0A18]/90 via-[#080714]/95 to-[#060610] border border-white/10 hover:border-[#7C61FF]/50 transition-all duration-500 overflow-hidden shadow-2xl flex flex-col justify-between"
                       >
                         {/* Top ambient hover accent border glow */}
                         <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#7C61FF] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -176,7 +176,7 @@ export default function OurWorkClient() {
                         </span>
 
                         {/* Top: Screenshot frame */}
-                        <div className="relative z-10 w-full h-56 sm:h-64 lg:h-72 rounded-xl sm:rounded-2xl overflow-hidden bg-[#0A0912] border border-white/5 shadow-inner mb-6">
+                        <div className="relative z-10 w-full h-56 sm:h-64 lg:h-72 rounded-xl sm:rounded-2xl overflow-hidden bg-[#060610] border border-white/5 shadow-inner mb-6">
                           <Image
                             src={project.image}
                             alt={project.name}
@@ -188,7 +188,7 @@ export default function OurWorkClient() {
                             className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                           />
                           {/* Subtle dark gradient overlay */}
-                          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0A0912]/90 via-[#0A0912]/30 to-transparent pointer-events-none" />
+                          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#060610]/90 via-[#060610]/30 to-transparent pointer-events-none" />
                         </div>
 
                         {/* Middle: Project Metadata */}
@@ -249,7 +249,7 @@ export default function OurWorkClient() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-b from-[#141322]/90 via-[#0e0d1a]/90 to-[#0A0912]/95 backdrop-blur-xl p-8 sm:p-14 text-center flex flex-col items-center justify-center min-h-[380px] shadow-2xl"
+              className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-b from-[#0D0C18]/90 via-[#08071A]/90 to-[#060610]/95 backdrop-blur-xl p-8 sm:p-14 text-center flex flex-col items-center justify-center min-h-[380px] shadow-2xl"
             >
               <div className="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#A78BFA] mb-6 shadow-inner relative z-10">
                 <FolderGit2 className="w-7 h-7 text-[#A78BFA]" />

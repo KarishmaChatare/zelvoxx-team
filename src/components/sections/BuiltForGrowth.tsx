@@ -400,7 +400,7 @@ export default function BuiltForGrowth() {
         {/* 3 Interactive Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {pillars.map((item, idx) => (
-            <TiltCard key={item.title} className="h-full bg-gradient-to-b from-[#141322] to-[#0A0912] rounded-2xl">
+            <TiltCard key={item.title} className="h-full bg-gradient-to-b from-[#0D0C18] to-[#060610] rounded-2xl">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -411,10 +411,10 @@ export default function BuiltForGrowth() {
                     ? {}
                     : { y: -6, transition: { duration: 0.3, ease: "easeOut" } }
                 }
-                className="glass-premium rounded-2xl p-6 border border-white/10 hover:border-[#7C61FF]/50 transition-all duration-300 flex flex-col justify-between h-full group bg-gradient-to-b from-[#141322]/85 to-[#0A0912]/85 hover:shadow-[0_16px_40px_rgba(124,97,255,0.18)] cursor-pointer"
+                className="glass-premium rounded-2xl p-6 border border-white/10 hover:border-[#7C61FF]/50 transition-all duration-300 flex flex-col justify-between h-full group bg-gradient-to-b from-[#0D0C18]/85 to-[#060610]/85 hover:shadow-[0_16px_40px_rgba(124,97,255,0.18)] cursor-pointer"
               >
                 {/* Visual Interactive Illustration Graphic */}
-                <div className="w-full mb-6 rounded-xl overflow-hidden border border-white/5 bg-[#0A0912] shadow-inner group-hover:border-[#7C61FF]/40 transition-colors duration-500">
+                <div className="w-full mb-6 rounded-xl overflow-hidden border border-white/5 bg-[#060610] shadow-inner group-hover:border-[#7C61FF]/40 transition-colors duration-500">
                   {item.graphic}
                 </div>
 

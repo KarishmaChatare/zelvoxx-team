@@ -56,7 +56,7 @@ export default function Problem() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="mt-4 sm:mt-5 rounded-2xl overflow-hidden border border-[#7C61FF]/25 shadow-[0_12px_40px_rgba(0,0,0,0.6)] group hover:border-[#A78BFA]/40 transition-all duration-500 bg-[#0E0D17]"
+              className="mt-4 sm:mt-5 rounded-2xl overflow-hidden border border-[#7C61FF]/25 shadow-[0_12px_40px_rgba(0,0,0,0.6)] group hover:border-[#A78BFA]/40 transition-all duration-500 bg-[#090810]"
             >
               <Image
                 src="/images/problem/system-leak-diagram.svg"
@@ -75,13 +75,13 @@ export default function Problem() {
           {/* Right Column: 2x2 Grid with 3D Tilt Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full">
             {painPoints.map((point, idx) => (
-              <TiltCard key={idx} className="h-full bg-[#0E0D17] rounded-2xl">
+              <TiltCard key={idx} className="h-full bg-[#090810] rounded-2xl">
                 <motion.div
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-30px" }}
                   transition={{ duration: 0.4, delay: idx * 0.08 }}
-                  className="p-6 sm:p-7 rounded-2xl border border-white/10 bg-[#0E0D17]/80 backdrop-blur-sm hover:border-[#7C61FF]/50 transition-all duration-300 hover:shadow-xl hover:shadow-[#7C61FF]/10 flex flex-col justify-start h-full"
+                  className="p-6 sm:p-7 rounded-2xl border border-white/10 bg-[#090810]/80 backdrop-blur-sm hover:border-[#7C61FF]/50 transition-all duration-300 hover:shadow-xl hover:shadow-[#7C61FF]/10 flex flex-col justify-start h-full"
                 >
                   <div className="w-11 h-11 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
                     <XCircle className="w-5 h-5 text-red-400" />

@@ -81,7 +81,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             </div>
 
             {/* Project Header Banner with Signature Touch */}
-            <div className="relative rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-14 bg-gradient-to-b from-[#131221]/90 via-[#0F0E1B]/95 to-[#0A0912] border border-white/10 overflow-hidden shadow-2xl mb-12 sm:mb-16">
+            <div className="relative rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-14 bg-gradient-to-b from-[#0B0A18]/90 via-[#080714]/95 to-[#060610] border border-white/10 overflow-hidden shadow-2xl mb-12 sm:mb-16">
               {/* Oversized Background Letter */}
               <span
                 aria-hidden="true"
@@ -164,7 +164,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               </div>
 
               {/* Full-width Screenshot */}
-              <div className="relative w-full aspect-[16/9] sm:aspect-[16/10] bg-[#0A0912]">
+              <div className="relative w-full aspect-[16/9] sm:aspect-[16/10] bg-[#060610]">
                 <Image
                   src={project.image}
                   alt={`${project.name} desktop showcase`}
@@ -186,7 +186,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 {/* Previous Project Card */}
                 <Link
                   href={`/our-work/${prevProject.slug}`}
-                  className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#131221]/80 to-[#0A0912] border border-white/10 hover:border-[#7C61FF]/50 transition-all duration-300 flex items-center justify-between overflow-hidden"
+                  className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#0B0A18]/80 to-[#060610] border border-white/10 hover:border-[#7C61FF]/50 transition-all duration-300 flex items-center justify-between overflow-hidden"
                 >
                   <div className="space-y-1">
                     <span className="text-xs text-white/40 uppercase tracking-wider flex items-center gap-1.5">
@@ -212,7 +212,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 {/* Next Project Card */}
                 <Link
                   href={`/our-work/${nextProject.slug}`}
-                  className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#131221]/80 to-[#0A0912] border border-white/10 hover:border-[#7C61FF]/50 transition-all duration-300 flex items-center justify-between text-right overflow-hidden"
+                  className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#0B0A18]/80 to-[#060610] border border-white/10 hover:border-[#7C61FF]/50 transition-all duration-300 flex items-center justify-between text-right overflow-hidden"
                 >
                   <div className="relative w-16 h-12 rounded-lg overflow-hidden border border-white/10 flex-shrink-0 order-last sm:order-first">
                     <Image

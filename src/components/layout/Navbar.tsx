@@ -144,8 +144,8 @@ export default function Navbar() {
       }}
       className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl ${
         isScrolled
-          ? "bg-[#08080C]/90 border-b border-[#7C61FF]/20 shadow-[0_10px_30px_rgba(0,0,0,0.8),0_1px_0_rgba(167,139,250,0.1)]"
-          : "bg-[#08080C]/40 border-b border-white/[0.05]"
+          ? "bg-[#040408]/90 border-b border-[#7C61FF]/20 shadow-[0_10px_30px_rgba(0,0,0,0.8),0_1px_0_rgba(167,139,250,0.1)]"
+          : "bg-[#040408]/40 border-b border-white/[0.05]"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 lg:h-20 flex items-center justify-between">
@@ -220,7 +220,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ type: "tween", ease: "easeInOut", duration: 0.25 }}
-            className="xl:hidden fixed inset-0 bg-[#08080C]/98 backdrop-blur-2xl z-50 flex flex-col justify-between pt-24 pb-10 px-6 overflow-y-auto h-[100dvh] w-full"
+            className="xl:hidden fixed inset-0 bg-[#040408]/98 backdrop-blur-2xl z-50 flex flex-col justify-between pt-24 pb-10 px-6 overflow-y-auto h-[100dvh] w-full"
           >
             <div className="flex flex-col items-center justify-center space-y-2 sm:space-y-3 my-auto">
               {NAV_ITEMS.map((item, index) => (

@@ -1,6 +1,9 @@
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
+
   async redirects() {
     return [
       {
@@ -50,6 +53,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
   async rewrites() {
     return [
       {
@@ -58,7 +62,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
   compress: true,
+
   async headers() {
     return [
       {
@@ -93,6 +99,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 31536000,

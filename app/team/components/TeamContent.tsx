@@ -262,7 +262,7 @@ export default function TeamContent({ members }: Props) {
                         {/* Profile image */}
                         <div className="relative w-32 h-32 mb-6">
                           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-accent opacity-20 blur-md group-hover:opacity-40 transition-opacity" />
-                          <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/30 transition-colors bg-[#141322]">
+                          <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/30 transition-colors bg-[#0D0C18]">
                             {photoSrc ? (
                               <Image
                                 src={photoSrc}
@@ -376,7 +376,7 @@ export default function TeamContent({ members }: Props) {
       </section>
 
       {/* CTA SECTION - WORK WITH US */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-[#08080C] via-[#0E0D17] to-[#08080C] border-t border-white/10">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-[#040408] via-[#090810] to-[#040408] border-t border-white/10">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#7C61FF]/10 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto text-center relative z-10">

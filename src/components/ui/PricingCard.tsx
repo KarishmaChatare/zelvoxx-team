@@ -54,8 +54,8 @@ export default function PricingCard({ plan, index, isMobile = false }: PricingCa
         transition={{ duration: isMobile ? 0.4 : 0.6, delay: 0 }}
         className={`p-6 sm:p-8 lg:p-10 rounded-2xl sm:rounded-[2.5rem] relative group border flex flex-col justify-between h-full transition-all duration-500 ${
           isPopular
-            ? "bg-gradient-to-b from-[#181729] to-[#0A0912] border-[#7C61FF]/60 shadow-[0_15px_50px_rgba(124,97,255,0.25)]"
-            : "glass border-white/10 bg-[#12111E]/80 hover:border-[#7C61FF]/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+            ? "bg-gradient-to-b from-[#10101F] to-[#060610] border-[#7C61FF]/60 shadow-[0_15px_50px_rgba(124,97,255,0.25)]"
+            : "glass border-white/10 bg-[#0A0916]/80 hover:border-[#7C61FF]/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
         }`}
       >
         {isPopular && (

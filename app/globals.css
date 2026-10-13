@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #08080C;
-  --color-surface-1: #0E0D17;
-  --color-surface-2: #141322;
-  --color-surface-3: #1A192C;
+  --color-background: #040408;
+  --color-surface-1: #090810;
+  --color-surface-2: #0D0C18;
+  --color-surface-3: #13121F;
   --color-primary: #7C61FF;
   --color-accent: #8B5CF6;
   --color-highlight: #A78BFA;
@@ -136,10 +136,10 @@
   body {
     @apply bg-background text-white antialiased font-body selection:bg-primary/30 selection:text-white;
     background-image:
-      radial-gradient(circle at 15% 15%, rgba(124, 97, 255, 0.15), transparent 38%),
-      radial-gradient(circle at 85% 10%, rgba(139, 92, 246, 0.12), transparent 35%),
-      radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.04), transparent 50%),
-      linear-gradient(180deg, #08080C 0%, #0B0A12 50%, #060609 100%);
+      radial-gradient(circle at 15% 15%, rgba(124, 97, 255, 0.08), transparent 38%),
+      radial-gradient(circle at 85% 10%, rgba(139, 92, 246, 0.06), transparent 35%),
+      radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.02), transparent 50%),
+      linear-gradient(180deg, #040408 0%, #060610 50%, #030306 100%);
   }
 
   /* Modern subtle purple scrollbar */
@@ -147,7 +147,7 @@
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #08080C;
+    background: #040408;
   }
   ::-webkit-scrollbar-thumb {
     background: rgba(124, 97, 255, 0.25);
@@ -188,7 +188,7 @@
 @layer utilities {
   .premium-border {
     @apply border border-white/10;
-    background: linear-gradient(#0c0b14, #0c0b14) padding-box, linear-gradient(135deg, rgba(124,97,255,.5), rgba(139,92,246,.3), rgba(167,139,250,.2)) border-box;
+    background: linear-gradient(#07060E, #07060E) padding-box, linear-gradient(135deg, rgba(124,97,255,.5), rgba(139,92,246,.3), rgba(167,139,250,.2)) border-box;
     border: 1px solid transparent;
   }
 
@@ -586,4 +586,315 @@
 /* Allow sitewide ambient background texture to show through main content wrappers */
 main {
   background-color: transparent !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FLOWING BACKGROUND ANIMATIONS — Premium page-level moving backgrounds
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Variant 1: Flowing Waves (Home) ─── */
+@keyframes flowing-wave-1 {
+  0%, 100% {
+    transform: rotate(-8deg) translate3d(0, 0, 0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: rotate(-8deg) translate3d(8%, 3%, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes flowing-wave-2 {
+  0%, 100% {
+    transform: rotate(-5deg) translate3d(0, 0, 0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(-5deg) translate3d(-6%, 2%, 0);
+    opacity: 0.9;
+  }
+}
+
+@keyframes flowing-wave-3 {
+  0%, 100% {
+    transform: rotate(3deg) translate3d(0, 0, 0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: rotate(3deg) translate3d(5%, -2%, 0);
+    opacity: 0.85;
+  }
+}
+
+.animate-flowing-wave-1 {
+  animation: flowing-wave-1 22s ease-in-out infinite;
+}
+.animate-flowing-wave-2 {
+  animation: flowing-wave-2 28s ease-in-out infinite 4s;
+}
+.animate-flowing-wave-3 {
+  animation: flowing-wave-3 25s ease-in-out infinite 8s;
+}
+
+/* ─── Variant 2: Aurora Ribbons (Our Work / Portfolio) ─── */
+@keyframes aurora-ribbon-1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scaleY(1);
+    opacity: 0.5;
+  }
+  33% {
+    transform: translate3d(-8%, 6px, 0) scaleY(1.3);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translate3d(5%, -4px, 0) scaleY(0.85);
+    opacity: 0.6;
+  }
+}
+
+@keyframes aurora-ribbon-2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scaleY(1);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translate3d(6%, -8px, 0) scaleY(1.4);
+    opacity: 0.75;
+  }
+  70% {
+    transform: translate3d(-4%, 5px, 0) scaleY(0.9);
+    opacity: 0.5;
+  }
+}
+
+@keyframes aurora-ribbon-3 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scaleY(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(-5%, 4px, 0) scaleY(1.2);
+    opacity: 0.7;
+  }
+}
+
+.animate-aurora-ribbon-1 {
+  animation: aurora-ribbon-1 20s ease-in-out infinite;
+}
+.animate-aurora-ribbon-2 {
+  animation: aurora-ribbon-2 26s ease-in-out infinite 3s;
+}
+.animate-aurora-ribbon-3 {
+  animation: aurora-ribbon-3 23s ease-in-out infinite 7s;
+}
+
+/* ─── Variant 3: Silk Curtain (Contact / Careers) ─── */
+@keyframes silk-curtain-1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) skewX(0deg);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(3%, 0, 0) skewX(1.5deg);
+    opacity: 0.8;
+  }
+}
+
+@keyframes silk-curtain-2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) skewX(0deg);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(-2.5%, 0, 0) skewX(-1.2deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes silk-curtain-3 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) skewX(0deg);
+    opacity: 0.4;
+  }
+  35% {
+    transform: translate3d(1.5%, 0, 0) skewX(0.8deg);
+    opacity: 0.65;
+  }
+  70% {
+    transform: translate3d(-1%, 0, 0) skewX(-0.6deg);
+    opacity: 0.55;
+  }
+}
+
+.animate-silk-curtain-1 {
+  animation: silk-curtain-1 18s ease-in-out infinite;
+}
+.animate-silk-curtain-2 {
+  animation: silk-curtain-2 24s ease-in-out infinite 5s;
+}
+.animate-silk-curtain-3 {
+  animation: silk-curtain-3 21s ease-in-out infinite 2s;
+}
+
+/* ─── Variant 4: Tidal Pulse (Pricing / Testimonials) ─── */
+@keyframes tidal-pulse-1 {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.25);
+    opacity: 0.8;
+  }
+}
+
+@keyframes tidal-pulse-2 {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+@keyframes tidal-pulse-3 {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+.animate-tidal-pulse-1 {
+  animation: tidal-pulse-1 16s ease-in-out infinite;
+}
+.animate-tidal-pulse-2 {
+  animation: tidal-pulse-2 20s ease-in-out infinite 4s;
+}
+.animate-tidal-pulse-3 {
+  animation: tidal-pulse-3 24s ease-in-out infinite 8s;
+}
+
+/* ─── Variant 5: Nebula Drift (Team / Why Zelvoxx) ─── */
+@keyframes nebula-drift-1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.5;
+  }
+  33% {
+    transform: translate3d(4vw, 2vh, 0) scale(1.08);
+    opacity: 0.7;
+  }
+  66% {
+    transform: translate3d(-2vw, 4vh, 0) scale(0.95);
+    opacity: 0.55;
+  }
+}
+
+@keyframes nebula-drift-2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.45;
+  }
+  40% {
+    transform: translate3d(-3vw, -3vh, 0) scale(1.1);
+    opacity: 0.65;
+  }
+  75% {
+    transform: translate3d(2vw, -1vh, 0) scale(0.92);
+    opacity: 0.5;
+  }
+}
+
+@keyframes nebula-drift-3 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate3d(3vw, -2vh, 0) scale(1.05);
+    opacity: 0.6;
+  }
+}
+
+.animate-nebula-drift-1 {
+  animation: nebula-drift-1 30s ease-in-out infinite;
+}
+.animate-nebula-drift-2 {
+  animation: nebula-drift-2 36s ease-in-out infinite 6s;
+}
+.animate-nebula-drift-3 {
+  animation: nebula-drift-3 28s ease-in-out infinite 12s;
+}
+
+/* ─── Variant 6: Prism Sweep (Legal pages) ─── */
+@keyframes prism-sweep {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0.3;
+  }
+  25% {
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg);
+    opacity: 0.3;
+  }
+  75% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+    opacity: 0.3;
+  }
+}
+
+@keyframes prism-wash {
+  0% {
+    transform: translate(-50%, -50%) rotate(90deg);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(270deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(450deg);
+    opacity: 0.25;
+  }
+}
+
+.animate-prism-sweep {
+  animation: prism-sweep 45s linear infinite;
+}
+.animate-prism-wash {
+  animation: prism-wash 55s linear infinite 8s;
+}
+
+/* ─── Reduced-motion: disable all flowing bg animations ─── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-flowing-wave-1,
+  .animate-flowing-wave-2,
+  .animate-flowing-wave-3,
+  .animate-aurora-ribbon-1,
+  .animate-aurora-ribbon-2,
+  .animate-aurora-ribbon-3,
+  .animate-silk-curtain-1,
+  .animate-silk-curtain-2,
+  .animate-silk-curtain-3,
+  .animate-tidal-pulse-1,
+  .animate-tidal-pulse-2,
+  .animate-tidal-pulse-3,
+  .animate-nebula-drift-1,
+  .animate-nebula-drift-2,
+  .animate-nebula-drift-3,
+  .animate-prism-sweep,
+  .animate-prism-wash {
+    animation: none !important;
+  }
 }

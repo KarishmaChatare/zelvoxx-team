@@ -63,7 +63,7 @@ export default function CookieConsent() {
           aria-live="polite"
           aria-label="Cookie consent banner"
         >
-          <div className="relative p-5 sm:p-6 rounded-2xl bg-[#0E0D17]/95 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(124,97,255,0.15)] overflow-hidden">
+          <div className="relative p-5 sm:p-6 rounded-2xl bg-[#090810]/95 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(124,97,255,0.15)] overflow-hidden">
             {/* Ambient accent glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#7C61FF]/15 blur-2xl rounded-full pointer-events-none" />
             

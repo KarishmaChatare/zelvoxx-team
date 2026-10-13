@@ -88,7 +88,7 @@ export default function PortfolioContent({ data }: PortfolioContentProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-b from-[#141322]/90 via-[#0e0d1a]/90 to-[#0A0912]/95 backdrop-blur-xl p-8 sm:p-14 text-center flex flex-col items-center justify-center min-h-[380px] shadow-2xl"
+            className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-b from-[#0D0C18]/90 via-[#08071A]/90 to-[#060610]/95 backdrop-blur-xl p-8 sm:p-14 text-center flex flex-col items-center justify-center min-h-[380px] shadow-2xl"
           >
             <div className="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#A78BFA] mb-6 shadow-inner relative z-10">
               <FolderGit2 className="w-7 h-7 text-[#A78BFA]" />

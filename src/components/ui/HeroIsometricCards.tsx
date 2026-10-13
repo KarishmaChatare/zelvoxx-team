@@ -195,7 +195,7 @@ export default function HeroIsometricCards({ stats }: HeroIsometricCardsProps) {
         >
           <div
             style={{ willChange: "transform", transform: "translateZ(0)", backfaceVisibility: "hidden" }}
-            className="animate-card-bob-1 rounded-full px-3 py-1 border border-white/10 bg-[#0E0D17]/90 shadow-lg flex items-center gap-2 relative overflow-hidden"
+            className="animate-card-bob-1 rounded-full px-3 py-1 border border-white/10 bg-[#090810]/90 shadow-lg flex items-center gap-2 relative overflow-hidden"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
             <span className="text-[11px] font-medium text-white/80 tracking-wide">
@@ -225,7 +225,7 @@ export default function HeroIsometricCards({ stats }: HeroIsometricCardsProps) {
                   borderColor: "rgba(167, 139, 250, 0.45)",
                   boxShadow: "0 0 35px rgba(124, 97, 255, 0.45), 0 20px 40px rgba(0,0,0,0.8)",
                 }}
-                className="rounded-2xl p-3.5 sm:p-4 border border-white/10 bg-gradient-to-b from-[#141322] via-[#100F1E] to-[#0A0912] shadow-[0_15px_35px_rgba(0,0,0,0.6)] flex items-center gap-3 cursor-default group relative overflow-hidden"
+                className="rounded-2xl p-3.5 sm:p-4 border border-white/10 bg-gradient-to-b from-[#0D0C18] via-[#0A0916] to-[#060610] shadow-[0_15px_35px_rgba(0,0,0,0.6)] flex items-center gap-3 cursor-default group relative overflow-hidden"
               >
                 {/* Specular top highlight */}
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
@@ -269,7 +269,7 @@ export default function HeroIsometricCards({ stats }: HeroIsometricCardsProps) {
                   borderColor: "rgba(167, 139, 250, 0.45)",
                   boxShadow: "0 0 35px rgba(124, 97, 255, 0.45), 0 20px 40px rgba(0,0,0,0.8)",
                 }}
-                className="rounded-2xl p-3.5 sm:p-4 border border-white/10 bg-gradient-to-b from-[#141322] via-[#100F1E] to-[#0A0912] shadow-[0_15px_35px_rgba(0,0,0,0.6)] flex items-center gap-3 cursor-default group relative overflow-hidden"
+                className="rounded-2xl p-3.5 sm:p-4 border border-white/10 bg-gradient-to-b from-[#0D0C18] via-[#0A0916] to-[#060610] shadow-[0_15px_35px_rgba(0,0,0,0.6)] flex items-center gap-3 cursor-default group relative overflow-hidden"
               >
                 {/* Specular top highlight */}
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
@@ -315,7 +315,7 @@ export default function HeroIsometricCards({ stats }: HeroIsometricCardsProps) {
                   borderColor: "rgba(167, 139, 250, 0.45)",
                   boxShadow: "0 0 35px rgba(124, 97, 255, 0.45), 0 20px 40px rgba(0,0,0,0.8)",
                 }}
-                className="rounded-2xl p-3.5 sm:p-4 border border-white/10 bg-gradient-to-b from-[#141322] via-[#100F1E] to-[#0A0912] shadow-[0_20px_45px_rgba(0,0,0,0.7)] flex items-center gap-3 cursor-default group relative overflow-hidden"
+                className="rounded-2xl p-3.5 sm:p-4 border border-white/10 bg-gradient-to-b from-[#0D0C18] via-[#0A0916] to-[#060610] shadow-[0_20px_45px_rgba(0,0,0,0.7)] flex items-center gap-3 cursor-default group relative overflow-hidden"
               >
                 {/* Specular top highlight */}
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
@@ -359,7 +359,7 @@ export default function HeroIsometricCards({ stats }: HeroIsometricCardsProps) {
                   borderColor: "rgba(167, 139, 250, 0.45)",
                   boxShadow: "0 0 35px rgba(124, 97, 255, 0.45), 0 20px 40px rgba(0,0,0,0.8)",
                 }}
-                className="rounded-2xl p-3.5 sm:p-4 border border-white/10 bg-gradient-to-b from-[#141322] via-[#100F1E] to-[#0A0912] shadow-[0_20px_45px_rgba(0,0,0,0.7)] flex items-center gap-3 cursor-default group relative overflow-hidden"
+                className="rounded-2xl p-3.5 sm:p-4 border border-white/10 bg-gradient-to-b from-[#0D0C18] via-[#0A0916] to-[#060610] shadow-[0_20px_45px_rgba(0,0,0,0.7)] flex items-center gap-3 cursor-default group relative overflow-hidden"
               >
                 {/* Specular top highlight */}
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
@@ -395,7 +395,7 @@ export default function HeroIsometricCards({ stats }: HeroIsometricCardsProps) {
         >
           <div
             style={{ willChange: "transform", transform: "translateZ(0)", backfaceVisibility: "hidden" }}
-            className="animate-card-bob-2 rounded-full px-3 py-1 border border-white/10 bg-[#0E0D17]/90 shadow-lg flex items-center gap-2 relative overflow-hidden"
+            className="animate-card-bob-2 rounded-full px-3 py-1 border border-white/10 bg-[#090810]/90 shadow-lg flex items-center gap-2 relative overflow-hidden"
           >
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(124,97,255,0.8)]" />
             <span className="text-[11px] font-medium text-white/80 tracking-wide">

@@ -196,7 +196,7 @@ export default function Hero({ data, stats }: HeroProps) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: isMobile ? 0.1 : 0.35 + idx * 0.05, ease: "easeOut" }}
                   whileHover={{ y: -3, scale: 1.05 }}
-                  className="group relative flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 min-h-[36px] rounded-full glass-premium border border-white/10 bg-[#0E0D17]/70 hover:bg-[#141322]/90 hover:border-[#7C61FF]/40 shadow-sm hover:shadow-[0_0_20px_rgba(124,97,255,0.35)] transition-all duration-300 cursor-pointer touch-manipulation shrink-0"
+                  className="group relative flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 min-h-[36px] rounded-full glass-premium border border-white/10 bg-[#090810]/70 hover:bg-[#0D0C18]/90 hover:border-[#7C61FF]/40 shadow-sm hover:shadow-[0_0_20px_rgba(124,97,255,0.35)] transition-all duration-300 cursor-pointer touch-manipulation shrink-0"
                 >
                   <div className="w-1.5 h-1.5 rounded-full bg-white/30 group-hover:bg-[#7C61FF] group-hover:shadow-[0_0_8px_rgba(124,97,255,0.9)] group-hover:scale-125 transition-all duration-300 shrink-0" />
                   <span className="font-heading font-bold text-[10px] sm:text-[11px] tracking-widest text-white/50 group-hover:text-white transition-colors duration-300 whitespace-nowrap">

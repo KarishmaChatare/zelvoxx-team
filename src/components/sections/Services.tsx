@@ -113,7 +113,7 @@ export default function Services({ data }: { data?: ServiceType[] }) {
               const visualImage = serviceVisualMap[service.title] || "/images/services/web-design.svg";
 
               return (
-                <TiltCard key={idx} className="h-full bg-[#12111E] rounded-2xl sm:rounded-3xl">
+                <TiltCard key={idx} className="h-full bg-[#0A0916] rounded-2xl sm:rounded-3xl">
                   <Link
                     href={service.slug ? `/service/${service.slug}` : "#"}
                     className="flex flex-col h-full group block"
@@ -123,7 +123,7 @@ export default function Services({ data }: { data?: ServiceType[] }) {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-40px" }}
                       transition={{ duration: 0.4, delay: idx * 0.07 }}
-                      className="flex flex-col justify-between h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/10 bg-[#12111E] backdrop-blur-md group-hover:border-[#7C61FF]/50 transition-all duration-300 relative overflow-hidden group-hover:shadow-xl group-hover:shadow-[#7C61FF]/10"
+                      className="flex flex-col justify-between h-full p-6 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0A0916] backdrop-blur-md group-hover:border-[#7C61FF]/50 transition-all duration-300 relative overflow-hidden group-hover:shadow-xl group-hover:shadow-[#7C61FF]/10"
                     >
                       {/* Subtle inner hover glow */}
                       <div className="absolute inset-0 bg-gradient-to-br from-[#7C61FF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />

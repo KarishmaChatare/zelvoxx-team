@@ -62,12 +62,12 @@ export default function AmbientBackground({ opacity = 0.24, fixed = true }: Ambi
           />
 
           {/* High-contrast gradient overlays to preserve deep dark aesthetic and readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#08080C]/40 via-transparent to-[#08080C]/50 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#040408]/40 via-transparent to-[#040408]/50 pointer-events-none" />
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "radial-gradient(ellipse at 50% 50%, transparent 35%, #08080C 85%)",
+                "radial-gradient(ellipse at 50% 50%, transparent 35%, #040408 85%)",
             }}
           />
         </motion.div>

@@ -199,10 +199,10 @@ export default function Testimonials({ data }: { data?: TestimonialType[] }) {
             className="flex overflow-x-auto gap-4 sm:gap-6 pb-8 sm:pb-12 pt-2 snap-x snap-mandatory scrollbar-hide relative z-10 -mx-4 px-4 sm:mx-0 sm:px-0"
           >
             {displayData.map((test, idx) => (
-              <TiltCard key={idx} className="snap-center shrink-0 rounded-2xl sm:rounded-[2rem] bg-gradient-to-b from-[#141322] to-[#0A0912]">
+              <TiltCard key={idx} className="snap-center shrink-0 rounded-2xl sm:rounded-[2rem] bg-gradient-to-b from-[#0D0C18] to-[#060610]">
                 <div
                   data-testimonial-card
-                  className="w-[84vw] sm:w-[460px] md:w-[480px] min-h-[390px] sm:min-h-[420px] glass-premium premium-border p-6 sm:p-8 rounded-2xl sm:rounded-[2rem] relative group bg-gradient-to-b from-[#141322] to-[#0A0912] flex flex-col justify-between transition-all duration-500 touch-manipulation hover:border-[#7C61FF]/40"
+                  className="w-[84vw] sm:w-[460px] md:w-[480px] min-h-[390px] sm:min-h-[420px] glass-premium premium-border p-6 sm:p-8 rounded-2xl sm:rounded-[2rem] relative group bg-gradient-to-b from-[#0D0C18] to-[#060610] flex flex-col justify-between transition-all duration-500 touch-manipulation hover:border-[#7C61FF]/40"
                   style={{
                     boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)",
                   }}

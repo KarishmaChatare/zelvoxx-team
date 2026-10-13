@@ -89,8 +89,8 @@ export default function PhonePricingMockup({
         <div
           className={`relative rounded-[40px] sm:rounded-[44px] overflow-hidden flex flex-col justify-between border border-white/10 h-[680px] sm:h-[720px] xl:h-[740px] ${
             isCenter
-              ? "bg-gradient-to-b from-[#1C1836] via-[#100E22] to-[#0A0914]"
-              : "bg-gradient-to-b from-[#141225] via-[#0C0B18] to-[#070610]"
+              ? "bg-gradient-to-b from-[#14122A] via-[#0A0916] to-[#060610]"
+              : "bg-gradient-to-b from-[#0D0B1A] via-[#070610] to-[#040408]"
           }`}
         >
           {/* Subtle Ambient Radial Glow on Screen */}

@@ -29,7 +29,7 @@ export default function WhatsAppButton() {
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
-        className="group relative flex items-center justify-center w-[50px] h-[50px] sm:w-[56px] sm:h-[56px] rounded-full bg-[#0E0D17]/90 hover:bg-[#141322] border border-[#25D366]/40 hover:border-[#25D366] shadow-[0_8px_24px_rgba(0,0,0,0.6),0_0_15px_rgba(37,211,102,0.25)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.8),0_0_28px_rgba(37,211,102,0.5)] backdrop-blur-xl transition-all duration-300"
+        className="group relative flex items-center justify-center w-[50px] h-[50px] sm:w-[56px] sm:h-[56px] rounded-full bg-[#090810]/90 hover:bg-[#0D0C18] border border-[#25D366]/40 hover:border-[#25D366] shadow-[0_8px_24px_rgba(0,0,0,0.6),0_0_15px_rgba(37,211,102,0.25)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.8),0_0_28px_rgba(37,211,102,0.5)] backdrop-blur-xl transition-all duration-300"
       >
         {/* Subtle idle pulsing outer ring / halo */}
         <span
@@ -65,11 +65,11 @@ export default function WhatsAppButton() {
         </svg>
 
         {/* Small active status dot */}
-        <span className="absolute top-0 right-0 w-3 h-3 rounded-full bg-[#25D366] border-2 border-[#0E0D17] shadow-[0_0_8px_rgba(37,211,102,0.9)]" />
+        <span className="absolute top-0 right-0 w-3 h-3 rounded-full bg-[#25D366] border-2 border-[#090810] shadow-[0_0_8px_rgba(37,211,102,0.9)]" />
 
         {/* Desktop hover tooltip */}
         <span
-          className={`hidden sm:inline-flex absolute right-[calc(100%+12px)] top-1/2 -translate-y-1/2 items-center px-3 py-1.5 rounded-full bg-[#0E0D17]/95 border border-[#25D366]/30 text-white text-xs font-semibold tracking-wide shadow-xl backdrop-blur-md whitespace-nowrap transition-all duration-200 pointer-events-none ${
+          className={`hidden sm:inline-flex absolute right-[calc(100%+12px)] top-1/2 -translate-y-1/2 items-center px-3 py-1.5 rounded-full bg-[#090810]/95 border border-[#25D366]/30 text-white text-xs font-semibold tracking-wide shadow-xl backdrop-blur-md whitespace-nowrap transition-all duration-200 pointer-events-none ${
             isHovered
               ? "opacity-100 translate-x-0"
               : "opacity-0 translate-x-2"

@@ -373,7 +373,7 @@ export default function CurvedGallery({ projects }: CurvedGalleryProps) {
                   </div>
 
                   {/* Subtle dark ambient bottom gradient */}
-                  <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0A0912]/95 via-[#0A0912]/45 to-transparent pointer-events-none z-10" />
+                  <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#060610]/95 via-[#060610]/45 to-transparent pointer-events-none z-10" />
 
                   {/* Project name & arrow pill fading in on hover */}
                   <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 z-20 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 pointer-events-none">

@@ -275,7 +275,7 @@ export default function HomeTeam({ members }: Props) {
                         >
                           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-accent opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-500" />
                           
-                          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/50 transition-colors duration-500 bg-[#141322]">
+                          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary/50 transition-colors duration-500 bg-[#0D0C18]">
                             {photoSrc ? (
                               <Image
                                 src={photoSrc}

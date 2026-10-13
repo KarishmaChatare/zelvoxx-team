@@ -87,6 +87,7 @@ import SitewideAmbientBackground from "@/src/components/ui/SitewideAmbientBackgr
 import GoogleTagManager from "@/src/components/analytics/GoogleTagManager";
 import SmoothScrollProvider from "@/src/components/providers/SmoothScrollProvider";
 import CustomCursor from "@/src/components/ui/CustomCursor";
+import FlowingBackground from "@/src/components/ui/FlowingBackground";
 
 export default function RootLayout({
   children,
@@ -120,6 +121,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${poppins.variable} antialiased bg-background text-white overflow-x-hidden min-h-screen`}
       >
+        <FlowingBackground />
         {children}
         <Analytics />
         <SpeedInsights />

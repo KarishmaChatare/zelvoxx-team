@@ -391,10 +391,10 @@ export default function SystemFlow() {
                         transition={{ type: "spring", stiffness: 350, damping: 20 }}
                         className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.6)] ${
                           isHovered
-                            ? "bg-gradient-to-br from-[#1C1A35] via-[#121024] to-[#0A0914] border-2 border-[#7C61FF] shadow-[0_0_35px_rgba(124,97,255,0.6)]"
+                            ? "bg-gradient-to-br from-[#14122A] via-[#0A0916] to-[#060610] border-2 border-[#7C61FF] shadow-[0_0_35px_rgba(124,97,255,0.6)]"
                             : isSales
                             ? "bg-gradient-to-br from-[#171A32] via-[#0F1122] to-[#080913] border-2 border-[#2D9CDB]/60 hover:border-[#38BDF8]"
-                            : "bg-gradient-to-br from-[#141224] to-[#0A0914] border border-white/15 hover:border-[#7C61FF]/60"
+                            : "bg-gradient-to-br from-[#0D0B1A] to-[#060610] border border-white/15 hover:border-[#7C61FF]/60"
                         }`}
                       >
                         {/* Inner Glowing Core */}

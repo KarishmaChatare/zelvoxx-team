@@ -106,7 +106,7 @@ export default function Footer() {
       <div className="absolute -top-28 left-1/2 -translate-x-1/2 w-[min(100vw,600px)] max-w-full h-[120px] bg-[#7C61FF]/8 blur-[100px] pointer-events-none rounded-full" />
 
       {/* Subtle background contrast tint */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0914]/40 to-[#07060C]/70 pointer-events-none -z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#06050C]/40 to-[#030308]/70 pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div

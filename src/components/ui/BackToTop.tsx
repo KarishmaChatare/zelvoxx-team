@@ -73,7 +73,7 @@ export default function BackToTop() {
             }}
             whileHover={prefersReducedMotion ? {} : { scale: 1.08 }}
             whileTap={prefersReducedMotion ? {} : { scale: 0.94 }}
-            className="group relative flex items-center justify-center w-[50px] h-[50px] sm:w-[56px] sm:h-[56px] rounded-full bg-[#0E0D17]/90 hover:bg-[#141322] border border-[#7C61FF]/40 hover:border-[#7C61FF] shadow-[0_8px_24px_rgba(0,0,0,0.6),0_0_15px_rgba(124,97,255,0.25)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.8),0_0_28px_rgba(124,97,255,0.5)] backdrop-blur-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C61FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0E0D17] cursor-pointer"
+            className="group relative flex items-center justify-center w-[50px] h-[50px] sm:w-[56px] sm:h-[56px] rounded-full bg-[#090810]/90 hover:bg-[#0D0C18] border border-[#7C61FF]/40 hover:border-[#7C61FF] shadow-[0_8px_24px_rgba(0,0,0,0.6),0_0_15px_rgba(124,97,255,0.25)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.8),0_0_28px_rgba(124,97,255,0.5)] backdrop-blur-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C61FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#090810] cursor-pointer"
           >
             {/* Ambient violet soft glow */}
             <div className="absolute -inset-1 rounded-full bg-[#7C61FF]/20 blur-md -z-10 group-hover:bg-[#7C61FF]/35 transition-colors duration-300 pointer-events-none" />
@@ -87,7 +87,7 @@ export default function BackToTop() {
 
             {/* Desktop hover tooltip */}
             <span
-              className={`hidden sm:inline-flex absolute right-[calc(100%+12px)] top-1/2 -translate-y-1/2 items-center px-3 py-1.5 rounded-full bg-[#0E0D17]/95 border border-[#7C61FF]/30 text-white text-xs font-semibold tracking-wide shadow-xl backdrop-blur-md whitespace-nowrap transition-all duration-200 pointer-events-none ${
+              className={`hidden sm:inline-flex absolute right-[calc(100%+12px)] top-1/2 -translate-y-1/2 items-center px-3 py-1.5 rounded-full bg-[#090810]/95 border border-[#7C61FF]/30 text-white text-xs font-semibold tracking-wide shadow-xl backdrop-blur-md whitespace-nowrap transition-all duration-200 pointer-events-none ${
                 isHovered
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-2"
