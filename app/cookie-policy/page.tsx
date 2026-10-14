@@ -6,6 +6,8 @@ import LegalContactSection from "@/src/components/legal/LegalContactSection";
 import LegalPageLayout from "@/src/components/legal/LegalPageLayout";
 import { legalSiteInfo } from "@/src/constants/data";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Cookie Policy | Zelvoxx",
   description:
@@ -28,7 +30,7 @@ export default function CookiePolicyPage() {
                 {legalSiteInfo.website}
               </a>
               . It should be read together with our{" "}
-              <Link href="/privacy" className="text-primary hover:underline">
+              <Link href="/privacy-policy" className="text-primary hover:underline">
                 Privacy Policy
               </Link>
               , which describes how we process personal data more broadly.

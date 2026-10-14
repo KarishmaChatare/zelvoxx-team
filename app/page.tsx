@@ -13,7 +13,6 @@ import HomeWhyZelvoxx from "@/src/components/sections/HomeWhyZelvoxx";
 import HomeTeam from "@/src/components/sections/HomeTeam";
 import CTA from "@/src/components/sections/CTA";
 import Footer from "@/src/components/layout/Footer";
-import AmbientBackground from "@/src/components/ui/AmbientBackground";
 
 import { client } from "@/sanity/lib/client";
 import { PHONE_CALL_URL } from "@/src/constants/data";
@@ -73,11 +72,9 @@ export default async function Home() {
 
       <Hero data={heroData} stats={statsData} />
 
-      {/* Subtle ambient visual texture with gentle parallax across all sections from Built for Growing Businesses down to Footer */}
-      <div className="relative bg-[#08080C]">
-        <AmbientBackground opacity={0.24} fixed={true} />
-        <div className="relative z-10">
-          <TrustedBy />
+      {/* Base dark theme background across all sections below Hero */}
+      <div className="relative bg-[#08080C] z-10">
+        <TrustedBy />
           <Problem />
           <SystemFlow />
           <BuiltForGrowth />
@@ -91,7 +88,6 @@ export default async function Home() {
           <CTA />
           <Footer />
         </div>
-      </div>
 
     </main>
   );

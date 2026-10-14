@@ -5,6 +5,8 @@ import LegalContactSection from "@/src/components/legal/LegalContactSection";
 import LegalPageLayout from "@/src/components/legal/LegalPageLayout";
 import { legalSiteInfo } from "@/src/constants/data";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Terms & Conditions | Zelvoxx",
   description: "Read our terms and conditions to understand your rights and responsibilities when using Zelvoxx services.",

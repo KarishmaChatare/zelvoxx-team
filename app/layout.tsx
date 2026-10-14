@@ -82,7 +82,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import WhatsAppButton from "@/src/components/ui/WhatsAppButton";
 import BackToTop from "@/src/components/ui/BackToTop";
 import CookieConsent from "@/src/components/ui/CookieConsent";
-import SitewideAmbientBackground from "@/src/components/ui/SitewideAmbientBackground";
 import GoogleTagManager from "@/src/components/analytics/GoogleTagManager";
 import SmoothScrollProvider from "@/src/components/providers/SmoothScrollProvider";
 import CustomCursor from "@/src/components/ui/CustomCursor";
@@ -108,13 +107,6 @@ export default function RootLayout({
           type="image/webp"
           fetchPriority="high"
         />
-        <link
-          rel="preload"
-          as="image"
-          href="/images/abstract-glass-widescreen.webp"
-          type="image/webp"
-          fetchPriority="high"
-        />
       </head>
       <body
         className={`${inter.variable} ${poppins.variable} antialiased bg-background text-white overflow-x-hidden min-h-screen`}
@@ -131,7 +123,6 @@ export default function RootLayout({
 
         <SmoothScrollProvider>
           <CustomCursor />
-          <SitewideAmbientBackground />
           {children}
           <BackToTop />
           <WhatsAppButton />

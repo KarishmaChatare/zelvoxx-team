@@ -1,16 +1,19 @@
 import { createClient } from "next-sanity";
 import { NextResponse } from "next/server";
+import { sendCareerApplicationEmailServer } from "@/src/lib/emailjs";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "a0nhkjjj";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
 function getWriteClient() {
+  const token = process.env.SANITY_API_TOKEN;
+  if (!token) return null;
   return createClient({
     projectId,
     dataset,
     apiVersion: "2024-01-01",
     useCdn: false,
-    token: process.env.SANITY_API_TOKEN,
+    token,
   });
 }
 
@@ -23,8 +26,12 @@ export async function POST(request: Request) {
     const role = String(formData.get("role") || "").trim();
     const honeypot = String(formData.get("website_url_hp") || "").trim();
 
+    // Honeypot spam defense
     if (honeypot) {
-      return NextResponse.json({ success: true, message: "Application received." }, { status: 200 });
+      return NextResponse.json(
+        { success: true, message: "Application received." },
+        { status: 200 }
+      );
     }
 
     if (!name || !email || !role) {
@@ -34,49 +41,106 @@ export async function POST(request: Request) {
       );
     }
 
-    const client = getWriteClient();
-    if (!process.env.SANITY_API_TOKEN) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: "Application service is not configured." },
-        { status: 503 }
+        { error: "Please enter a valid email address." },
+        { status: 400 }
       );
     }
+
+    const phone = String(formData.get("phone") || "").trim() || undefined;
+    const location = String(formData.get("location") || "").trim() || undefined;
+    const portfolioUrl = String(formData.get("portfolioUrl") || "").trim() || undefined;
+    const workMode = String(formData.get("workMode") || "").trim() || undefined;
+    const yearsOfExperience = String(formData.get("yearsOfExperience") || "").trim() || undefined;
+    const whyJoin = String(formData.get("whyJoin") || "").trim() || undefined;
 
     const resumeFile = formData.get("resume");
     let resumeField: { _type: "file"; asset: { _type: "reference"; _ref: string } } | undefined;
     let resumeFileName: string | undefined;
 
+    const sanityClient = getWriteClient();
+
     if (resumeFile instanceof File && resumeFile.size > 0) {
       resumeFileName = resumeFile.name;
-      const buffer = Buffer.from(await resumeFile.arrayBuffer());
-      const asset = await client.assets.upload("file", buffer, {
-        filename: resumeFile.name,
-        contentType: resumeFile.type || "application/octet-stream",
-      });
-      resumeField = {
-        _type: "file",
-        asset: { _type: "reference", _ref: asset._id },
-      };
+      if (sanityClient) {
+        try {
+          const buffer = Buffer.from(await resumeFile.arrayBuffer());
+          const asset = await sanityClient.assets.upload("file", buffer, {
+            filename: resumeFile.name,
+            contentType: resumeFile.type || "application/octet-stream",
+          });
+          resumeField = {
+            _type: "file",
+            asset: { _type: "reference", _ref: asset._id },
+          };
+        } catch (assetErr) {
+          console.warn("[Sanity Asset Upload Notice]:", assetErr);
+        }
+      }
     }
 
-    await client.create({
-      _type: "careerApplication",
+    // 1. Store in Sanity CMS Content Lake if SANITY_API_TOKEN is configured
+    let savedToSanity = false;
+    if (sanityClient) {
+      try {
+        await sanityClient.create({
+          _type: "careerApplication",
+          name,
+          email,
+          phone,
+          location,
+          role,
+          portfolioUrl,
+          resume: resumeField,
+          resumeFileName,
+          workMode,
+          yearsOfExperience,
+          whyJoin,
+          submittedAt: new Date().toISOString(),
+          status: "new",
+        });
+        savedToSanity = true;
+      } catch (sanityErr) {
+        console.warn("[Sanity Career Save Notice]:", sanityErr);
+      }
+    } else {
+      console.log("[CAREER APPLICATION LOGGED (SANITY_API_TOKEN pending)]:", {
+        name,
+        email,
+        phone,
+        location,
+        role,
+        workMode,
+        yearsOfExperience,
+        portfolioUrl,
+        resumeFileName,
+        whyJoin,
+        submittedAt: new Date().toISOString(),
+      });
+    }
+
+    // 2. Dispatch email notification to enquiry.zelvoxx@gmail.com via EmailJS
+    const emailResult = await sendCareerApplicationEmailServer({
       name,
       email,
-      phone: String(formData.get("phone") || "").trim() || undefined,
-      location: String(formData.get("location") || "").trim() || undefined,
+      phone,
+      location,
       role,
-      portfolioUrl: String(formData.get("portfolioUrl") || "").trim() || undefined,
-      resume: resumeField,
+      portfolioUrl,
+      workMode,
+      yearsOfExperience,
+      whyJoin,
       resumeFileName,
-      workMode: String(formData.get("workMode") || "").trim() || undefined,
-      yearsOfExperience: String(formData.get("yearsOfExperience") || "").trim() || undefined,
-      whyJoin: String(formData.get("whyJoin") || "").trim() || undefined,
-      submittedAt: new Date().toISOString(),
-      status: "new",
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      message: "Application submitted successfully.",
+      emailSent: emailResult.success,
+      storedInSanity: savedToSanity,
+    });
   } catch (error) {
     console.error("Career application error:", error);
     return NextResponse.json(

@@ -6,6 +6,8 @@ import LegalContactSection from "@/src/components/legal/LegalContactSection";
 import LegalPageLayout from "@/src/components/legal/LegalPageLayout";
 import { legalSiteInfo } from "@/src/constants/data";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "DMCA Policy | Zelvoxx",
   description:
@@ -119,7 +121,7 @@ export default function DmcaPage() {
                 Copyright
               </Link>{" "}
               page and{" "}
-              <Link href="/privacy" className="text-primary hover:underline">
+              <Link href="/privacy-policy" className="text-primary hover:underline">
                 Privacy Policy
               </Link>
               .

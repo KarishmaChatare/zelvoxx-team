@@ -6,6 +6,8 @@ import LegalContactSection from "@/src/components/legal/LegalContactSection";
 import LegalPageLayout from "@/src/components/legal/LegalPageLayout";
 import { legalSiteInfo } from "@/src/constants/data";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Privacy Policy | Zelvoxx",
   description: "Learn how Zelvoxx collects, uses, and protects your personal data. Comprehensive privacy notice covering forms, analytics, cookies, and user rights.",

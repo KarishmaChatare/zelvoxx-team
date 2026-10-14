@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { pushToDataLayer } from "@/src/lib/analytics";
+import { useSmoothScroll } from "@/src/components/providers/SmoothScrollProvider";
 
 const NAV_ITEMS = [
+  { label: "SERVICES", href: "/#services" },
   { label: "OUR WORK", href: "/our-work" },
   { label: "WHY Zelvoxx", href: "/why-Zelvoxx" },
   { label: "OUR TEAM", href: "/team" },
@@ -19,6 +22,8 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const { scrollTo } = useSmoothScroll();
 
   const navRef = useRef<HTMLElement>(null);
   const isHiddenRef = useRef(false);
@@ -49,45 +54,39 @@ export default function Navbar() {
         setIsScrolled(shouldBeScrolled);
       }
 
-      // Always keep navbar visible near the top
-      if (currentScrollY <= 30 || isOpen) {
-        accumulatedDelta = 0;
-        if (isHiddenRef.current && navEl) {
+      // Delta between frames
+      const delta = currentScrollY - lastScrollY.current;
+
+      // Pin visible at top of page or if near bottom (to access footer easily)
+      if (currentScrollY <= 80 || currentScrollY >= cachedMaxScroll - 60) {
+        if (isHiddenRef.current) {
           isHiddenRef.current = false;
-          navEl.style.transform = "translate3d(0, 0, 0)";
-          navEl.style.pointerEvents = "auto";
+          if (navEl) navEl.style.transform = "translate3d(0, 0, 0)";
         }
+        accumulatedDelta = 0;
         lastScrollY.current = currentScrollY;
         ticking = false;
         return;
       }
 
-      // Avoid rubber-band overscroll at page bottom without reading DOM every frame
-      if (cachedMaxScroll > 0 && currentScrollY >= cachedMaxScroll - 20) {
-        ticking = false;
-        return;
-      }
+      // Track directional velocity
+      if (delta > 0) {
+        // Scrolling down
+        if (accumulatedDelta < 0) accumulatedDelta = 0;
+        accumulatedDelta += delta;
 
-      const delta = currentScrollY - lastScrollY.current;
-
-      // Reset accumulation when reversing scroll direction
-      if ((delta > 0 && accumulatedDelta < 0) || (delta < 0 && accumulatedDelta > 0)) {
-        accumulatedDelta = 0;
-      }
-      accumulatedDelta += delta;
-
-      // Hide or show via direct GPU-accelerated translate3d (0ms latency, zero re-renders)
-      if (accumulatedDelta > hideThreshold) {
-        if (!isHiddenRef.current && navEl) {
+        if (accumulatedDelta > hideThreshold && !isHiddenRef.current) {
           isHiddenRef.current = true;
-          navEl.style.transform = "translate3d(0, -100%, 0)";
-          navEl.style.pointerEvents = "none";
+          if (navEl) navEl.style.transform = "translate3d(0, -100%, 0)";
         }
-      } else if (accumulatedDelta < -showThreshold) {
-        if (isHiddenRef.current && navEl) {
+      } else if (delta < 0) {
+        // Scrolling up
+        if (accumulatedDelta > 0) accumulatedDelta = 0;
+        accumulatedDelta += delta;
+
+        if (accumulatedDelta < -showThreshold && isHiddenRef.current) {
           isHiddenRef.current = false;
-          navEl.style.transform = "translate3d(0, 0, 0)";
-          navEl.style.pointerEvents = "auto";
+          if (navEl) navEl.style.transform = "translate3d(0, 0, 0)";
         }
       }
 
@@ -95,52 +94,57 @@ export default function Navbar() {
       ticking = false;
     };
 
-    const handleScroll = () => {
+    const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(updateNavbar);
         ticking = true;
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", updateDimensions);
     };
-  }, [isOpen]);
+  }, []);
 
-  // Keep visible if mobile drawer opens
+  // Prevent background scrolling when mobile modal menu is open
   useEffect(() => {
-    if (isOpen && navRef.current) {
-      isHiddenRef.current = false;
-      navRef.current.style.transform = "translate3d(0, 0, 0)";
-      navRef.current.style.pointerEvents = "auto";
+    if (isOpen) {
       document.body.style.overflow = "hidden";
+      if (navRef.current) {
+        navRef.current.style.transform = "translate3d(0, 0, 0)";
+        isHiddenRef.current = false;
+      }
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
-  // Close menu on Escape
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+    closeMobile = false
+  ) => {
+    if (closeMobile) setIsOpen(false);
+
+    if (href.startsWith("/#") && pathname === "/") {
+      e.preventDefault();
+      const hash = href.replace("/", "");
+      window.history.pushState(null, "", hash);
+      scrollTo(hash, { offset: -80, duration: 0.9 });
+    }
+  };
 
   return (
     <nav
       ref={navRef}
       style={{
         transform: "translate3d(0, 0, 0)",
-        transition:
-          "transform 380ms cubic-bezier(0.16, 1, 0.3, 1), background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease",
-        willChange: "transform",
+        transition: "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
       className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl ${
         isScrolled
@@ -152,17 +156,23 @@ export default function Navbar() {
         {/* Brand Logo */}
         <Link
           href="/"
+          onClick={(e) => {
+            if (pathname === "/") {
+              e.preventDefault();
+              scrollTo(0, { immediate: false, duration: 0.8 });
+            }
+          }}
           className="relative z-[60] flex items-center group py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7C61FF]/50 rounded-lg"
           aria-label="Zelvoxx Home"
         >
           <div className="relative h-8 sm:h-9 lg:h-10 flex items-center transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-[0_0_16px_rgba(124,97,255,0.5)]">
             <Image
-              src="/images/zelvoxx-zk-logo.webp"
-              alt="Zelvoxx Digital Growth Systems Logo"
+              src="/images/zelvoxx-logo.webp"
+              alt="Zelvoxx Logo"
               width={140}
-              height={76}
+              height={74}
               priority
-              className="h-full w-auto object-contain rounded-md"
+              className="h-full w-auto object-contain"
             />
           </div>
         </Link>
@@ -173,6 +183,7 @@ export default function Navbar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
               className="text-gray-300 hover:text-white px-2.5 py-1.5 2xl:px-3 rounded-full hover:bg-white/[0.06] transition-all duration-200 whitespace-nowrap"
             >
               {item.label}
@@ -233,7 +244,7 @@ export default function Navbar() {
                 >
                   <Link
                     href={item.href}
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleNavClick(e, item.href, true)}
                     className="text-lg sm:text-2xl md:text-3xl font-heading font-black text-gray-200 hover:text-primary transition-colors uppercase tracking-wider min-h-[44px] px-4 py-2 flex items-center justify-center rounded-xl hover:bg-white/5 active:scale-95 touch-manipulation text-center"
                   >
                     {item.label}

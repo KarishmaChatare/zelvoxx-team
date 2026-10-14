@@ -163,3 +163,129 @@ export async function sendContactEmailBrowser(data: ContactEmailParams): Promise
     return { success: false, error: error.text || error.message || "Failed to send email." };
   }
 }
+
+export interface CareerApplicationEmailParams {
+  name: string;
+  email: string;
+  phone?: string;
+  location?: string;
+  role: string;
+  portfolioUrl?: string;
+  workMode?: string;
+  yearsOfExperience?: string;
+  whyJoin?: string;
+  resumeFileName?: string;
+}
+
+export function buildCareerEmailJsTemplateParams(data: CareerApplicationEmailParams) {
+  const targetEmail = process.env.CONTACT_RECEIVER_EMAIL || legalSiteInfo.email;
+
+  const summary = [
+    `Candidate Name: ${data.name}`,
+    `Email: ${data.email}`,
+    `Phone: ${data.phone || "Not provided"}`,
+    `Location: ${data.location || "Not provided"}`,
+    `Role Applied For: ${data.role}`,
+    `Preferred Work Mode: ${data.workMode || "Not provided"}`,
+    `Years of Experience: ${data.yearsOfExperience || "Not provided"}`,
+    `Portfolio / LinkedIn: ${data.portfolioUrl || "Not provided"}`,
+    `Resume File: ${data.resumeFileName || "Not uploaded"}`,
+    "",
+    "--- Why Want To Join Zelvoxx ---",
+    data.whyJoin || "Not provided",
+  ].join("\n");
+
+  return {
+    to_email: targetEmail,
+    to_name: "Zelvoxx Careers Team",
+    from_name: data.name,
+    from_email: data.email,
+    reply_to: data.email,
+    phone: data.phone || "Not provided",
+    role: data.role,
+    location: data.location || "Not provided",
+    portfolio_url: data.portfolioUrl || "Not provided",
+    work_mode: data.workMode || "Not provided",
+    years_of_experience: data.yearsOfExperience || "Not provided",
+    why_join: data.whyJoin || "Not provided",
+    resume_file_name: data.resumeFileName || "Not uploaded",
+    message: summary,
+    services: `Career Application — ${data.role}`,
+    company: data.location || "Career Applicant",
+    submitted_at: new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Kolkata",
+      dateStyle: "medium",
+      timeStyle: "short",
+    }),
+  };
+}
+
+export async function sendCareerApplicationEmailServer(
+  data: CareerApplicationEmailParams
+): Promise<{ success: boolean; error?: string }> {
+  const serviceId =
+    process.env.CAREER_EMAILJS_SERVICE_ID ||
+    process.env.EMAILJS_SERVICE_ID ||
+    process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const templateId =
+    process.env.CAREER_EMAILJS_TEMPLATE_ID ||
+    process.env.EMAILJS_TEMPLATE_ID ||
+    process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const publicKey =
+    process.env.CAREER_EMAILJS_PUBLIC_KEY ||
+    process.env.EMAILJS_PUBLIC_KEY ||
+    process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+  const privateKey =
+    process.env.CAREER_EMAILJS_PRIVATE_KEY || process.env.EMAILJS_PRIVATE_KEY;
+
+  if (!serviceId || !templateId || !publicKey) {
+    console.warn(
+      "[EmailJS Notice - Career] Missing configuration. Required variables:\n" +
+        `- EMAILJS_SERVICE_ID: ${serviceId ? "set" : "MISSING"}\n` +
+        `- EMAILJS_TEMPLATE_ID: ${templateId ? "set" : "MISSING"}\n` +
+        `- EMAILJS_PUBLIC_KEY: ${publicKey ? "set" : "MISSING"}`
+    );
+    return {
+      success: false,
+      error: "EmailJS is not fully configured yet in environment variables.",
+    };
+  }
+
+  const templateParams = buildCareerEmailJsTemplateParams(data);
+
+  const payload: Record<string, any> = {
+    service_id: serviceId,
+    template_id: templateId,
+    user_id: publicKey,
+    template_params: templateParams,
+  };
+
+  if (privateKey) {
+    payload.accessToken = privateKey;
+  }
+
+  try {
+    const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`[EmailJS Career Error] HTTP ${response.status}: ${errorText}`);
+      return { success: false, error: `EmailJS responded with ${response.status}: ${errorText}` };
+    }
+
+    console.log(
+      `[EmailJS Career Success] Application email delivered to ${templateParams.to_email} for ${data.name} (${data.role})`
+    );
+    return { success: true };
+  } catch (error: any) {
+    console.error("[EmailJS Career Network Error]:", error);
+    return { success: false, error: error.message || "Failed to reach EmailJS server." };
+  }
+}
+

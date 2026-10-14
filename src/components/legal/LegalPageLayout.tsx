@@ -30,11 +30,10 @@ const headerStagger: Variants = {
 };
 
 const contentReveal: Variants = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: { duration: 0.68, ease: [0.22, 1, 0.36, 1], delay: 0.14 },
+    transition: { duration: 0.25, ease: "easeOut" },
   },
 };
 
@@ -51,33 +50,11 @@ export default function LegalPageLayout({
 }: LegalPageLayoutProps) {
   return (
     <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24 overflow-hidden">
+      {/* High-performance static ambient glows (zero JS loop, zero paint thrash) */}
       <div className="absolute inset-0 pointer-events-none select-none" aria-hidden>
-        <motion.div
-          className="absolute -top-32 -right-16 w-[min(100vw,28rem)] h-[min(100vw,28rem)] max-w-[480px] max-h-[480px] rounded-full bg-primary/30 blur-[100px] sm:blur-[128px]"
-          animate={{
-            x: [0, 24, 0],
-            y: [0, 16, 0],
-            opacity: [0.35, 0.55, 0.35],
-          }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-[40%] -left-24 w-[min(100vw,22rem)] h-[min(100vw,22rem)] rounded-full bg-accent/25 blur-[90px] sm:blur-[110px]"
-          animate={{
-            x: [0, -20, 0],
-            y: [0, 28, 0],
-            opacity: [0.25, 0.45, 0.25],
-          }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -bottom-20 right-[15%] w-72 h-72 rounded-full bg-violet-500/20 blur-[100px]"
-          animate={{
-            scale: [1, 1.12, 1],
-            opacity: [0.2, 0.38, 0.2],
-          }}
-          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-        />
+        <div className="absolute -top-32 -right-16 w-[min(100vw,28rem)] h-[min(100vw,28rem)] max-w-[480px] max-h-[480px] rounded-full bg-primary/25 blur-[100px] sm:blur-[128px] opacity-70" />
+        <div className="absolute top-[40%] -left-24 w-[min(100vw,22rem)] h-[min(100vw,22rem)] rounded-full bg-accent/20 blur-[90px] sm:blur-[110px] opacity-60" />
+        <div className="absolute -bottom-20 right-[15%] w-72 h-72 rounded-full bg-violet-500/15 blur-[100px] opacity-60" />
       </div>
 
       <div className="relative z-10">
@@ -122,20 +99,6 @@ export default function LegalPageLayout({
             <span>Effective Date: {effectiveDate}</span>
             <span>•</span>
             <span>Last Updated: {effectiveDate}</span>
-          </motion.div>
-
-          {/* Placeholder Legal Text Notice */}
-          <motion.div
-            variants={fadeInUp}
-            className="mt-4 p-3 sm:p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-mono leading-relaxed"
-          >
-            <div className="flex items-center gap-2 font-bold uppercase tracking-wider text-amber-400 text-[11px]">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              [PLACEHOLDER — REPLACE WITH REVIEWED LEGAL TEXT]
-            </div>
-            <p className="mt-1 text-amber-300/80 text-[11px] font-sans">
-              This document contains standard boilerplate legal language for development and layout preview. It must be reviewed by qualified legal counsel or generated via an official policy generator (e.g. Termly, iubenda) before commercial deployment.
-            </p>
           </motion.div>
         </motion.header>
 

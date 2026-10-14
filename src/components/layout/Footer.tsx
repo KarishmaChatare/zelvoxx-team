@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { socialLinks, footerNavLinks, legalLinks, legalSiteInfo } from "@/src/constants/data";
 import { pushToDataLayer } from "@/src/lib/analytics";
+import { useSmoothScroll } from "@/src/components/providers/SmoothScrollProvider";
 
 function getSocialIcon(platform: string) {
   const p = platform.toLowerCase();
@@ -72,6 +75,8 @@ function getSocialIcon(platform: string) {
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const prefersReducedMotion = useReducedMotion();
+  const pathname = usePathname();
+  const { scrollTo } = useSmoothScroll();
   const contactEmail = legalSiteInfo.email || "enquiry.zelvoxx@gmail.com";
 
   const containerVariants: Variants = {
@@ -144,25 +149,69 @@ export default function Footer() {
             {/* Right: Horizontal Nav links */}
             <nav aria-label="Footer navigation">
               <ul className="flex items-center flex-wrap gap-x-5 sm:gap-x-7 lg:gap-x-8 gap-y-2 text-xs sm:text-sm font-medium text-white/70">
-                {footerNavLinks.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.url}
-                      className="relative py-2 sm:py-1 px-1 text-white/70 hover:text-white transition-colors duration-200 group flex items-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C61FF] rounded"
-                    >
-                      <span className="group-hover:text-white transition-colors">
-                        {link.label}
-                      </span>
-                      {/* Smooth violet underline animation */}
-                      <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#7C61FF] group-hover:w-full transition-all duration-300 ease-out" />
-                    </Link>
-                  </li>
-                ))}
+                {footerNavLinks.map((link) => {
+                  const isAnchor = link.url.startsWith("/#") || link.url.startsWith("#");
+                  const isTel = link.url.startsWith("tel:");
+                  const isExternal = link.url.startsWith("http") || isTel || link.url.startsWith("mailto:");
+
+                  if (isTel || isExternal) {
+                    return (
+                      <li key={link.label}>
+                        <a
+                          href={link.url}
+                          className="relative py-2 sm:py-1 px-1 text-white/70 hover:text-white transition-colors duration-200 group flex items-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C61FF] rounded"
+                        >
+                          <span className="group-hover:text-white transition-colors">
+                            {link.label}
+                          </span>
+                          <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#7C61FF] group-hover:w-full transition-all duration-300 ease-out" />
+                        </a>
+                      </li>
+                    );
+                  }
+
+                  if (isAnchor && pathname === "/") {
+                    const hash = link.url.startsWith("/#") ? link.url.replace("/", "") : link.url;
+                    return (
+                      <li key={link.label}>
+                        <a
+                          href={hash}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.history.pushState(null, "", hash);
+                            scrollTo(hash, { offset: -80, duration: 0.9 });
+                          }}
+                          className="relative py-2 sm:py-1 px-1 text-white/70 hover:text-white transition-colors duration-200 group flex items-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C61FF] rounded"
+                        >
+                          <span className="group-hover:text-white transition-colors">
+                            {link.label}
+                          </span>
+                          <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#7C61FF] group-hover:w-full transition-all duration-300 ease-out" />
+                        </a>
+                      </li>
+                    );
+                  }
+
+                  return (
+                    <li key={link.label}>
+                      <Link
+                        href={link.url}
+                        prefetch={true}
+                        className="relative py-2 sm:py-1 px-1 text-white/70 hover:text-white transition-colors duration-200 group flex items-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C61FF] rounded"
+                      >
+                        <span className="group-hover:text-white transition-colors">
+                          {link.label}
+                        </span>
+                        <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#7C61FF] group-hover:w-full transition-all duration-300 ease-out" />
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           </motion.div>
 
-          {/* 2. MIDDLE: Large bold "ZELVOXX" wordmark */}
+          {/* 2. MIDDLE: Large bold "ZELVOXX" wordmark with transparent emblem logo */}
           <motion.div
             variants={rowVariants}
             className="relative py-2 sm:py-4 lg:py-6 overflow-hidden select-none"
@@ -173,6 +222,12 @@ export default function Footer() {
 
               <Link
                 href="/"
+                onClick={(e) => {
+                  if (pathname === "/") {
+                    e.preventDefault();
+                    scrollTo(0, { immediate: false, duration: 0.8 });
+                  }
+                }}
                 className="group block w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C61FF] rounded-2xl"
                 aria-label="Zelvoxx Home"
               >
@@ -207,6 +262,7 @@ export default function Footer() {
                     <li key={link.label}>
                       <Link
                         href={link.url}
+                        prefetch={true}
                         className="relative py-2 sm:py-1 px-1 text-white/55 hover:text-white transition-colors duration-200 group flex items-center touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#7C61FF] rounded"
                       >
                         <span className="group-hover:text-[#A78BFA] transition-colors">
