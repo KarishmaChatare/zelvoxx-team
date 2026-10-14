@@ -185,7 +185,7 @@ export default function TestimonialsContentClient({ testimonialsData }: Testimon
               })}
             </div>
 
-            {testimonialsData.length === 0 && (
+            {(!displayData || displayData.length === 0) && (
               <div className="text-center py-20">
                 <p className="text-white/60">No testimonials yet. Be our first!</p>
               </div>
